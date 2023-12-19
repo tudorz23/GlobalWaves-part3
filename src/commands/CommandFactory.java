@@ -40,7 +40,14 @@ public class CommandFactory {
      * @throws IllegalArgumentException if command is not supported.
      */
     public ICommand getCommand(final CommandInput commandInput) throws IllegalArgumentException {
-        CommandType commandType = CommandType.fromString(commandInput.getCommand());
+        CommandType commandType;
+        try {
+            commandType = CommandType.fromString(commandInput.getCommand());
+        } catch (IllegalArgumentException exception) {
+            PrinterBasic printer = new PrinterBasic(output, commandInput);
+            printer.print("Command " + commandInput.getCommand() + " not supported.");
+            throw new IllegalArgumentException("Invalid command.");
+        }
 
         switch (commandType) {
             case GET_TOP5_SONGS -> {
@@ -198,7 +205,7 @@ public class CommandFactory {
             }
             default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);
-                printer.print("Command " + commandInput.getCommand() + " not supported.");
+                printer.print("Command " + commandInput.getCommand() + " not yet implemented.");
                 throw new IllegalArgumentException("Invalid command.");
             }
         }

@@ -22,6 +22,7 @@ public final class CommandInput {
     private String date;
     private int price;
     private ArrayList<EpisodeInput> episodes;
+    private String recommendationType;
 
     /* Constructor */
     public CommandInput() { }
@@ -177,5 +178,13 @@ public final class CommandInput {
 
     public void setEpisodes(final ArrayList<EpisodeInput> episodes) {
         this.episodes = episodes;
+    }
+
+    public String getRecommendationType() {
+        return recommendationType;
+    }
+
+    public void setRecommendationType(final String recommendationType) {
+        this.recommendationType = recommendationType;
     }
 }
