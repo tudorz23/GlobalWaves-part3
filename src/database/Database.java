@@ -266,6 +266,36 @@ public final class Database {
         hosts.remove((Host) user);
     }
 
+
+    /**
+     * Traverses the artist database and returns the instance of the
+     * requested artist, if it exists.
+     * @throws IllegalArgumentException if the artist is not found.
+     */
+    public Artist searchArtistInDatabase(final String artistName) throws IllegalArgumentException {
+        for (Artist artist : artists) {
+            if (artist.getUsername().equals(artistName)) {
+                return artist;
+            }
+        }
+        throw new IllegalArgumentException("Artist not found in the database.");
+    }
+
+
+    /**
+     * Traverses the host database and returns the instance of the
+     * requested host, if it exists.
+     * @throws IllegalArgumentException if the host is not found.
+     */
+    public Host searchHostInDatabase(final String hostName) throws IllegalArgumentException {
+        for (Host host : hosts) {
+            if (host.getUsername().equals(hostName)) {
+                return host;
+            }
+        }
+        throw new IllegalArgumentException("Host not found in the database.");
+    }
+
     /* Getters and Setters */
     public ArrayList<Song> getSongs() {
         return songs;

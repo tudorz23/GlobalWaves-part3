@@ -49,7 +49,7 @@ public final class AddUserCommand implements ICommand {
      */
     private void addBasicUser() {
         BasicUser user = new BasicUser(commandInput.getUsername(), commandInput.getAge(),
-                                        commandInput.getCity());
+                                        commandInput.getCity(), session.getDatabase());
         session.getDatabase().addBasicUser(user);
     }
 
@@ -59,7 +59,7 @@ public final class AddUserCommand implements ICommand {
      */
     private void addArtist() {
         Artist artist = new Artist(commandInput.getUsername(), commandInput.getAge(),
-                                        commandInput.getCity());
+                                    commandInput.getCity(), session.getDatabase());
         session.getDatabase().addArtist(artist);
     }
 
@@ -69,7 +69,7 @@ public final class AddUserCommand implements ICommand {
      */
     private void addHost() {
         Host host = new Host(commandInput.getUsername(), commandInput.getAge(),
-                                        commandInput.getCity());
+                                commandInput.getCity(), session.getDatabase());
         session.getDatabase().addHost(host);
     }
 }

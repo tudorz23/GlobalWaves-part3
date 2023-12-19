@@ -1,5 +1,7 @@
 package database.audio;
 
+import database.users.Artist;
+import database.users.User;
 import utils.enums.AudioType;
 
 public final class Album extends SongCollection {
@@ -30,6 +32,33 @@ public final class Album extends SongCollection {
         copy.initializeShuffleArray();
 
         return copy;
+    }
+
+
+    @Override
+    public void updateAnalytics() {
+        User listener = getListener();
+
+        listener.getAnalytics().addAlbum(getName());
+        listener.getAnalytics().addSong(getPlayingTrackName());
+        listener.getAnalytics().addGenre(getSongs().get(getPlayingSongIndex()).getGenre());
+        listener.getAnalytics().addArtist(getOwner());
+
+        updateArtistAnalytics();
+    }
+
+    private void updateArtistAnalytics() {
+        Artist artist;
+        try {
+            artist = getListener().getDatabase().searchArtistInDatabase(getOwner());
+        } catch (IllegalArgumentException exception) {
+            return;
+        }
+
+        artist.getArtistAnalytics().addAlbum(getName());
+        artist.getArtistAnalytics().addSong(getSongs().get(getPlayingSongIndex()).getName());
+        artist.getArtistAnalytics().addFan(getListener().getUsername());
+        artist.getArtistAnalytics().addCity(getListener().getCity());
     }
 
     /* Getters and Setters */

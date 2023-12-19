@@ -61,6 +61,9 @@ public final class LoadCommand implements ICommand {
         // Load the selection into the player.
         loadSelection(userPlayer);
 
+        userPlayer.getCurrPlaying().setListener(user);
+        userPlayer.getCurrPlaying().updateAnalytics();
+
         userPlayer.setPrevTimeInfo(session.getTimestamp());
         userPlayer.setPlayerState(PlayerState.PLAYING);
 

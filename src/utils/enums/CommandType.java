@@ -40,7 +40,8 @@ public enum CommandType {
     GET_ALL_USERS("getAllUsers"),
     GET_ONLINE_USERS("getOnlineUsers"),
     PRINT_CURRENT_PAGE("printCurrentPage"),
-    CHANGE_PAGE("changePage");
+    CHANGE_PAGE("changePage"),
+    WRAPPED("wrapped");
 
     private final String label;
 

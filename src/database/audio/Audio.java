@@ -2,6 +2,7 @@ package database.audio;
 
 import database.Player;
 import database.Searchable;
+import database.users.User;
 import utils.enums.AudioType;
 import utils.enums.SearchableType;
 
@@ -12,6 +13,7 @@ import utils.enums.SearchableType;
 public abstract class Audio extends Searchable {
     private String name;
     private AudioType type;
+    private User listener; // The user that listens to the audio file.
 
     /* Constructors */
     public Audio() {
@@ -60,6 +62,12 @@ public abstract class Audio extends Searchable {
     public abstract String getPlayingTrackName();
 
 
+    /**
+     * Updates the analytics for the listener for one single listen to this audio.
+     */
+    public abstract void updateAnalytics();
+
+
     /* Getters and Setters */
     /**
      * Getter for name field.
@@ -87,5 +95,13 @@ public abstract class Audio extends Searchable {
      */
     public void setType(final AudioType type) {
         this.type = type;
+    }
+
+    public User getListener() {
+        return listener;
+    }
+
+    public void setListener(User listener) {
+        this.listener = listener;
     }
 }

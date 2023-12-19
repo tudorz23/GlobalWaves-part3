@@ -58,7 +58,7 @@ public class AdminInteraction {
 
         // Populate database with users.
         for (UserInput userInput : libraryInput.getUsers()) {
-            BasicUser user =  new BasicUser(userInput);
+            BasicUser user =  new BasicUser(userInput, database);
             database.addBasicUser(user);
         }
     }

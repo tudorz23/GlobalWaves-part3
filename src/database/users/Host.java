@@ -1,5 +1,7 @@
 package database.users;
 
+import database.Database;
+import database.analytics.HostAnalytics;
 import database.records.Announcement;
 import database.audio.Podcast;
 import fileio.input.CommandInput;
@@ -10,12 +12,15 @@ import java.util.ArrayList;
 
 public final class Host extends User {
     private final HostPage officialPage;
+    private HostAnalytics hostAnalytics;
 
     /* Constructor */
-    public Host(final String username, final int age, final String city) {
-        super(username, age, city);
+    public Host(final String username, final int age, final String city,
+                Database database) {
+        super(username, age, city, database);
         this.setType(UserType.HOST);
         this.officialPage = new HostPage(this);
+        this.hostAnalytics = new HostAnalytics();
     }
 
     /**
@@ -74,5 +79,11 @@ public final class Host extends User {
     }
     public ArrayList<Podcast> getPodcasts() {
         return officialPage.getPodcasts();
+    }
+    public HostAnalytics getHostAnalytics() {
+        return hostAnalytics;
+    }
+    public void setHostAnalytics(HostAnalytics hostAnalytics) {
+        this.hostAnalytics = hostAnalytics;
     }
 }

@@ -61,6 +61,7 @@ public abstract class SongCollection extends Audio {
     private void changeToNextSong(final Player player) {
         if (player.getRepeatState() == RepeatState.REPEAT_CURR_SONG_COLLECTION) {
             songs.get(playingSongIndex).resetTimePosition();
+            updateAnalytics();
             return;
         }
 
@@ -84,6 +85,8 @@ public abstract class SongCollection extends Audio {
         this.playingSongIndex = nextSongIndex;
         Song newSong = songs.get(nextSongIndex);
         newSong.setTimePosition(0);
+
+        updateAnalytics();
     }
 
 
@@ -163,6 +166,7 @@ public abstract class SongCollection extends Audio {
 
         if (shuffleIndex == 0) {
             // First song.
+            updateAnalytics();
             return;
         }
 
@@ -172,6 +176,7 @@ public abstract class SongCollection extends Audio {
         playingSongIndex = prevSongIndex;
         Song prevSong = songs.get(prevSongIndex);
         prevSong.setTimePosition(0);
+        updateAnalytics();
     }
 
 
@@ -226,6 +231,8 @@ public abstract class SongCollection extends Audio {
         return totalLikes;
     }
 
+    @Override
+    public abstract void updateAnalytics();
 
     /* Getters and Setters */
     /**

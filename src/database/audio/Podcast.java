@@ -1,6 +1,8 @@
 package database.audio;
 
 import database.Player;
+import database.users.Host;
+import database.users.User;
 import fileio.input.EpisodeInput;
 import fileio.input.PodcastInput;
 import utils.enums.AudioType;
@@ -92,12 +94,14 @@ public final class Podcast extends Audio {
     private void changeToNextEpisode(final Player player) {
         if (player.getRepeatState() == RepeatState.REPEAT_INFINITE) {
             episodes.get(playingEpisodeIdx).resetTimePosition();
+            updateAnalytics();
             return;
         }
 
         if (player.getRepeatState() == RepeatState.REPEAT_ONCE) {
             episodes.get(playingEpisodeIdx).resetTimePosition();
             player.setRepeatState(RepeatState.NO_REPEAT);
+            updateAnalytics();
             return;
         }
 
@@ -115,6 +119,8 @@ public final class Podcast extends Audio {
         this.playingEpisodeIdx = nextEpisodeIdx;
         Episode newEpisode = episodes.get(nextEpisodeIdx);
         newEpisode.setTimePosition(0);
+
+        updateAnalytics();
     }
 
     @Override
@@ -222,6 +228,27 @@ public final class Podcast extends Audio {
      */
     public void addEpisode(final Episode episode) {
         episodes.add(episode);
+    }
+
+
+    @Override
+    public void updateAnalytics() {
+        User listener = getListener();
+
+        listener.getAnalytics().addPodcast(getName());
+        updateHostAnalytics();
+    }
+
+    private void updateHostAnalytics() {
+        Host host;
+        try {
+            host = getListener().getDatabase().searchHostInDatabase(getOwner());
+        } catch (IllegalArgumentException exception) {
+            return;
+        }
+
+        host.getHostAnalytics().addEpisode(getEpisodes().get(playingEpisodeIdx).getName());
+        host.getHostAnalytics().addFan(getListener().getUsername());
     }
 
     /* Getters and Setters */

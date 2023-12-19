@@ -1,6 +1,7 @@
 package database.users;
 
 import database.*;
+import database.analytics.Analytics;
 import database.audio.*;
 import fileio.input.UserInput;
 import pages.HomePage;
@@ -22,9 +23,12 @@ public abstract class User extends Searchable {
     private UserType type;
     private Page currPage;
     private LogStatus logStatus;
+    private Database database;
+    private Analytics analytics;
 
     /* Constructors */
-    public User(final String username, final int age, final String city) {
+    public User(final String username, final int age, final String city,
+                Database database) {
         this.username = username;
         this.age = age;
         this.city = city;
@@ -36,10 +40,12 @@ public abstract class User extends Searchable {
         this.followedPlaylists = new ArrayList<>();
         this.currPage = new HomePage(this);
         this.setSearchableType(SearchableType.USER);
+        this.database = database;
+        this.analytics = new Analytics();
     }
 
-    public User(final UserInput userInput) {
-        this(userInput.getUsername(), userInput.getAge(), userInput.getCity());
+    public User(final UserInput userInput, Database database) {
+        this(userInput.getUsername(), userInput.getAge(), userInput.getCity(), database);
     }
 
     /**
@@ -362,5 +368,15 @@ public abstract class User extends Searchable {
      */
     public void setLogStatus(final LogStatus logStatus) {
         this.logStatus = logStatus;
+    }
+    /**
+     * Getter for analytics.
+     */
+    public Analytics getAnalytics() {
+        return analytics;
+    }
+
+    public Database getDatabase() {
+        return database;
     }
 }

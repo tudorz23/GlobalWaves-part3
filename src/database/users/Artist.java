@@ -1,20 +1,26 @@
 package database.users;
 
+import database.Database;
+import database.analytics.ArtistAnalytics;
 import database.records.Event;
 import database.audio.Album;
 import fileio.input.CommandInput;
 import pages.ArtistPage;
 import utils.enums.UserType;
+
 import java.util.ArrayList;
 
 public final class Artist extends User {
     private final ArtistPage officialPage;
+    private ArtistAnalytics artistAnalytics;
 
     /* Constructor */
-    public Artist(final String username, final int age, final String city) {
-        super(username, age, city);
+    public Artist(final String username, final int age, final String city,
+                  Database database) {
+        super(username, age, city, database);
         this.setType(UserType.ARTIST);
         this.officialPage = new ArtistPage(this);
+        this.artistAnalytics = new ArtistAnalytics();
     }
 
     /**
@@ -97,5 +103,11 @@ public final class Artist extends User {
     }
     public ArrayList<Album> getAlbums() {
         return officialPage.getAlbums();
+    }
+    public ArtistAnalytics getArtistAnalytics() {
+        return artistAnalytics;
+    }
+    public void setArtistAnalytics(ArtistAnalytics artistAnalytics) {
+        this.artistAnalytics = artistAnalytics;
     }
 }

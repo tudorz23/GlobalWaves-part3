@@ -1,6 +1,8 @@
 package database.audio;
 
 import database.Player;
+import database.users.Artist;
+import database.users.User;
 import fileio.input.SongInput;
 import utils.enums.AudioType;
 import utils.enums.PlayerState;
@@ -80,7 +82,14 @@ public final class Song extends Audio {
      * Simulates the time passing when Repeat Infinite is on.
      */
     private void simulateRepeatInfinite(final int elapsedTime) {
-        timePosition = (timePosition + elapsedTime) % duration;
+        int quotient = (timePosition + elapsedTime) / duration;
+        int remainder = (timePosition + elapsedTime) % duration;
+
+        for (int i = 0; i < quotient; i++) {
+            updateAnalytics();
+        }
+
+        timePosition = remainder;
     }
 
     /**
@@ -95,6 +104,9 @@ public final class Song extends Audio {
             timePosition = remainder;
             return;
         }
+
+        // Surely, it repeats once, so update analytics once.
+        updateAnalytics();
 
         if (quotient == 1) {
             // Repeat it once and set repeat state to No repeat.
@@ -169,6 +181,35 @@ public final class Song extends Audio {
     public void decrementLikeCnt() {
         likeCnt--;
     }
+
+
+    @Override
+    public void updateAnalytics() {
+        User listener = getListener();
+
+        listener.getAnalytics().addSong(getName());
+        listener.getAnalytics().addArtist(getArtist());
+        listener.getAnalytics().addGenre(getGenre());
+        listener.getAnalytics().addAlbum(getAlbum());
+
+        updateArtistAnalytics();
+    }
+
+    private void updateArtistAnalytics() {
+        Artist artist;
+        try {
+            artist = getListener().getDatabase().searchArtistInDatabase(getArtist());
+        } catch (IllegalArgumentException exception) {
+            return;
+        }
+
+        artist.getArtistAnalytics().addAlbum(getAlbum());
+        artist.getArtistAnalytics().addSong(getName());
+        artist.getArtistAnalytics().addFan(getListener().getUsername());
+        artist.getArtistAnalytics().addCity(getListener().getCity());
+    }
+
+
 
     /* Getters and Setters */
     public Integer getDuration() {

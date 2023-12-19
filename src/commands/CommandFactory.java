@@ -204,6 +204,25 @@ public class CommandFactory {
                 return new RemoveEventCommand(session, commandInput, user, output);
             }
             default -> {
+                return helperGetCommandStage3(commandInput, commandType, user);
+            }
+        }
+    }
+
+
+    /**
+     * Helper to the public Factory Method. This part manages commands from stage 3
+     * that require a User instance.
+     * @return ICommand object.
+     * @throws IllegalArgumentException if the command is not supported.
+     */
+    private ICommand helperGetCommandStage3(final CommandInput commandInput,
+                                            final CommandType commandType, final User user) {
+        switch(commandType) {
+            case WRAPPED -> {
+                return new WrappedCommand(session, commandInput, user, output);
+            }
+            default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);
                 printer.print("Command " + commandInput.getCommand() + " not yet implemented.");
                 throw new IllegalArgumentException("Invalid command.");
