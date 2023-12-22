@@ -3,6 +3,7 @@ package commands.searchbarCommands.searchStrategy;
 import client.Session;
 import database.Searchable;
 import database.audio.Album;
+import database.users.Artist;
 import database.users.User;
 import fileio.input.CommandInput;
 import fileio.input.FiltersInput;
@@ -29,7 +30,11 @@ public final class SearchAlbumStrategy implements ISearchStrategy {
         FiltersInput filtersInput = commandInput.getFilters();
 
         // Add all albums, then remove those that do not respect the given filters.
-        searchResult.addAll(session.getDatabase().getAlbums());
+        for (Artist artist : session.getDatabase().getArtists()) {
+            searchResult.addAll(artist.getAlbums());
+        }
+
+//        searchResult.addAll(session.getDatabase().getAlbums());
 
         if (filtersInput.getName() != null) {
             searchAlbumsByName(searchResult, filtersInput.getName());

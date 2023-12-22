@@ -107,9 +107,9 @@ public class PrinterWrapped extends PrinterComplex {
         output.add(commandNode);
     }
 
-    public LinkedHashMap<String, Integer> sortTreeMapByValue(Map<String, Integer> treeMap) {
+    public <T extends Comparable<? super T>> LinkedHashMap<T, Integer> sortTreeMapByValue(Map<T, Integer> treeMap) {
         // https://stackoverflow.com/questions/2864840/treemap-sort-by-value
-        LinkedHashMap<String, Integer> sortedMap = treeMap.entrySet().stream()
+        LinkedHashMap<T, Integer> sortedMap = treeMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,

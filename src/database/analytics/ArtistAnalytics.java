@@ -7,14 +7,12 @@ public class ArtistAnalytics extends Analytics {
     private Map<String, Integer> artistTopAlbums;
     private Map<String, Integer> artistTopSongs;
     private Map<String, Integer> artistTopFans;
-    private Map<String, Integer> artistTopCities;
 
     /* Constructor */
     public ArtistAnalytics() {
         artistTopAlbums = new TreeMap<>();
         artistTopSongs = new TreeMap<>();
         artistTopFans = new TreeMap<>();
-        artistTopCities = new TreeMap<>();
     }
 
     public void addAlbum(String albumName) {
@@ -32,10 +30,6 @@ public class ArtistAnalytics extends Analytics {
         artistTopFans.put(fanName, listens + 1);
     }
 
-    public void addCity(String cityName) {
-        int listens = artistTopCities.getOrDefault(cityName, 0);
-        artistTopCities.put(cityName, listens + 1);
-    }
 
     /* Getters and Setters */
     public Map<String, Integer> getArtistTopAlbums() {
@@ -55,11 +49,5 @@ public class ArtistAnalytics extends Analytics {
     }
     public void setArtistTopFans(Map<String, Integer> artistTopFans) {
         this.artistTopFans = artistTopFans;
-    }
-    public Map<String, Integer> getArtistTopCities() {
-        return artistTopCities;
-    }
-    public void setArtistTopCities(Map<String, Integer> artistTopCities) {
-        this.artistTopCities = artistTopCities;
     }
 }

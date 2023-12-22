@@ -58,7 +58,6 @@ public final class Album extends SongCollection {
         artist.getArtistAnalytics().addAlbum(getName());
         artist.getArtistAnalytics().addSong(getSongs().get(getPlayingSongIndex()).getName());
         artist.getArtistAnalytics().addFan(getListener().getUsername());
-        artist.getArtistAnalytics().addCity(getListener().getCity());
     }
 
     /* Getters and Setters */

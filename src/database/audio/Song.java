@@ -206,7 +206,6 @@ public final class Song extends Audio {
         artist.getArtistAnalytics().addAlbum(getAlbum());
         artist.getArtistAnalytics().addSong(getName());
         artist.getArtistAnalytics().addFan(getListener().getUsername());
-        artist.getArtistAnalytics().addCity(getListener().getCity());
     }
 
 

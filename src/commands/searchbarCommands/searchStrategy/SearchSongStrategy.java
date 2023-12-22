@@ -70,7 +70,7 @@ public final class SearchSongStrategy implements ISearchStrategy {
         while (iterator.hasNext()) {
             Song song = (Song) iterator.next();
 
-            if (!song.getName().startsWith(name)) {
+            if (!song.getName().toLowerCase().startsWith(name.toLowerCase())) {
                 iterator.remove();
             }
         }

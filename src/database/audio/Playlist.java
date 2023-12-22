@@ -74,7 +74,6 @@ public final class Playlist extends SongCollection {
         artist.getArtistAnalytics().addAlbum(currSong.getAlbum());
         artist.getArtistAnalytics().addSong(currSong.getName());
         artist.getArtistAnalytics().addFan(getListener().getUsername());
-        artist.getArtistAnalytics().addCity(getListener().getCity());
     }
 
     /* Getters and Setters */
