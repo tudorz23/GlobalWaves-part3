@@ -4,12 +4,12 @@ import client.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import commands.statsCommands.personalStats.WrappedCommand;
 import database.analytics.ArtistAnalytics;
 import database.audio.Audio;
 import database.users.Artist;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
+import utils.MapOperations;
 
 import java.util.LinkedHashMap;
 
@@ -44,14 +44,14 @@ public class ArtistWrappedStrategy implements IWrappedStrategy {
         commandNode.put("user", user.getUsername());
         commandNode.put("timestamp", session.getTimestamp());
 
-        LinkedHashMap<String, Integer> sortedAlbums = WrappedCommand.sortStringMapByValue(analytics.getArtistTopAlbums());
-        LinkedHashMap<Audio, Integer> sortedSongs = WrappedCommand.sortAudioMapByValue(analytics.getArtistTopSongs());
-        LinkedHashMap<String, Integer> sortedFans = WrappedCommand.sortStringMapByValue(analytics.getArtistTopFans());
+        LinkedHashMap<String, Integer> sortedAlbums = MapOperations.sortStringMapByValue(analytics.getArtistTopAlbums());
+        LinkedHashMap<Audio, Integer> sortedSongs = MapOperations.sortAudioMapByValue(analytics.getArtistTopSongs());
+        LinkedHashMap<String, Integer> sortedFans = MapOperations.sortStringMapByValue(analytics.getArtistTopFans());
 
         ObjectNode resultNode = mapper.createObjectNode();
-        ObjectNode topAlbums = WrappedCommand.createStringMapObjectNode(sortedAlbums);
-        ObjectNode topSongs = WrappedCommand.createAudioMapObjectNode(sortedSongs);
-        ArrayNode topFans = WrappedCommand.createLinkedMapKeyArrayNode(sortedFans);
+        ObjectNode topAlbums = MapOperations.createStringMapObjectNode(sortedAlbums);
+        ObjectNode topSongs = MapOperations.createAudioMapObjectNode(sortedSongs);
+        ArrayNode topFans = MapOperations.createLinkedMapKeyArrayNode(sortedFans);
 
         resultNode.set("topAlbums", topAlbums);
         resultNode.set("topSongs", topSongs);

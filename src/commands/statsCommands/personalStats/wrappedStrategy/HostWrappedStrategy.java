@@ -9,6 +9,7 @@ import database.analytics.HostAnalytics;
 import database.users.Host;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
+import utils.MapOperations;
 
 import java.util.LinkedHashMap;
 
@@ -43,10 +44,10 @@ public class HostWrappedStrategy implements IWrappedStrategy {
         commandNode.put("user", user.getUsername());
         commandNode.put("timestamp", session.getTimestamp());
 
-        LinkedHashMap<String, Integer> sortedEpisodes = WrappedCommand.sortStringMapByValue(analytics.getHostTopEpisodes());
+        LinkedHashMap<String, Integer> sortedEpisodes = MapOperations.sortStringMapByValue(analytics.getHostTopEpisodes());
 
         ObjectNode resultNode = mapper.createObjectNode();
-        ObjectNode topEpisodes = WrappedCommand.createStringMapObjectNode(sortedEpisodes);
+        ObjectNode topEpisodes = MapOperations.createStringMapObjectNode(sortedEpisodes);
 
         resultNode.set("topEpisodes", topEpisodes);
         resultNode.put("listeners", analytics.getHostTopFans().size());

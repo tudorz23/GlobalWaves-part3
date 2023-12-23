@@ -4,12 +4,12 @@ import client.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import commands.statsCommands.personalStats.WrappedCommand;
 import database.analytics.Analytics;
 import database.audio.Audio;
 import database.users.BasicUser;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
+import utils.MapOperations;
 
 import java.util.LinkedHashMap;
 
@@ -37,11 +37,11 @@ public class UserWrappedStrategy implements IWrappedStrategy {
             return;
         }
 
-        LinkedHashMap<String, Integer> sortedArtists = WrappedCommand.sortStringMapByValue(user.getAnalytics().getTopArtists());
-        LinkedHashMap<String, Integer> sortedGenres = WrappedCommand.sortStringMapByValue(user.getAnalytics().getTopGenres());
-        LinkedHashMap<Audio, Integer> sortedSongs = WrappedCommand.sortAudioMapByValue(user.getAnalytics().getTopSongs());
-        LinkedHashMap<String, Integer> sortedAlbums = WrappedCommand.sortStringMapByValue(user.getAnalytics().getTopAlbums());
-        LinkedHashMap<Audio, Integer> sortedPodcasts = WrappedCommand.sortAudioMapByValue(user.getAnalytics().getTopPodcasts());
+        LinkedHashMap<String, Integer> sortedArtists = MapOperations.sortStringMapByValue(user.getAnalytics().getTopArtists());
+        LinkedHashMap<String, Integer> sortedGenres = MapOperations.sortStringMapByValue(user.getAnalytics().getTopGenres());
+        LinkedHashMap<Audio, Integer> sortedSongs = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopSongs());
+        LinkedHashMap<String, Integer> sortedAlbums = MapOperations.sortStringMapByValue(user.getAnalytics().getTopAlbums());
+        LinkedHashMap<Audio, Integer> sortedPodcasts = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopPodcasts());
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -51,11 +51,11 @@ public class UserWrappedStrategy implements IWrappedStrategy {
         commandNode.put("timestamp", session.getTimestamp());
 
         ObjectNode resultNode = mapper.createObjectNode();
-        ObjectNode topArtists = WrappedCommand.createStringMapObjectNode(sortedArtists);
-        ObjectNode topGenres = WrappedCommand.createStringMapObjectNode(sortedGenres);
-        ObjectNode topSongs = WrappedCommand.createAudioMapObjectNode(sortedSongs);
-        ObjectNode topAlbums = WrappedCommand.createStringMapObjectNode(sortedAlbums);
-        ObjectNode topPodcasts = WrappedCommand.createAudioMapObjectNode(sortedPodcasts);
+        ObjectNode topArtists = MapOperations.createStringMapObjectNode(sortedArtists);
+        ObjectNode topGenres = MapOperations.createStringMapObjectNode(sortedGenres);
+        ObjectNode topSongs = MapOperations.createAudioMapObjectNode(sortedSongs);
+        ObjectNode topAlbums = MapOperations.createStringMapObjectNode(sortedAlbums);
+        ObjectNode topPodcasts = MapOperations.createAudioMapObjectNode(sortedPodcasts);
 
         resultNode.set("topArtists", topArtists);
         resultNode.set("topGenres", topGenres);
