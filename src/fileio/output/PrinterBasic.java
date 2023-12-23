@@ -2,9 +2,11 @@ package fileio.output;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import database.observer.Notification;
 import fileio.input.CommandInput;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The most commonly-used printer for a simple message.
@@ -71,6 +73,28 @@ public final class PrinterBasic extends Printer {
         }
 
         commandNode.set("result", result);
+        output.add(commandNode);
+    }
+
+
+    /**
+     * Used for Get Notifications command.
+     * @param notifications List of notifications to print.
+     */
+    public void printNotifications(List<Notification> notifications) {
+        ObjectNode commandNode = getMetadataNode();
+        ArrayNode result = mapper.createArrayNode();
+
+        for (Notification notification : notifications) {
+            ObjectNode notificationNode = mapper.createObjectNode();
+
+            notificationNode.put("name", notification.getName());
+            notificationNode.put("description", notification.getDescription());
+
+            result.add(notificationNode);
+        }
+
+        commandNode.set("notifications", result);
         output.add(commandNode);
     }
 }

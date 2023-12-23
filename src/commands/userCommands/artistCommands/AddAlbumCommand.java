@@ -4,6 +4,7 @@ import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
 import database.audio.Album;
+import database.observer.Notification;
 import database.users.Artist;
 import database.users.User;
 import fileio.input.CommandInput;
@@ -47,5 +48,8 @@ public final class AddAlbumCommand implements ICommand {
 
         session.getDatabase().addAlbum(newAlbum);
         printer.print(user.getUsername() + " has added new album successfully.");
+
+        artist.notifyObservers(new Notification("New Album",
+                "New album from " + artist.getUsername() + "."));
     }
 }

@@ -3,6 +3,7 @@ package commands.userCommands.artistCommands;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
+import database.observer.Notification;
 import database.users.Artist;
 import database.users.User;
 import fileio.input.CommandInput;
@@ -44,5 +45,8 @@ public final class AddMerchCommand implements ICommand {
         }
 
         printer.print(user.getUsername() + " has added new merchandise successfully.");
+
+        artist.notifyObservers(new Notification("New Merchandise",
+                "New Merchandise from " + artist.getUsername() + "."));
     }
 }

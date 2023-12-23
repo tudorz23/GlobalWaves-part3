@@ -42,7 +42,8 @@ public enum CommandType {
     PRINT_CURRENT_PAGE("printCurrentPage"),
     CHANGE_PAGE("changePage"),
     WRAPPED("wrapped"),
-    SUBSCRIBE("subscribe");
+    SUBSCRIBE("subscribe"),
+    GET_NOTIFICATIONS("getNotifications");
 
     private final String label;
 

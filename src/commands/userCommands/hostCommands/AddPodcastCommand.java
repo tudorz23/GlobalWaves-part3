@@ -4,6 +4,7 @@ import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
 import database.audio.Podcast;
+import database.observer.Notification;
 import database.users.Host;
 import database.users.User;
 import fileio.input.CommandInput;
@@ -47,5 +48,8 @@ public final class AddPodcastCommand implements ICommand {
 
         session.getDatabase().addPodcast(newPodcast);
         printer.print(user.getUsername() + " has added new podcast successfully.");
+
+        host.notifyObservers(new Notification("New Podcast",
+                "New Podcast from " + host.getUsername() + "."));
     }
 }

@@ -225,6 +225,9 @@ public class CommandFactory {
             case SUBSCRIBE -> {
                 return new SubscribeCommand(session, commandInput, user, output);
             }
+            case GET_NOTIFICATIONS -> {
+                return new GetNotificationsCommand(session, commandInput, user, output);
+            }
             default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);
                 printer.print("Command " + commandInput.getCommand() + " not yet implemented.");

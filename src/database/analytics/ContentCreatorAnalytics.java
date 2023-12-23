@@ -1,11 +1,10 @@
 package database.analytics;
 
 import database.observer.IObserver;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContentCreatorAnalytics {
+public abstract class ContentCreatorAnalytics {
     private List<IObserver> subscribers;
 
     /* Constructor */

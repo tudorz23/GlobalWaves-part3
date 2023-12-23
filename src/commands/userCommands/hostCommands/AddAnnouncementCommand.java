@@ -3,6 +3,7 @@ package commands.userCommands.hostCommands;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
+import database.observer.Notification;
 import database.users.Host;
 import database.users.User;
 import fileio.input.CommandInput;
@@ -44,5 +45,8 @@ public final class AddAnnouncementCommand implements ICommand {
         }
 
         printer.print(user.getUsername() + " has successfully added new announcement.");
+
+        host.notifyObservers(new Notification("New Announcement",
+                "New Announcement from " + host.getUsername() + "."));
     }
 }
