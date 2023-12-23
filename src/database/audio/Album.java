@@ -40,14 +40,18 @@ public final class Album extends SongCollection {
         User listener = getListener();
 
         listener.getAnalytics().addAlbum(getName());
-        listener.getAnalytics().addSong(getPlayingTrackName());
+
+        Song originalSong = getListener().getDatabase()
+                .searchSongInDatabase(getSongs().get(getPlayingSongIndex()));
+        listener.getAnalytics().addSong(originalSong);
+
         listener.getAnalytics().addGenre(getSongs().get(getPlayingSongIndex()).getGenre());
         listener.getAnalytics().addArtist(getOwner());
 
-        updateArtistAnalytics();
+        updateArtistAnalytics(originalSong);
     }
 
-    private void updateArtistAnalytics() {
+    private void updateArtistAnalytics(Song originalSong) {
         Artist artist;
         try {
             artist = getListener().getDatabase().searchArtistInDatabase(getOwner());
@@ -56,7 +60,7 @@ public final class Album extends SongCollection {
         }
 
         artist.getArtistAnalytics().addAlbum(getName());
-        artist.getArtistAnalytics().addSong(getSongs().get(getPlayingSongIndex()).getName());
+        artist.getArtistAnalytics().addSong(originalSong);
         artist.getArtistAnalytics().addFan(getListener().getUsername());
     }
 

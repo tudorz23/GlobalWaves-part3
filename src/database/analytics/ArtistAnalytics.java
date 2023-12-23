@@ -1,18 +1,21 @@
 package database.analytics;
 
+import database.audio.Audio;
+import database.audio.Song;
+
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class ArtistAnalytics extends Analytics {
     private Map<String, Integer> artistTopAlbums;
-    private Map<String, Integer> artistTopSongs;
+    private Map<Audio, Integer> artistTopSongs;
     private Map<String, Integer> artistTopFans;
 
     /* Constructor */
     public ArtistAnalytics() {
-        artistTopAlbums = new TreeMap<>();
-        artistTopSongs = new TreeMap<>();
-        artistTopFans = new TreeMap<>();
+        artistTopAlbums = new HashMap<>();
+        artistTopSongs = new HashMap<>();
+        artistTopFans = new HashMap<>();
     }
 
     public void addAlbum(String albumName) {
@@ -20,9 +23,9 @@ public class ArtistAnalytics extends Analytics {
         artistTopAlbums.put(albumName, listens + 1);
     }
 
-    public void addSong(String songName) {
-        int listens = artistTopSongs.getOrDefault(songName, 0);
-        artistTopSongs.put(songName, listens + 1);
+    public void addSong(Song song) {
+        int listens = artistTopSongs.getOrDefault(song, 0);
+        artistTopSongs.put(song, listens + 1);
     }
 
     public void addFan(String fanName) {
@@ -38,10 +41,10 @@ public class ArtistAnalytics extends Analytics {
     public void setArtistTopAlbums(Map<String, Integer> artistTopAlbums) {
         this.artistTopAlbums = artistTopAlbums;
     }
-    public Map<String, Integer> getArtistTopSongs() {
+    public Map<Audio, Integer> getArtistTopSongs() {
         return artistTopSongs;
     }
-    public void setArtistTopSongs(Map<String, Integer> artistTopSongs) {
+    public void setArtistTopSongs(Map<Audio, Integer> artistTopSongs) {
         this.artistTopSongs = artistTopSongs;
     }
     public Map<String, Integer> getArtistTopFans() {

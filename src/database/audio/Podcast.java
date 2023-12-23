@@ -9,6 +9,8 @@ import utils.enums.AudioType;
 import utils.enums.PlayerState;
 import utils.enums.RepeatState;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import static utils.Constants.SKIP_REWIND_TIME;
 
 public final class Podcast extends Audio {
@@ -235,7 +237,9 @@ public final class Podcast extends Audio {
     public void updateAnalytics() {
         User listener = getListener();
 
-        listener.getAnalytics().addPodcast(getName());
+        Podcast originalPodcast = getListener().getDatabase().searchPodcastInDatabase(this);
+        listener.getAnalytics().addPodcast(originalPodcast);
+
         updateHostAnalytics();
     }
 
@@ -249,6 +253,21 @@ public final class Podcast extends Audio {
 
         host.getHostAnalytics().addEpisode(getEpisodes().get(playingEpisodeIdx).getName());
         host.getHostAnalytics().addFan(getListener().getUsername());
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Podcast podcast = (Podcast) o;
+        return Objects.equals(getName(), podcast.getName())
+                && Objects.equals(owner, podcast.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), owner);
     }
 
     /* Getters and Setters */

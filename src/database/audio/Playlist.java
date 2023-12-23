@@ -55,14 +55,18 @@ public final class Playlist extends SongCollection {
 
         listener.getAnalytics().addArtist(getSongs().get(getPlayingSongIndex()).getArtist());
         listener.getAnalytics().addGenre(getSongs().get(getPlayingSongIndex()).getGenre());
-        listener.getAnalytics().addSong(getPlayingTrackName());
+
+        Song originalSong = getListener().getDatabase()
+                .searchSongInDatabase(getSongs().get(getPlayingSongIndex()));
+        listener.getAnalytics().addSong(originalSong);
+
         listener.getAnalytics().addAlbum(getSongs().get(getPlayingSongIndex()).getAlbum());
 
-        updateArtistAnalytics();
+        updateArtistAnalytics(originalSong);
     }
 
 
-    private void updateArtistAnalytics() {
+    private void updateArtistAnalytics(Song originalSong) {
         Song currSong = getSongs().get(getPlayingSongIndex());
         Artist artist;
         try {
@@ -72,7 +76,7 @@ public final class Playlist extends SongCollection {
         }
 
         artist.getArtistAnalytics().addAlbum(currSong.getAlbum());
-        artist.getArtistAnalytics().addSong(currSong.getName());
+        artist.getArtistAnalytics().addSong(originalSong);
         artist.getArtistAnalytics().addFan(getListener().getUsername());
     }
 

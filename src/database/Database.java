@@ -190,17 +190,34 @@ public final class Database {
     /**
      * Traverses the song database and returns the instance of the
      * requested song, if it exists.
+     * @param reqSong Song object to search for in the Database (might be a deep copy).
      * @return Song instance for success, null otherwise.
      * @throws IllegalArgumentException if the song is not found.
      */
     public Song searchSongInDatabase(final Song reqSong) throws IllegalArgumentException {
         for (Song song : songs) {
-            if (song.getName().equals(reqSong.getName())
-                && song.getArtist().equals(reqSong.getArtist())) {
+            if (song.equals(reqSong)) {
                 return song;
             }
         }
         throw new IllegalArgumentException("Critical: Song not found in the database.");
+    }
+
+
+    /**
+     * Traverses the podcast database and returns the instance of the
+     * requested podcast, if it exists.
+     * @param reqPodcast Podcast object to search for in the Database (might be a deep copy).
+     * @return Podcast instance for success, null otherwise.
+     * @throws IllegalArgumentException if the podcast is not found.
+     */
+    public Podcast searchPodcastInDatabase(final Podcast reqPodcast) throws IllegalArgumentException {
+        for (Podcast podcast : podcasts) {
+            if (podcast.equals(reqPodcast)) {
+                return podcast;
+            }
+        }
+        throw new IllegalArgumentException("Critical: Podcast not found in the database.");
     }
 
 

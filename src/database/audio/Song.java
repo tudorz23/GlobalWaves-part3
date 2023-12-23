@@ -8,6 +8,7 @@ import utils.enums.AudioType;
 import utils.enums.PlayerState;
 import utils.enums.RepeatState;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public final class Song extends Audio {
     private Integer duration;
@@ -187,15 +188,17 @@ public final class Song extends Audio {
     public void updateAnalytics() {
         User listener = getListener();
 
-        listener.getAnalytics().addSong(getName());
+        Song originalSong = getListener().getDatabase().searchSongInDatabase(this);
+        listener.getAnalytics().addSong(originalSong);
+
         listener.getAnalytics().addArtist(getArtist());
         listener.getAnalytics().addGenre(getGenre());
         listener.getAnalytics().addAlbum(getAlbum());
 
-        updateArtistAnalytics();
+        updateArtistAnalytics(originalSong);
     }
 
-    private void updateArtistAnalytics() {
+    private void updateArtistAnalytics(Song originalSong) {
         Artist artist;
         try {
             artist = getListener().getDatabase().searchArtistInDatabase(getArtist());
@@ -204,11 +207,24 @@ public final class Song extends Audio {
         }
 
         artist.getArtistAnalytics().addAlbum(getAlbum());
-        artist.getArtistAnalytics().addSong(getName());
+        artist.getArtistAnalytics().addSong(originalSong);
         artist.getArtistAnalytics().addFan(getListener().getUsername());
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Song song = (Song) o;
+        return Objects.equals(getName(), song.getName()) && Objects.equals(artist, song.artist)
+                && Objects.equals(lyrics, song.lyrics);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), artist, lyrics);
+    }
 
     /* Getters and Setters */
     public Integer getDuration() {

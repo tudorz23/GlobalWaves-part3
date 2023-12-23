@@ -1,7 +1,7 @@
 package database.analytics;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class HostAnalytics extends Analytics {
     private Map<String, Integer> hostTopEpisodes;
@@ -9,8 +9,8 @@ public class HostAnalytics extends Analytics {
 
     /* Constructor */
     public HostAnalytics() {
-        hostTopEpisodes = new TreeMap<>();
-        hostTopFans = new TreeMap<>();
+        hostTopEpisodes = new HashMap<>();
+        hostTopFans = new HashMap<>();
     }
 
     public void addEpisode(String episodeName) {
