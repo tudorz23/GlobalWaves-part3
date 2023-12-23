@@ -222,6 +222,9 @@ public class CommandFactory {
             case WRAPPED -> {
                 return new WrappedCommand(session, commandInput, user, output);
             }
+            case SUBSCRIBE -> {
+                return new SubscribeCommand(session, commandInput, user, output);
+            }
             default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);
                 printer.print("Command " + commandInput.getCommand() + " not yet implemented.");

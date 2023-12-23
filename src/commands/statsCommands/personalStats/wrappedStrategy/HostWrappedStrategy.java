@@ -33,7 +33,7 @@ public class HostWrappedStrategy implements IWrappedStrategy {
         HostAnalytics analytics = user.getHostAnalytics();
         if (analytics.getHostTopFans().isEmpty()) {
             PrinterBasic printer = new PrinterBasic(output, commandInput);
-            printer.print("No data to show for user " + user.getUsername());
+            printer.print("No data to show for host " + user.getUsername());
             return;
         }
 

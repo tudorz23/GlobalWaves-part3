@@ -41,7 +41,8 @@ public enum CommandType {
     GET_ONLINE_USERS("getOnlineUsers"),
     PRINT_CURRENT_PAGE("printCurrentPage"),
     CHANGE_PAGE("changePage"),
-    WRAPPED("wrapped");
+    WRAPPED("wrapped"),
+    SUBSCRIBE("subscribe");
 
     private final String label;
 

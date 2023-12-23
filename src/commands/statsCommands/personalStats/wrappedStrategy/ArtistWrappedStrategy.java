@@ -33,7 +33,7 @@ public class ArtistWrappedStrategy implements IWrappedStrategy {
         ArtistAnalytics analytics = user.getArtistAnalytics();
         if (analytics.getArtistTopFans().isEmpty()) {
             PrinterBasic printer = new PrinterBasic(output, commandInput);
-            printer.print("No data to show for user " + user.getUsername() + ".");
+            printer.print("No data to show for artist " + user.getUsername() + ".");
             return;
         }
 

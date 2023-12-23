@@ -1,6 +1,7 @@
 package database.users;
 
 import database.Database;
+import database.analytics.ContentCreatorAnalytics;
 import database.analytics.HostAnalytics;
 import database.records.Announcement;
 import database.audio.Podcast;
@@ -10,7 +11,7 @@ import utils.enums.UserType;
 
 import java.util.ArrayList;
 
-public final class Host extends User {
+public final class Host extends ContentCreator {
     private final HostPage officialPage;
     private HostAnalytics hostAnalytics;
 
@@ -71,6 +72,12 @@ public final class Host extends User {
      */
     public void removeAnnouncement(final Announcement announcement) {
         officialPage.removeAnnouncement(announcement);
+    }
+
+
+    @Override
+    public ContentCreatorAnalytics getContentCreatorAnalytics() {
+        return hostAnalytics;
     }
 
     /* Getters and Setters */

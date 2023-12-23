@@ -2,11 +2,14 @@ package database.analytics;
 
 import database.audio.Audio;
 import database.audio.Song;
+import database.observer.IObserver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class ArtistAnalytics extends Analytics {
+public class ArtistAnalytics extends ContentCreatorAnalytics {
     private Map<String, Integer> artistTopAlbums;
     private Map<Audio, Integer> artistTopSongs;
     private Map<String, Integer> artistTopFans;
@@ -32,7 +35,6 @@ public class ArtistAnalytics extends Analytics {
         int listens = artistTopFans.getOrDefault(fanName, 0);
         artistTopFans.put(fanName, listens + 1);
     }
-
 
     /* Getters and Setters */
     public Map<String, Integer> getArtistTopAlbums() {

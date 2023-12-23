@@ -2,6 +2,10 @@ package database.users;
 
 import database.Database;
 import database.analytics.ArtistAnalytics;
+import database.analytics.ContentCreatorAnalytics;
+import database.observer.IObservable;
+import database.observer.IObserver;
+import database.observer.Notification;
 import database.records.Event;
 import database.audio.Album;
 import fileio.input.CommandInput;
@@ -10,7 +14,7 @@ import utils.enums.UserType;
 
 import java.util.ArrayList;
 
-public final class Artist extends User {
+public final class Artist extends ContentCreator {
     private final ArtistPage officialPage;
     private ArtistAnalytics artistAnalytics;
 
@@ -95,6 +99,12 @@ public final class Artist extends User {
         }
 
         return totalLikes;
+    }
+
+
+    @Override
+    public ContentCreatorAnalytics getContentCreatorAnalytics(){
+        return artistAnalytics;
     }
 
     /* Getters and Setters */

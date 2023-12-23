@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
 import database.audio.Audio;
 import database.audio.Playlist;
+import database.observer.Notification;
 import database.users.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
@@ -64,6 +65,10 @@ public final class FollowPlaylistCommand implements ICommand {
             user.addFollowedPlaylist(playlist);
             playlist.incrementFollowersCnt();
             printer.print("Playlist followed successfully.");
+
+            Notification notification = new Notification("New follower",
+                    "New follower for playlist " + playlist.getName() + ".");
+            playlist.notifyObservers(notification);
             return;
         }
 

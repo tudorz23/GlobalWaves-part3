@@ -1,9 +1,12 @@
 package database.analytics;
 
+import database.observer.IObserver;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class HostAnalytics extends Analytics {
+public class HostAnalytics extends ContentCreatorAnalytics {
     private Map<String, Integer> hostTopEpisodes;
     private Map<String, Integer> hostTopFans;
 

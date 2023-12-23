@@ -3,6 +3,8 @@ package database.analytics;
 import database.audio.Audio;
 import database.audio.Podcast;
 import database.audio.Song;
+import database.observer.Notification;
+import database.users.ContentCreator;
 
 import java.util.*;
 
@@ -15,6 +17,8 @@ public class Analytics {
     private Map<String, Integer> topAlbums;
     private Map<Audio, Integer> topPodcasts;
 
+    private List<ContentCreator> subscribedToList;
+
     /* Constructor */
     public Analytics() {
         notifications = new ArrayList<>();
@@ -23,6 +27,7 @@ public class Analytics {
         topSongs = new HashMap<>();
         topAlbums = new HashMap<>();
         topPodcasts = new HashMap<>();
+        subscribedToList = new ArrayList<>();
     }
 
 
@@ -51,6 +56,32 @@ public class Analytics {
         topPodcasts.put(podcast, listens + 1);
     }
 
+
+    public void addNotification(Notification notification) {
+        notifications.add(notification);
+    }
+
+
+    public void clearNotifications() {
+        notifications = new ArrayList<>();
+    }
+
+
+    public void subscribeTo(ContentCreator creator) {
+        subscribedToList.add(creator);
+    }
+
+
+    public void unsubscribedFrom(ContentCreator creator) {
+        subscribedToList.remove(creator);
+    }
+
+
+    public boolean isSubscribedTo(ContentCreator creator) {
+        return subscribedToList.contains(creator);
+    }
+
+
     /* Getters and Setters */
     public List<Notification> getNotifications() {
         return notifications;
@@ -69,5 +100,11 @@ public class Analytics {
     }
     public Map<Audio, Integer> getTopPodcasts() {
         return topPodcasts;
+    }
+    public List<ContentCreator> getSubscribedToList() {
+        return subscribedToList;
+    }
+    public void setSubscribedToList(List<ContentCreator> subscribedToList) {
+        this.subscribedToList = subscribedToList;
     }
 }

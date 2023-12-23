@@ -3,13 +3,15 @@ package database.users;
 import database.*;
 import database.analytics.Analytics;
 import database.audio.*;
+import database.observer.IObserver;
+import database.observer.Notification;
 import fileio.input.UserInput;
 import pages.HomePage;
 import pages.Page;
 import utils.enums.*;
 import java.util.ArrayList;
 
-public abstract class User extends Searchable {
+public abstract class User extends Searchable implements IObserver {
     private String username;
     private int age;
     private String city;
@@ -233,6 +235,12 @@ public abstract class User extends Searchable {
         Podcast currPodcast = (Podcast) currPlaying;
         return currPodcast.getName().equals(podcast.getName())
                 && currPodcast.getOwner().equals(podcast.getOwner());
+    }
+
+
+    @Override
+    public void update(Notification notification) {
+        analytics.addNotification(notification);
     }
 
 

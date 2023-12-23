@@ -1,14 +1,18 @@
 package database.audio;
 
+import database.observer.IObservable;
+import database.observer.IObserver;
+import database.observer.Notification;
 import database.users.Artist;
 import database.users.User;
 import utils.enums.AudioType;
 import utils.enums.PlaylistVisibility;
 
-public final class Playlist extends SongCollection {
+public final class Playlist extends SongCollection implements IObservable {
     private final String owner;
     private PlaylistVisibility visibility;
     private int followersCnt;
+    private IObserver observer; // The owner is the only observer.
 
     /* Constructor */
     public Playlist(final String name, final String owner) {
@@ -66,6 +70,11 @@ public final class Playlist extends SongCollection {
     }
 
 
+    /**
+     * Updates the analytics of the artist that owns the song,
+     * if he is registered in the database.
+     * @param originalSong Song instance from the database.
+     */
     private void updateArtistAnalytics(Song originalSong) {
         Song currSong = getSongs().get(getPlayingSongIndex());
         Artist artist;
@@ -78,6 +87,31 @@ public final class Playlist extends SongCollection {
         artist.getArtistAnalytics().addAlbum(currSong.getAlbum());
         artist.getArtistAnalytics().addSong(originalSong);
         artist.getArtistAnalytics().addFan(getListener().getUsername());
+    }
+
+
+    /**
+     * Sets the observer for the playlist (should be the owner).
+     */
+    @Override
+    public void addObserver(IObserver observer) throws IllegalStateException {
+        if (this.observer != null) {
+            throw new IllegalStateException("The playlist " + getName() + " already has an owner.");
+        }
+
+        this.observer = observer;
+    }
+
+
+    @Override
+    public void removeObserver(IObserver observer) throws IllegalStateException {
+        throw new IllegalStateException("Cannot remove the owner of the playlist.");
+    }
+
+
+    @Override
+    public void notifyObservers(Notification notification) {
+        observer.update(notification);
     }
 
     /* Getters and Setters */

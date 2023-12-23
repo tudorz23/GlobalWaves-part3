@@ -41,6 +41,8 @@ public final class CreatePlaylistCommand implements ICommand {
             return;
         }
 
+        newPlaylist.addObserver(user);
+
         // Add the playlist to the database.
         session.getDatabase().addPlaylist(newPlaylist);
 

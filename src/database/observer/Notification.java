@@ -1,4 +1,4 @@
-package database.analytics;
+package database.observer;
 
 public class Notification {
     private final String name;
