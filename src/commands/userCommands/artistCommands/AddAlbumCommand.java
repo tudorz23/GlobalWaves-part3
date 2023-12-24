@@ -4,7 +4,7 @@ import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
 import database.audio.Album;
-import database.observer.Notification;
+import database.records.Notification;
 import database.users.Artist;
 import database.users.User;
 import fileio.input.CommandInput;

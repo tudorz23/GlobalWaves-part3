@@ -2,7 +2,7 @@ package fileio.output;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import database.observer.Notification;
+import database.records.Notification;
 import fileio.input.CommandInput;
 
 import java.util.ArrayList;
@@ -88,8 +88,8 @@ public final class PrinterBasic extends Printer {
         for (Notification notification : notifications) {
             ObjectNode notificationNode = mapper.createObjectNode();
 
-            notificationNode.put("name", notification.getName());
-            notificationNode.put("description", notification.getDescription());
+            notificationNode.put("name", notification.name());
+            notificationNode.put("description", notification.description());
 
             result.add(notificationNode);
         }

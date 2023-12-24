@@ -4,7 +4,7 @@ import database.Database;
 import database.analytics.ContentCreatorAnalytics;
 import database.observer.IObservable;
 import database.observer.IObserver;
-import database.observer.Notification;
+import database.records.Notification;
 
 public abstract class ContentCreator extends User implements IObservable {
     /* Constructor */

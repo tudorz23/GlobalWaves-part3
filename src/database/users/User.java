@@ -4,7 +4,7 @@ import database.*;
 import database.analytics.Analytics;
 import database.audio.*;
 import database.observer.IObserver;
-import database.observer.Notification;
+import database.records.Notification;
 import fileio.input.UserInput;
 import pages.HomePage;
 import pages.Page;

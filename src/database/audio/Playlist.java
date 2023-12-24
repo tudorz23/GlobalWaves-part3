@@ -2,7 +2,7 @@ package database.audio;
 
 import database.observer.IObservable;
 import database.observer.IObserver;
-import database.observer.Notification;
+import database.records.Notification;
 import database.users.Artist;
 import database.users.User;
 import utils.enums.AudioType;

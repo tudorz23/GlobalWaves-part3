@@ -3,7 +3,7 @@ package database.analytics;
 import database.audio.Audio;
 import database.audio.Podcast;
 import database.audio.Song;
-import database.observer.Notification;
+import database.records.Notification;
 import database.users.ContentCreator;
 
 import java.util.*;

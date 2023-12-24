@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
 import database.audio.Audio;
 import database.audio.Playlist;
-import database.observer.Notification;
+import database.records.Notification;
 import database.users.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
