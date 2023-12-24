@@ -8,6 +8,7 @@ import java.util.Map;
 public class ArtistMoneyStats {
     private double songRevenue;
     private double merchRevenue;
+    private double totalRevenue;
     private Map<Song, Double> payingSongs;
 
     /* Constructor */
@@ -39,5 +40,11 @@ public class ArtistMoneyStats {
     }
     public Map<Song, Double> getPayingSongs() {
         return payingSongs;
+    }
+    public double getTotalRevenue() {
+        return totalRevenue;
+    }
+    public void setTotalRevenue(double totalRevenue) {
+        this.totalRevenue = totalRevenue;
     }
 }

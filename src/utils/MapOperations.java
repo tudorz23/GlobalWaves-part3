@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.audio.Audio;
+import database.monetization.ArtistMoneyStats;
+import database.monetization.Monetization;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,6 +43,27 @@ public class MapOperations {
                         LinkedHashMap::new
                 ));
 
+        return sortedMap;
+    }
+
+
+    public static LinkedHashMap<String, ArtistMoneyStats> sortMonetization(Map<String,
+            ArtistMoneyStats> map) {
+        LinkedHashMap<String, ArtistMoneyStats> sortedMap = map.entrySet().stream()
+                .sorted((e1, e2) -> {
+                    int valueCompare = Double.compare(e2.getValue().getTotalRevenue(),
+                            e1.getValue().getTotalRevenue());
+                    if (valueCompare != 0) {
+                        return valueCompare;
+                    }
+                    return e1.getKey().compareTo(e2.getKey());
+                })
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
         return sortedMap;
     }
 

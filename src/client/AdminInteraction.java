@@ -3,6 +3,7 @@ package client;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.CommandFactory;
 import commands.ICommand;
+import commands.adminCommands.MonetizationCommand;
 import database.Database;
 import database.audio.Podcast;
 import database.audio.Song;
@@ -36,6 +37,7 @@ public class AdminInteraction {
         initSession();
         commandFactory = new CommandFactory(session, output);
         startCommands();
+        endProgram();
     }
 
     /**
@@ -93,5 +95,10 @@ public class AdminInteraction {
         }
 
         invoker.execute(command);
+    }
+
+    private void endProgram() {
+        ICommand monetizationCommand = new MonetizationCommand(session, output);
+        monetizationCommand.execute();
     }
 }

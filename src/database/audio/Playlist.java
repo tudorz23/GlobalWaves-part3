@@ -67,6 +67,7 @@ public final class Playlist extends SongCollection implements IObservable {
         listener.getAnalytics().addAlbum(getSongs().get(getPlayingSongIndex()).getAlbum());
 
         updateArtistAnalytics(originalSong);
+        updateMonetization();
     }
 
 
@@ -89,6 +90,9 @@ public final class Playlist extends SongCollection implements IObservable {
         artist.getArtistAnalytics().addFan(getListener().getUsername());
     }
 
+    public void updateMonetization() {
+        getListener().getDatabase().getMonetization().addListenedArtist(getOwner());
+    }
 
     /**
      * Sets the observer for the playlist (should be the owner).

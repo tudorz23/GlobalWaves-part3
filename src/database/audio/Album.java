@@ -49,6 +49,7 @@ public final class Album extends SongCollection {
         listener.getAnalytics().addArtist(getOwner());
 
         updateArtistAnalytics(originalSong);
+        updateMonetization();
     }
 
     private void updateArtistAnalytics(Song originalSong) {
@@ -62,6 +63,11 @@ public final class Album extends SongCollection {
         artist.getArtistAnalytics().addAlbum(getName());
         artist.getArtistAnalytics().addSong(originalSong);
         artist.getArtistAnalytics().addFan(getListener().getUsername());
+    }
+
+
+    public void updateMonetization() {
+        getListener().getDatabase().getMonetization().addListenedArtist(getOwner());
     }
 
     /* Getters and Setters */

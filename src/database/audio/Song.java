@@ -196,6 +196,7 @@ public final class Song extends Audio {
         listener.getAnalytics().addAlbum(getAlbum());
 
         updateArtistAnalytics(originalSong);
+        updateMonetization();
     }
 
     private void updateArtistAnalytics(Song originalSong) {
@@ -209,6 +210,10 @@ public final class Song extends Audio {
         artist.getArtistAnalytics().addAlbum(getAlbum());
         artist.getArtistAnalytics().addSong(originalSong);
         artist.getArtistAnalytics().addFan(getListener().getUsername());
+    }
+
+    public void updateMonetization() {
+        getListener().getDatabase().getMonetization().addListenedArtist(getArtist());
     }
 
 

@@ -21,6 +21,15 @@ public class Monetization {
                                             .getOrDefault(artistName, new ArtistMoneyStats());
 
         artistMoneyStats.addMerchRevenue(merchRevenue);
+
+        listenedArtists.put(artistName, artistMoneyStats);
+    }
+
+
+    public void addListenedArtist(String artistName) {
+        ArtistMoneyStats artistMoneyStats = listenedArtists
+                .getOrDefault(artistName, new ArtistMoneyStats());
+        listenedArtists.put(artistName, artistMoneyStats);
     }
 
     /* Getters and Setters */
