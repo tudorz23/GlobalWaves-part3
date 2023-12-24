@@ -62,7 +62,7 @@ public final class PrinterBasic extends Printer {
      * command name, the timestamp and a list of Strings, called result.
      * @param stringList the String list.
      */
-    public void printStringResultsStats(final ArrayList<String> stringList) {
+    public void printStringResultsStats(final List<String> stringList) {
         ObjectNode commandNode = mapper.createObjectNode();
         commandNode.put("command", commandInput.getCommand());
         commandNode.put("timestamp", commandInput.getTimestamp());
@@ -76,6 +76,22 @@ public final class PrinterBasic extends Printer {
         output.add(commandNode);
     }
 
+
+    /**
+     * Used for SeeMerch command.
+     * @param merchList List of names of the merch objects owned by the user.
+     */
+    public void printMerch(final List<String> merchList) {
+        ObjectNode commandNode = getMetadataNode();
+
+        ArrayNode result = mapper.createArrayNode();
+        for (String string : merchList) {
+            result.add(string);
+        }
+
+        commandNode.set("result", result);
+        output.add(commandNode);
+    }
 
     /**
      * Used for Get Notifications command.

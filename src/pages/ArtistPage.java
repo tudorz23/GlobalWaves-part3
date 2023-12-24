@@ -171,6 +171,21 @@ public final class ArtistPage extends Page {
     }
 
 
+    /**
+     * Searches for a merch with the requested name.
+     * @return Merch object from the list, if it exists.
+     * @throws IllegalArgumentException if there is no merch with the requested name.
+     */
+    public Merch getMerch(final String merchName) throws IllegalArgumentException {
+        for (Merch merch : merchList) {
+            if (merch.name().equals(merchName)) {
+                return merch;
+            }
+        }
+        throw new IllegalArgumentException("No merch with the requested name.");
+    }
+
+
     @Override
     public String printPage() {
         StringBuilder stringBuilder = new StringBuilder("Albums:\n\t[");

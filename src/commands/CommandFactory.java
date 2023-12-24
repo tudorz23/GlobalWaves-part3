@@ -228,6 +228,12 @@ public class CommandFactory {
             case GET_NOTIFICATIONS -> {
                 return new GetNotificationsCommand(session, commandInput, user, output);
             }
+            case BUY_MERCH -> {
+                return new BuyMerchCommand(session, commandInput, user, output);
+            }
+            case SEE_MERCH -> {
+                return new SeeMerchCommand(session, commandInput, user, output);
+            }
             default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);
                 printer.print("Command " + commandInput.getCommand() + " not yet implemented.");

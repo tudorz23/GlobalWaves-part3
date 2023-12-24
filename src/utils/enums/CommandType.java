@@ -43,7 +43,9 @@ public enum CommandType {
     CHANGE_PAGE("changePage"),
     WRAPPED("wrapped"),
     SUBSCRIBE("subscribe"),
-    GET_NOTIFICATIONS("getNotifications");
+    GET_NOTIFICATIONS("getNotifications"),
+    BUY_MERCH("buyMerch"),
+    SEE_MERCH("seeMerch");
 
     private final String label;
 

@@ -1,6 +1,7 @@
 package database;
 
 import database.audio.*;
+import database.monetization.Monetization;
 import database.users.Artist;
 import database.users.BasicUser;
 import database.users.Host;
@@ -17,6 +18,7 @@ public final class Database {
     private ArrayList<Podcast> podcasts;
     private ArrayList<Playlist> playlists;
     private ArrayList<Album> albums;
+    private Monetization monetization;
 
     /* Constructor */
     public Database() {
@@ -27,6 +29,7 @@ public final class Database {
         this.podcasts = new ArrayList<>();
         this.playlists = new ArrayList<>();
         this.albums = new ArrayList<>();
+        monetization = new Monetization();
     }
 
     /**
@@ -334,5 +337,8 @@ public final class Database {
     }
     public ArrayList<Host> getHosts() {
         return hosts;
+    }
+    public Monetization getMonetization() {
+        return monetization;
     }
 }
