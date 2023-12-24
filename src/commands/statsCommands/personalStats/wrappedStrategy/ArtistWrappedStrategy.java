@@ -45,12 +45,12 @@ public class ArtistWrappedStrategy implements IWrappedStrategy {
         commandNode.put("timestamp", session.getTimestamp());
 
         LinkedHashMap<String, Integer> sortedAlbums = MapOperations.sortStringMapByValue(analytics.getArtistTopAlbums());
-        LinkedHashMap<Audio, Integer> sortedSongs = MapOperations.sortAudioMapByValue(analytics.getArtistTopSongs());
+        LinkedHashMap<String, Integer> sortedSongs = MapOperations.sortAudioMapByValue(analytics.getArtistTopSongs());
         LinkedHashMap<String, Integer> sortedFans = MapOperations.sortStringMapByValue(analytics.getArtistTopFans());
 
         ObjectNode resultNode = mapper.createObjectNode();
         ObjectNode topAlbums = MapOperations.createStringMapObjectNode(sortedAlbums);
-        ObjectNode topSongs = MapOperations.createAudioMapObjectNode(sortedSongs);
+        ObjectNode topSongs = MapOperations.createStringMapObjectNode(sortedSongs);
         ArrayNode topFans = MapOperations.createLinkedMapKeyArrayNode(sortedFans);
 
         resultNode.set("topAlbums", topAlbums);

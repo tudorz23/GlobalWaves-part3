@@ -50,6 +50,6 @@ public final class AddAlbumCommand implements ICommand {
         printer.print(user.getUsername() + " has added new album successfully.");
 
         artist.notifyObservers(new Notification("New Album",
-                "New album from " + artist.getUsername() + "."));
+                "New Album from " + artist.getUsername() + "."));
     }
 }

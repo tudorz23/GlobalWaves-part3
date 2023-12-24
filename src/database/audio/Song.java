@@ -218,12 +218,15 @@ public final class Song extends Audio {
         if (o == null || getClass() != o.getClass()) return false;
         Song song = (Song) o;
         return Objects.equals(getName(), song.getName()) && Objects.equals(artist, song.artist)
-                && Objects.equals(lyrics, song.lyrics);
+                && Objects.equals(lyrics, song.lyrics) && Objects.equals(duration, song.duration)
+                && Objects.equals(album, song.album) && Objects.equals(genre, song.genre)
+                && Objects.equals(releaseYear, song.releaseYear);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), artist, lyrics);
+        return Objects.hash(getName(), artist, lyrics, duration,
+                album, genre, releaseYear);
     }
 
     /* Getters and Setters */

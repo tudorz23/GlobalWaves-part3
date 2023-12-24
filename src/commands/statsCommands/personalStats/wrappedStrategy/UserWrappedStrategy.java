@@ -39,9 +39,9 @@ public class UserWrappedStrategy implements IWrappedStrategy {
 
         LinkedHashMap<String, Integer> sortedArtists = MapOperations.sortStringMapByValue(user.getAnalytics().getTopArtists());
         LinkedHashMap<String, Integer> sortedGenres = MapOperations.sortStringMapByValue(user.getAnalytics().getTopGenres());
-        LinkedHashMap<Audio, Integer> sortedSongs = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopSongs());
+        LinkedHashMap<String, Integer> sortedSongs = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopSongs());
         LinkedHashMap<String, Integer> sortedAlbums = MapOperations.sortStringMapByValue(user.getAnalytics().getTopAlbums());
-        LinkedHashMap<Audio, Integer> sortedPodcasts = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopPodcasts());
+        LinkedHashMap<String, Integer> sortedPodcasts = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopPodcasts());
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -53,9 +53,9 @@ public class UserWrappedStrategy implements IWrappedStrategy {
         ObjectNode resultNode = mapper.createObjectNode();
         ObjectNode topArtists = MapOperations.createStringMapObjectNode(sortedArtists);
         ObjectNode topGenres = MapOperations.createStringMapObjectNode(sortedGenres);
-        ObjectNode topSongs = MapOperations.createAudioMapObjectNode(sortedSongs);
+        ObjectNode topSongs = MapOperations.createStringMapObjectNode(sortedSongs);
         ObjectNode topAlbums = MapOperations.createStringMapObjectNode(sortedAlbums);
-        ObjectNode topPodcasts = MapOperations.createAudioMapObjectNode(sortedPodcasts);
+        ObjectNode topPodcasts = MapOperations.createStringMapObjectNode(sortedPodcasts);
 
         resultNode.set("topArtists", topArtists);
         resultNode.set("topGenres", topGenres);
