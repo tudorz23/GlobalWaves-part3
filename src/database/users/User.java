@@ -27,6 +27,7 @@ public abstract class User extends Searchable implements IObserver {
     private LogStatus logStatus;
     private Database database;
     private Analytics analytics;
+    private PremiumState premiumState;
 
     /* Constructors */
     public User(final String username, final int age, final String city,
@@ -44,6 +45,7 @@ public abstract class User extends Searchable implements IObserver {
         this.setSearchableType(SearchableType.USER);
         this.database = database;
         this.analytics = new Analytics();
+        this.premiumState = PremiumState.FREE;
     }
 
     public User(final UserInput userInput, Database database) {
@@ -159,8 +161,7 @@ public abstract class User extends Searchable implements IObserver {
         }
 
         Song currSong = (Song) currPlaying;
-        return song.getName().equals(currSong.getName())
-                && song.getArtist().equals(currSong.getArtist());
+        return song.equals(currSong);
     }
 
 
@@ -176,8 +177,7 @@ public abstract class User extends Searchable implements IObserver {
                 Playlist currPlaylist = (Playlist) currPlaying;
                 for (Song playlistSong : currPlaylist.getSongs()) {
                     for (Song albumSong : album.getSongs()) {
-                        if (playlistSong.getName().equals(albumSong.getName())
-                                && playlistSong.getArtist().equals(albumSong.getArtist())) {
+                        if (playlistSong.equals(albumSong)) {
                             return true;
                         }
                     }
@@ -192,8 +192,7 @@ public abstract class User extends Searchable implements IObserver {
             case SONG -> {
                 Song currSong = (Song) currPlaying;
                 for (Song song : album.getSongs()) {
-                    if (song.getName().equals(currSong.getName())
-                        && song.getArtist().equals(currSong.getArtist())) {
+                    if (song.equals(currSong)) {
                         return true;
                     }
                 }
@@ -386,5 +385,13 @@ public abstract class User extends Searchable implements IObserver {
 
     public Database getDatabase() {
         return database;
+    }
+
+    public PremiumState getPremiumState() {
+        return premiumState;
+    }
+
+    public void setPremiumState(PremiumState premiumState) {
+        this.premiumState = premiumState;
     }
 }

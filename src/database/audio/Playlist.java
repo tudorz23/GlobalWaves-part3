@@ -3,7 +3,6 @@ package database.audio;
 import database.observer.IObservable;
 import database.observer.IObserver;
 import database.records.Notification;
-import database.users.Artist;
 import database.users.User;
 import utils.enums.AudioType;
 import utils.enums.PlaylistVisibility;
@@ -60,38 +59,15 @@ public final class Playlist extends SongCollection implements IObservable {
         listener.getAnalytics().addArtist(getSongs().get(getPlayingSongIndex()).getArtist());
         listener.getAnalytics().addGenre(getSongs().get(getPlayingSongIndex()).getGenre());
 
-        Song originalSong = getListener().getDatabase()
+        // Song from the database.
+        Song originalSong = listener.getDatabase()
                 .searchSongInDatabase(getSongs().get(getPlayingSongIndex()));
         listener.getAnalytics().addSong(originalSong);
 
         listener.getAnalytics().addAlbum(getSongs().get(getPlayingSongIndex()).getAlbum());
 
-        updateArtistAnalytics(originalSong);
-        updateMonetization();
-    }
-
-
-    /**
-     * Updates the analytics of the artist that owns the song,
-     * if he is registered in the database.
-     * @param originalSong Song instance from the database.
-     */
-    private void updateArtistAnalytics(Song originalSong) {
-        Song currSong = getSongs().get(getPlayingSongIndex());
-        Artist artist;
-        try {
-            artist = getListener().getDatabase().searchArtistInDatabase(currSong.getArtist());
-        } catch (IllegalArgumentException exception) {
-            return;
-        }
-
-        artist.getArtistAnalytics().addAlbum(currSong.getAlbum());
-        artist.getArtistAnalytics().addSong(originalSong);
-        artist.getArtistAnalytics().addFan(getListener().getUsername());
-    }
-
-    public void updateMonetization() {
-        getListener().getDatabase().getMonetization().addListenedArtist(getOwner());
+        originalSong.updateArtistAnalytics(listener);
+        originalSong.updateMonetization(listener);
     }
 
     /**

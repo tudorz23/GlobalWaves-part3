@@ -6,6 +6,7 @@ import database.users.User;
 import fileio.input.SongInput;
 import utils.enums.AudioType;
 import utils.enums.PlayerState;
+import utils.enums.PremiumState;
 import utils.enums.RepeatState;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -188,34 +189,51 @@ public final class Song extends Audio {
     public void updateAnalytics() {
         User listener = getListener();
 
-        Song originalSong = getListener().getDatabase().searchSongInDatabase(this);
+        // Song from the database.
+        Song originalSong = listener.getDatabase().searchSongInDatabase(this);
         listener.getAnalytics().addSong(originalSong);
 
         listener.getAnalytics().addArtist(getArtist());
         listener.getAnalytics().addGenre(getGenre());
         listener.getAnalytics().addAlbum(getAlbum());
 
-        updateArtistAnalytics(originalSong);
-        updateMonetization();
+        originalSong.updateArtistAnalytics(listener);
+        originalSong.updateMonetization(listener);
     }
 
-    private void updateArtistAnalytics(Song originalSong) {
+
+    /**
+     * Updates the analytics of the artist that owns the song,
+     * if he is registered in the database.
+     * To be called from a song instance from the database.
+     */
+    public void updateArtistAnalytics(User listener) {
         Artist artist;
         try {
-            artist = getListener().getDatabase().searchArtistInDatabase(getArtist());
+            artist = listener.getDatabase().searchArtistInDatabase(getArtist());
         } catch (IllegalArgumentException exception) {
             return;
         }
 
         artist.getArtistAnalytics().addAlbum(getAlbum());
-        artist.getArtistAnalytics().addSong(originalSong);
-        artist.getArtistAnalytics().addFan(getListener().getUsername());
+        artist.getArtistAnalytics().addSong(this);
+        artist.getArtistAnalytics().addFan(listener.getUsername());
     }
 
-    public void updateMonetization() {
-        getListener().getDatabase().getMonetization().addListenedArtist(getArtist());
-    }
 
+    /**
+     * Adds this song to the respective list from the player of the listening user.
+     * If the User is premium, adds to the listenedAsPremium list, else to the
+     * listenedSinceAd list.
+     * To be called from a song instance from the database.
+     */
+    public void updateMonetization(User listener) {
+        listener.getDatabase().getMonetization().addMonetizedArtist(getArtist());
+
+        if (listener.getPremiumState() == PremiumState.PREMIUM) {
+            listener.getPlayer().addListenedAsPremium(this);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

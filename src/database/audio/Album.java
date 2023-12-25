@@ -1,6 +1,5 @@
 package database.audio;
 
-import database.users.Artist;
 import database.users.User;
 import utils.enums.AudioType;
 
@@ -41,34 +40,18 @@ public final class Album extends SongCollection {
 
         listener.getAnalytics().addAlbum(getName());
 
-        Song originalSong = getListener().getDatabase()
+        // Song from the database.
+        Song originalSong = listener.getDatabase()
                 .searchSongInDatabase(getSongs().get(getPlayingSongIndex()));
         listener.getAnalytics().addSong(originalSong);
 
         listener.getAnalytics().addGenre(getSongs().get(getPlayingSongIndex()).getGenre());
         listener.getAnalytics().addArtist(getOwner());
 
-        updateArtistAnalytics(originalSong);
-        updateMonetization();
+        originalSong.updateArtistAnalytics(listener);
+        originalSong.updateMonetization(listener);
     }
 
-    private void updateArtistAnalytics(Song originalSong) {
-        Artist artist;
-        try {
-            artist = getListener().getDatabase().searchArtistInDatabase(getOwner());
-        } catch (IllegalArgumentException exception) {
-            return;
-        }
-
-        artist.getArtistAnalytics().addAlbum(getName());
-        artist.getArtistAnalytics().addSong(originalSong);
-        artist.getArtistAnalytics().addFan(getListener().getUsername());
-    }
-
-
-    public void updateMonetization() {
-        getListener().getDatabase().getMonetization().addListenedArtist(getOwner());
-    }
 
     /* Getters and Setters */
     public int getReleaseYear() {

@@ -45,7 +45,9 @@ public enum CommandType {
     SUBSCRIBE("subscribe"),
     GET_NOTIFICATIONS("getNotifications"),
     BUY_MERCH("buyMerch"),
-    SEE_MERCH("seeMerch");
+    SEE_MERCH("seeMerch"),
+    BUY_PREMIUM("buyPremium"),
+    CANCEL_PREMIUM("cancelPremium");
 
     private final String label;
 

@@ -234,6 +234,12 @@ public class CommandFactory {
             case SEE_MERCH -> {
                 return new SeeMerchCommand(session, commandInput, user, output);
             }
+            case BUY_PREMIUM -> {
+                return new BuyPremiumCommand(session, commandInput, user, output);
+            }
+            case CANCEL_PREMIUM -> {
+                return new CancelPremiumCommand(session, commandInput, user, output);
+            }
             default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);
                 printer.print("Command " + commandInput.getCommand() + " not yet implemented.");

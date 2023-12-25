@@ -8,8 +8,12 @@ import database.Database;
 import database.audio.Podcast;
 import database.audio.Song;
 import database.users.BasicUser;
+import database.users.User;
 import fileio.input.*;
+import utils.enums.PremiumState;
+
 import java.util.List;
+import java.util.Map;
 
 public class AdminInteraction {
     private Database database;
@@ -97,8 +101,29 @@ public class AdminInteraction {
         invoker.execute(command);
     }
 
+
     private void endProgram() {
+        checkPremiumUsersMonetization();
+
         ICommand monetizationCommand = new MonetizationCommand(session, output);
         monetizationCommand.execute();
+    }
+
+
+    private void checkPremiumUsersMonetization() {
+        for (User user : database.getBasicUsers()) {
+            if (user.getPremiumState() == PremiumState.FREE) {
+                continue;
+            }
+
+            Map<Song, Integer> listenedAsPremium = user.getPlayer().getListenedAsPremium();
+            if (listenedAsPremium.isEmpty()) {
+                continue;
+            }
+
+            Map<Song, Double> songMonetization = database.computeSongMonetization(listenedAsPremium);
+
+            database.updateArtistMonetization(songMonetization);
+        }
     }
 }

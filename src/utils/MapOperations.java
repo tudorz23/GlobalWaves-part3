@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class MapOperations {
     public static LinkedHashMap<String, Integer> sortAudioMapByValue(Map<Audio, Integer> map) {
+        // Merge the values for Audio objects that have the same name.
         Map<String, Integer> mergedEntries = new HashMap<>();
 
         for (Map.Entry<Audio, Integer> entry : map.entrySet()) {
@@ -21,35 +22,35 @@ public class MapOperations {
             mergedEntries.merge(audioName, value, Integer::sum);
         }
 
-        LinkedHashMap<String, Integer> sortedMap = sortStringMapByValue(mergedEntries);
-        return sortedMap;
+        return sortStringMapByValue(mergedEntries);
     }
 
 
-    public static LinkedHashMap<String, Integer> sortStringMapByValue(Map<String, Integer> map) {
+    /**
+     * Generic map sorting function descending by the values, for values implementing Comparable
+     * @param map Map to be sorted, with String keys and T values.
+     * @return A LinkedHashMap containing the sorted keys.
+     * @param <T> Value for the Map, implementing Comparable (for example, Integer or Double).
+     */
+    public static <T extends Comparable<T>> LinkedHashMap<String, T> sortStringMapByValue(Map<String, T> map) {
         // https://stackoverflow.com/questions/2864840/treemap-sort-by-value
-        LinkedHashMap<String, Integer> sortedMap = map.entrySet().stream()
+        return map.entrySet().stream()
                 .sorted((e1, e2) -> {
                     int valueCompare = e2.getValue().compareTo(e1.getValue());
                     if (valueCompare != 0) {
                         return valueCompare;
                     }
                     return e1.getKey().compareTo(e2.getKey());
-                })
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1,
-                        LinkedHashMap::new
-                ));
-
-        return sortedMap;
+                }).collect(Collectors.toMap(Map.Entry::getKey,
+                                            Map.Entry::getValue,
+                                            (e1, e2) -> e1,
+                                            LinkedHashMap::new));
     }
 
 
     public static LinkedHashMap<String, ArtistMoneyStats> sortMonetization(Map<String,
-            ArtistMoneyStats> map) {
-        LinkedHashMap<String, ArtistMoneyStats> sortedMap = map.entrySet().stream()
+                                                                ArtistMoneyStats> map) {
+        return map.entrySet().stream()
                 .sorted((e1, e2) -> {
                     int valueCompare = Double.compare(e2.getValue().getTotalRevenue(),
                             e1.getValue().getTotalRevenue());
@@ -57,14 +58,10 @@ public class MapOperations {
                         return valueCompare;
                     }
                     return e1.getKey().compareTo(e2.getKey());
-                })
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1,
-                        LinkedHashMap::new
-                ));
-        return sortedMap;
+                }).collect(Collectors.toMap(Map.Entry::getKey,
+                                            Map.Entry::getValue,
+                                            (e1, e2) -> e1,
+                                            LinkedHashMap::new));
     }
 
 

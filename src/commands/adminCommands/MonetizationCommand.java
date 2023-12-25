@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import commands.ICommand;
+import database.audio.Song;
 import database.monetization.ArtistMoneyStats;
 import database.monetization.Monetization;
 import utils.MapOperations;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MonetizationCommand implements ICommand {
     private final Session session;
@@ -25,15 +28,10 @@ public class MonetizationCommand implements ICommand {
     @Override
     public void execute() {
         session.getDatabase().simulateTimeForEveryone(session.getTimestamp());
-
         Monetization monetization = session.getDatabase().getMonetization();
 
-        monetization.getListenedArtists().forEach(
-                (key ,value) -> value.setTotalRevenue(value.getMerchRevenue() + value.getSongRevenue())
-        );
-
         LinkedHashMap<String, ArtistMoneyStats> sortedMap = MapOperations
-                                            .sortMonetization(monetization.getListenedArtists());
+                                            .sortMonetization(monetization.getMonetizedArtists());
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -50,7 +48,13 @@ public class MonetizationCommand implements ICommand {
             artistNode.put("songRevenue", roundDouble(entry.getValue().getSongRevenue()));
             artistNode.put("merchRevenue", roundDouble(entry.getValue().getMerchRevenue()));
             artistNode.put("ranking", cnt);
-            artistNode.put("mostProfitableSong", "N/A");
+
+            String mostProfitableSong = getMostProfitableSong(entry.getValue().getPayingSongs());
+            if (mostProfitableSong == null) {
+                artistNode.put("mostProfitableSong", "N/A");
+            } else {
+                artistNode.put("mostProfitableSong", mostProfitableSong);
+            }
 
             resultNode.set(entry.getKey(), artistNode);
         }
@@ -59,7 +63,42 @@ public class MonetizationCommand implements ICommand {
         output.add(commandNode);
     }
 
-    public double roundDouble(Double number) {
+
+    /**
+     * Truncates a double variable, keeping only its first two decimals.
+     */
+    private double roundDouble(Double number) {
         return Math.round(number * 100.0) / 100.0;
+    }
+
+
+    /**
+     * Computes the most profitable song of an artist.
+     * @param payingSongs Map containing pairs of type < Song, revenue >.
+     * @return Name of the most profitable song, if the map is not empty
+     * and null, otherwise.
+     */
+    public String getMostProfitableSong(Map<Song, Double> payingSongs) {
+        if (payingSongs.isEmpty()) {
+            return null;
+        }
+
+        // Firstly, merge the values for the Songs that have the same names.
+        Map<String, Double> mergedPayingSongs = new HashMap<>();
+
+        for (Map.Entry<Song, Double> entry : payingSongs.entrySet()) {
+            String songName = entry.getKey().getName();
+            double value = entry.getValue();
+
+            mergedPayingSongs.merge(songName, value, Double::sum);
+        }
+
+        // Sort the merged map.
+        LinkedHashMap<String, Double> sortedSongs =
+                                MapOperations.sortStringMapByValue(mergedPayingSongs);
+
+        String mostProfitableSong;
+
+        return sortedSongs.entrySet().stream().findFirst().get().getKey();
     }
 }

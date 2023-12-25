@@ -9,6 +9,10 @@ import database.users.User;
 import utils.enums.UserType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static utils.Constants.PREMIUM_FEE;
 
 public final class Database {
     private ArrayList<BasicUser> basicUsers;
@@ -314,6 +318,46 @@ public final class Database {
             }
         }
         throw new IllegalArgumentException("Host not found in the database.");
+    }
+
+
+    /**
+     * Computes the revenue that each listened song generates.
+     * @param listenedSongs Map of < Song, listenCnt > type.
+     * @return HashMap of < Song, Double >, meaning < Song, revenue >.
+     */
+    public Map<Song, Double> computeSongMonetization(Map<Song, Integer> listenedSongs) {
+        Map<Song, Double> songMonetization = new HashMap<>();
+
+        double totalListens = 0.0;
+        for (Map.Entry<Song, Integer> entry : listenedSongs.entrySet()) {
+            totalListens += (double) entry.getValue();
+        }
+
+        for (Map.Entry<Song, Integer> entry : listenedSongs.entrySet()) {
+            double songRevenue = entry.getValue() * (double) PREMIUM_FEE / totalListens;
+            songMonetization.put(entry.getKey(), songRevenue);
+        }
+
+        return songMonetization;
+    }
+
+
+    /**
+     * Updates the song revenue map of the artists that own each of the Songs
+     * from songMonetization map. These Songs are those that have been listened
+     * to by one user after buying premium subscription.
+     * @param songMonetization Map of < Song, revenue > type.
+     */
+    public void updateArtistMonetization(Map<Song, Double> songMonetization) {
+        Monetization monetization = getMonetization();
+
+        for (Map.Entry<Song, Double> entry : songMonetization.entrySet()) {
+            Song song = entry.getKey();
+            String artistName = song.getArtist();
+
+            monetization.addSongRevenue(artistName, song, entry.getValue());
+        }
     }
 
     /* Getters and Setters */

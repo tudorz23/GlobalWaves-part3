@@ -13,4 +13,5 @@ public final class Constants {
     public static final int SKIP_REWIND_TIME = 90;
     public static final int MIN_YEAR_EVENT = 1900;
     public static final int MAX_YEAR_EVENT = 2023;
+    public static final int PREMIUM_FEE = 1000000;
 }
