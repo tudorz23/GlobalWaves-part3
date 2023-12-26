@@ -41,7 +41,7 @@ public class CancelPremiumCommand implements ICommand {
         }
 
         user.setPremiumState(PremiumState.FREE);
-        printer.print(user.getUsername() + " canceled the subscription successfully.");
+        printer.print(user.getUsername() + " cancelled the subscription successfully.");
 
         Map<Song, Integer> listenedAsPremium = user.getPlayer().getListenedAsPremium();
         if (listenedAsPremium.isEmpty()) {
