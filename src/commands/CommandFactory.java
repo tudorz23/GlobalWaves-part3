@@ -260,30 +260,16 @@ public class CommandFactory {
      * in the database.
      */
     private User getUser(final CommandInput commandInput) throws IllegalArgumentException {
-        // Search basic users.
-        for (User user : session.getDatabase().getBasicUsers()) {
-            if (user.getUsername().equals(commandInput.getUsername())) {
-                return user;
-            }
+        User user;
+        try {
+            user = session.getDatabase().searchUserInDatabase(commandInput.getUsername());
+        } catch (IllegalArgumentException exception) {
+            PrinterBasic printer = new PrinterBasic(output, commandInput);
+            printer.print("The username " + commandInput.getUsername() + " doesn't exist.");
+
+            throw exception;
         }
 
-        // Search artists.
-        for (User user : session.getDatabase().getArtists()) {
-            if (user.getUsername().equals(commandInput.getUsername())) {
-                return user;
-            }
-        }
-
-        // Search hosts.
-        for (User user : session.getDatabase().getHosts()) {
-            if (user.getUsername().equals(commandInput.getUsername())) {
-                return user;
-            }
-        }
-
-        PrinterBasic printer = new PrinterBasic(output, commandInput);
-        printer.print("The username " + commandInput.getUsername() + " doesn't exist.");
-
-        throw new IllegalArgumentException("Nonexistent user.");
+        return user;
     }
 }

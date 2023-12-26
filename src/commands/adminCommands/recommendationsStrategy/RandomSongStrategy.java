@@ -27,17 +27,6 @@ public class RandomSongStrategy implements RecommendationStrategy {
 
     @Override
     public void recommend() {
-        if (user.getPlayer().getPlayerState() == PlayerState.EMPTY
-            || user.getPlayer().getPlayerState() == PlayerState.STOPPED) {
-            printer.print("No new recommendations were found.");
-            return;
-        }
-
-        if (user.getPlayer().getCurrPlaying().getType() != AudioType.SONG) {
-            printer.print("No new recommendations were found.");
-            return;
-        }
-
         Song playingSong = (Song) user.getPlayer().getCurrPlaying();
         int timePosition = playingSong.getTimePosition();
 

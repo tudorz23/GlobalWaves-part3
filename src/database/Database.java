@@ -322,6 +322,34 @@ public final class Database {
 
 
     /**
+     * Traverses the user database and returns the instance of the
+     * requested user, if it exists.
+     * @throws IllegalArgumentException if the user is not found.
+     */
+    public User searchUserInDatabase(final String name) throws IllegalArgumentException {
+        for (User user : getBasicUsers()) {
+            if (user.getUsername().equals(name)) {
+                return user;
+            }
+        }
+
+        for (User user : getArtists()) {
+            if (user.getUsername().equals(name)) {
+                return user;
+            }
+        }
+
+        for (User user : getHosts()) {
+            if (user.getUsername().equals(name)) {
+                return user;
+            }
+        }
+
+        throw new IllegalArgumentException("User not found in the database.");
+    }
+
+
+    /**
      * Computes the revenue that each listened song generates.
      * @param listenedSongs Map of < Song, listenCnt > type.
      * @return HashMap of < Song, Double >, meaning < Song, revenue >.

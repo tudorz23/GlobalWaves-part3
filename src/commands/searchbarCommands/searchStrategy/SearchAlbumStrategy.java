@@ -34,8 +34,6 @@ public final class SearchAlbumStrategy implements ISearchStrategy {
             searchResult.addAll(artist.getAlbums());
         }
 
-//        searchResult.addAll(session.getDatabase().getAlbums());
-
         if (filtersInput.getName() != null) {
             searchAlbumsByName(searchResult, filtersInput.getName());
         }

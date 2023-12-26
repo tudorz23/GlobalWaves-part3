@@ -7,6 +7,8 @@ import database.users.User;
 import utils.enums.AudioType;
 import utils.enums.PlaylistVisibility;
 
+import java.util.List;
+
 public final class Playlist extends SongCollection implements IObservable {
     private final String owner;
     private PlaylistVisibility visibility;
@@ -93,6 +95,7 @@ public final class Playlist extends SongCollection implements IObservable {
     public void notifyObservers(Notification notification) {
         observer.update(notification);
     }
+
 
     /* Getters and Setters */
     public String getOwner() {

@@ -4,6 +4,7 @@ import database.Player;
 import utils.enums.PlayerState;
 import utils.enums.RepeatState;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * General class for song collections that support changes in repeat mode and
@@ -203,6 +204,34 @@ public abstract class SongCollection extends Audio {
      */
     public void removeSong(final Song song) {
         songs.remove(song);
+    }
+
+
+    /**
+     * Checks if the collection contains the requested song.
+     */
+    public boolean containsSong(Song song) {
+        return songs.contains(song);
+    }
+
+
+    /**
+     * Adds all songs from a list to the collection, if not already present.
+     */
+    public void addAllSongsFromList(List<Song> songList) {
+        for (Song song : songList) {
+            if (!containsSong(song)) {
+                addSong(song);
+            }
+        }
+    }
+
+
+    /**
+     * Checks if the collection is empty.
+     */
+    public boolean isEmpty() {
+        return songs.isEmpty();
     }
 
 
