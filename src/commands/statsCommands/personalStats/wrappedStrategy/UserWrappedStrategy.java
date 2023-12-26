@@ -31,7 +31,7 @@ public class UserWrappedStrategy implements IWrappedStrategy {
     @Override
     public void wrapped() {
         Analytics analytics = user.getAnalytics();
-        if (analytics.getTopSongs().isEmpty() && analytics.getTopPodcasts().isEmpty()) {
+        if (analytics.getTopSongs().isEmpty() && analytics.getTopEpisodes().isEmpty()) {
             PrinterBasic printer = new PrinterBasic(output, commandInput);
             printer.print("No data to show for user " + user.getUsername() + ".");
             return;
@@ -41,7 +41,7 @@ public class UserWrappedStrategy implements IWrappedStrategy {
         LinkedHashMap<String, Integer> sortedGenres = MapOperations.sortStringMapByValue(user.getAnalytics().getTopGenres());
         LinkedHashMap<String, Integer> sortedSongs = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopSongs());
         LinkedHashMap<String, Integer> sortedAlbums = MapOperations.sortStringMapByValue(user.getAnalytics().getTopAlbums());
-        LinkedHashMap<String, Integer> sortedPodcasts = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopPodcasts());
+        LinkedHashMap<String, Integer> sortedEpisodes = MapOperations.sortStringMapByValue(user.getAnalytics().getTopEpisodes());
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -55,13 +55,13 @@ public class UserWrappedStrategy implements IWrappedStrategy {
         ObjectNode topGenres = MapOperations.createStringMapObjectNode(sortedGenres);
         ObjectNode topSongs = MapOperations.createStringMapObjectNode(sortedSongs);
         ObjectNode topAlbums = MapOperations.createStringMapObjectNode(sortedAlbums);
-        ObjectNode topPodcasts = MapOperations.createStringMapObjectNode(sortedPodcasts);
+        ObjectNode topEpisodes = MapOperations.createStringMapObjectNode(sortedEpisodes);
 
         resultNode.set("topArtists", topArtists);
         resultNode.set("topGenres", topGenres);
         resultNode.set("topSongs", topSongs);
         resultNode.set("topAlbums", topAlbums);
-        resultNode.set("topPodcasts", topPodcasts);
+        resultNode.set("topEpisodes", topEpisodes);
 
         commandNode.set("result", resultNode);
         output.add(commandNode);

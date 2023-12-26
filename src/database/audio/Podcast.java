@@ -237,8 +237,7 @@ public final class Podcast extends Audio {
     public void updateAnalytics() {
         User listener = getListener();
 
-        Podcast originalPodcast = getListener().getDatabase().searchPodcastInDatabase(this);
-        listener.getAnalytics().addPodcast(originalPodcast);
+        listener.getAnalytics().addEpisode(getEpisodes().get(playingEpisodeIdx).getName());
 
         updateHostAnalytics();
     }

@@ -14,7 +14,7 @@ public class Analytics {
     private Map<String, Integer> topGenres;
     private Map<Audio, Integer> topSongs;
     private Map<String, Integer> topAlbums;
-    private Map<Audio, Integer> topPodcasts;
+    private Map<String, Integer> topEpisodes;
 
     private List<ContentCreator> subscribedToList;
     private List<Notification> notifications;
@@ -27,7 +27,7 @@ public class Analytics {
         topGenres = new HashMap<>();
         topSongs = new HashMap<>();
         topAlbums = new HashMap<>();
-        topPodcasts = new HashMap<>();
+        topEpisodes = new HashMap<>();
         subscribedToList = new ArrayList<>();
         notifications = new ArrayList<>();
         merchCollection = new ArrayList<>();
@@ -54,9 +54,9 @@ public class Analytics {
         topAlbums.put(albumName, listens + 1);
     }
 
-    public void addPodcast(Podcast podcast) {
-        int listens = topPodcasts.getOrDefault(podcast, 0);
-        topPodcasts.put(podcast, listens + 1);
+    public void addEpisode(String episode) {
+        int listens = topEpisodes.getOrDefault(episode, 0);
+        topEpisodes.put(episode, listens + 1);
     }
 
 
@@ -105,8 +105,11 @@ public class Analytics {
     public Map<String, Integer> getTopAlbums() {
         return topAlbums;
     }
-    public Map<Audio, Integer> getTopPodcasts() {
-        return topPodcasts;
+    public void setTopEpisodes(Map<String, Integer> topEpisodes) {
+        this.topEpisodes = topEpisodes;
+    }
+    public Map<String, Integer> getTopEpisodes() {
+        return topEpisodes;
     }
     public List<ContentCreator> getSubscribedToList() {
         return subscribedToList;
