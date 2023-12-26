@@ -47,7 +47,8 @@ public enum CommandType {
     BUY_MERCH("buyMerch"),
     SEE_MERCH("seeMerch"),
     BUY_PREMIUM("buyPremium"),
-    CANCEL_PREMIUM("cancelPremium");
+    CANCEL_PREMIUM("cancelPremium"),
+    UPDATE_RECOMMENDATIONS("updateRecommendations");
 
     private final String label;
 

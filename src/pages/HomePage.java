@@ -1,5 +1,6 @@
 package pages;
 
+import database.audio.Audio;
 import database.audio.Playlist;
 import database.audio.Song;
 import database.users.User;
@@ -7,13 +8,16 @@ import utils.enums.PageType;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 import static utils.Constants.MAX_PLAYLIST_RANK_NUMBER;
 import static utils.Constants.MAX_SONG_RANK_NUMBER;
 
 public final class HomePage extends Page {
-    private ArrayList<Song> songRecommendation;
-    private ArrayList<Playlist> playlistRecommendation;
+    private List<Song> likedSongs;
+    private List<Playlist> likedPlaylists;
+    private List<Song> songRecommendations;
+    private List<Playlist> playlistRecommendations;
 
     /* Constructor */
     public HomePage(final User owningUser) {
@@ -25,30 +29,35 @@ public final class HomePage extends Page {
     public String printPage() {
         refreshPage();
         StringBuilder stringBuilder = new StringBuilder("Liked songs:\n\t[");
-
-        Iterator<Song> songIterator = songRecommendation.iterator();
-        while (songIterator.hasNext()) {
-            Song song = songIterator.next();
-            stringBuilder.append(song.getName());
-
-            if (songIterator.hasNext()) {
-                stringBuilder.append(", ");
-            }
-        }
+        appendAudioArray(likedSongs, stringBuilder);
 
         stringBuilder.append("]\n\nFollowed playlists:\n\t[");
-        Iterator<Playlist> playlistIterator = playlistRecommendation.iterator();
-        while (playlistIterator.hasNext()) {
-            Playlist playlist = playlistIterator.next();
-            stringBuilder.append(playlist.getName());
+        appendAudioArray(likedPlaylists, stringBuilder);
 
-            if (playlistIterator.hasNext()) {
-                stringBuilder.append(", ");
-            }
-        }
+        stringBuilder.append("]\n\nSong recommendations:\n\t[");
+        appendAudioArray(songRecommendations, stringBuilder);
+
+        stringBuilder.append("]\n\nPlaylists recommendations:\n\t[");
+        appendAudioArray(playlistRecommendations, stringBuilder);
 
         stringBuilder.append("]");
         return stringBuilder.toString();
+    }
+
+
+    /**
+     * Appends the audio names from the audio list to the builder.
+     */
+    private void appendAudioArray(List<? extends Audio> audioList, StringBuilder builder) {
+        Iterator<?> audioIterator = audioList.iterator();
+        while (audioIterator.hasNext()) {
+            Audio audio = (Audio) audioIterator.next();
+            builder.append(audio.getName());
+
+            if (audioIterator.hasNext()) {
+                builder.append(", ");
+            }
+        }
     }
 
 
@@ -58,6 +67,9 @@ public final class HomePage extends Page {
     private void refreshPage() {
         refreshSongRecommendation();
         refreshPlaylistRecommendation();
+
+        songRecommendations = getOwningUser().getAnalytics().getSongRecommendations();
+        playlistRecommendations = getOwningUser().getAnalytics().getPlaylistRecommendations();
     }
 
 
@@ -65,12 +77,12 @@ public final class HomePage extends Page {
      * Helper for refreshing the song recommendations.
      */
     private void refreshSongRecommendation() {
-        songRecommendation = new ArrayList<>(getOwningUser().getLikedSongs());
+        likedSongs = new ArrayList<>(getOwningUser().getLikedSongs());
 
-        songRecommendation.sort(Comparator.comparing(Song::getLikeCnt).reversed());
+        likedSongs.sort(Comparator.comparing(Song::getLikeCnt).reversed());
 
-        while (songRecommendation.size() > MAX_SONG_RANK_NUMBER) {
-            songRecommendation.remove(songRecommendation.size() - 1);
+        while (likedSongs.size() > MAX_SONG_RANK_NUMBER) {
+            likedSongs.remove(likedSongs.size() - 1);
         }
     }
 
@@ -79,12 +91,12 @@ public final class HomePage extends Page {
      * Helper for refreshing the playlist recommendations.
      */
     private void refreshPlaylistRecommendation() {
-        playlistRecommendation = new ArrayList<>(getOwningUser().getFollowedPlaylists());
+        likedPlaylists = new ArrayList<>(getOwningUser().getFollowedPlaylists());
 
-        playlistRecommendation.sort(Comparator.comparing(Playlist::computeLikeCnt).reversed());
+        likedPlaylists.sort(Comparator.comparing(Playlist::computeLikeCnt).reversed());
 
-        while (playlistRecommendation.size() > MAX_PLAYLIST_RANK_NUMBER) {
-            playlistRecommendation.remove(playlistRecommendation.size() - 1);
+        while (likedPlaylists.size() > MAX_PLAYLIST_RANK_NUMBER) {
+            likedPlaylists.remove(likedPlaylists.size() - 1);
         }
     }
 }

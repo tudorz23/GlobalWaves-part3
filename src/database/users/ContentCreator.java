@@ -13,6 +13,9 @@ public abstract class ContentCreator extends User implements IObservable {
         super(username, age, city, database);
     }
 
+    /**
+     * @return The analytics specific to the content creator.
+     */
     public abstract ContentCreatorAnalytics getContentCreatorAnalytics();
 
 

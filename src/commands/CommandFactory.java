@@ -4,6 +4,7 @@ import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.adminCommands.AddUserCommand;
 import commands.adminCommands.DeleteUserCommand;
+import commands.adminCommands.UpdateRecommendationsCommand;
 import commands.statsCommands.adminStats.*;
 import commands.statsCommands.personalStats.*;
 import commands.playerCommands.*;
@@ -239,6 +240,9 @@ public class CommandFactory {
             }
             case CANCEL_PREMIUM -> {
                 return new CancelPremiumCommand(session, commandInput, user, output);
+            }
+            case UPDATE_RECOMMENDATIONS -> {
+                return new UpdateRecommendationsCommand(session, commandInput, user, output);
             }
             default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);
