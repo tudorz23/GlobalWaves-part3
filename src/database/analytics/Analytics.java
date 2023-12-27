@@ -7,6 +7,7 @@ import database.audio.Song;
 import database.records.Merch;
 import database.records.Notification;
 import database.users.ContentCreator;
+import pages.Page;
 
 import java.util.*;
 
@@ -26,6 +27,10 @@ public class Analytics {
     private List<Playlist> playlistRecommendations;
     private Audio latestRecommendation;
 
+    private LinkedList<Page> pageHistory;
+    private LinkedList<Page> forwardPageHistory;
+
+
     /* Constructor */
     public Analytics() {
         topArtists = new HashMap<>();
@@ -38,6 +43,8 @@ public class Analytics {
         merchCollection = new ArrayList<>();
         songRecommendations = new ArrayList<>();
         playlistRecommendations = new ArrayList<>();
+        pageHistory = new LinkedList<>();
+        forwardPageHistory = new LinkedList<>();
     }
 
 
@@ -143,6 +150,36 @@ public class Analytics {
         playlistRecommendations.add(playlist);
     }
 
+
+    public void pushPageHistory(Page newPage) {
+        pageHistory.addFirst(newPage);
+    }
+
+
+    public Page popPageHistory() {
+        return pageHistory.pop();
+    }
+
+
+    public boolean pageHistoryIsEmpty() {
+        return pageHistory.isEmpty();
+    }
+
+
+    public void pushForwardPageHistory(Page oldPage) {
+        forwardPageHistory.addFirst(oldPage);
+    }
+
+
+    public Page popForwardPageHistory() {
+        return forwardPageHistory.pop();
+    }
+
+
+    public boolean forwardPageHistoryIsEmpty() {
+        return forwardPageHistory.isEmpty();
+    }
+
     /* Getters and Setters */
     public List<Notification> getNotifications() {
         return notifications;
@@ -176,5 +213,21 @@ public class Analytics {
     }
     public Audio getLatestRecommendation() {
         return latestRecommendation;
+    }
+
+    public LinkedList<Page> getPageHistory() {
+        return pageHistory;
+    }
+
+    public void setPageHistory(LinkedList<Page> pageHistory) {
+        this.pageHistory = pageHistory;
+    }
+
+    public LinkedList<Page> getForwardPageHistory() {
+        return forwardPageHistory;
+    }
+
+    public void setForwardPageHistory(LinkedList<Page> forwardPageHistory) {
+        this.forwardPageHistory = forwardPageHistory;
     }
 }

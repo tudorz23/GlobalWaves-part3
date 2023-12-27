@@ -49,7 +49,10 @@ public enum CommandType {
     BUY_PREMIUM("buyPremium"),
     CANCEL_PREMIUM("cancelPremium"),
     UPDATE_RECOMMENDATIONS("updateRecommendations"),
-    AD_BREAK("adBreak");
+    AD_BREAK("adBreak"),
+    PREVIOUS_PAGE("previousPage"),
+    NEXT_PAGE("nextPage"),
+    LOAD_RECOMMENDATIONS("loadRecommendations");
 
     private final String label;
 

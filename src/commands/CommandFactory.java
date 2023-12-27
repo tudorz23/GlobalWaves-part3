@@ -18,6 +18,9 @@ import commands.userCommands.hostCommands.AddAnnouncementCommand;
 import commands.userCommands.hostCommands.AddPodcastCommand;
 import commands.userCommands.hostCommands.RemoveAnnouncementCommand;
 import commands.userCommands.hostCommands.RemovePodcastCommand;
+import commands.userCommands.pageCommands.ChangePageCommand;
+import commands.userCommands.pageCommands.NextPageCommand;
+import commands.userCommands.pageCommands.PreviousPageCommand;
 import database.users.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
@@ -247,6 +250,15 @@ public class CommandFactory {
             }
             case AD_BREAK -> {
                 return new AdBreakCommand(session, commandInput, user, output);
+            }
+            case PREVIOUS_PAGE -> {
+                return new PreviousPageCommand(session, commandInput, user, output);
+            }
+            case NEXT_PAGE -> {
+                return new NextPageCommand(session, commandInput, user, output);
+            }
+            case LOAD_RECOMMENDATIONS -> {
+                return new LoadRecommendationsCommand(session, commandInput, user, output);
             }
             default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);

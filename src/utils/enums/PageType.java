@@ -3,8 +3,8 @@ package utils.enums;
 public enum PageType {
     HOME("Home"),
     LIKED_CONTENT("LikedContent"),
-    ARTIST_PAGE("ArtistPage"),
-    HOST_PAGE("HostPage");
+    ARTIST_PAGE("Artist"),
+    HOST_PAGE("Host");
 
     private final String label;
 

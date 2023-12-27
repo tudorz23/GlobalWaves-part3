@@ -1,4 +1,4 @@
-package commands.userCommands;
+package commands.userCommands.pageCommands;
 
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -9,6 +9,8 @@ import fileio.output.PrinterBasic;
 import pages.Page;
 import pages.PageFactory;
 import utils.enums.UserType;
+
+import java.util.LinkedList;
 
 public final class ChangePageCommand implements ICommand {
     private final Session session;
@@ -30,6 +32,10 @@ public final class ChangePageCommand implements ICommand {
         session.setTimestamp(commandInput.getTimestamp());
         PrinterBasic printer = new PrinterBasic(output, commandInput);
 
+        if (user.getPlayer() != null) {
+            user.getPlayer().simulateTimePass(session.getTimestamp());
+        }
+
         if (user.getType() != UserType.BASIC_USER) {
             printer.print(user.getUsername() + " not a basic user, can't change pages like this.");
             return;
@@ -45,7 +51,12 @@ public final class ChangePageCommand implements ICommand {
             return;
         }
 
+
+        user.getAnalytics().pushPageHistory(user.getCurrPage());
         user.setCurrPage(newPage);
+
+        user.getAnalytics().setForwardPageHistory(new LinkedList<>());
+
         printer.print(user.getUsername() + " accessed " + commandInput.getNextPage()
                 + " successfully.");
     }

@@ -164,7 +164,7 @@ public final class HostPage extends Page {
             }
         }
 
-        stringBuilder.append("\n]");
+        stringBuilder.append("]");
         return stringBuilder.toString();
     }
 
