@@ -2,6 +2,7 @@ package database;
 
 import database.audio.Audio;
 import database.audio.Song;
+import utils.enums.AudioType;
 import utils.enums.PlayerState;
 import utils.enums.RepeatState;
 
@@ -36,12 +37,27 @@ public final class Player {
         shuffle = false;
     }
 
+
     /**
      * Simulates the passing of the time between two interactions with the player,
      * updating its internal states.
      * @param currTime Current timestamp of the query.
      */
     public void simulateTimePass(final int currTime) {
+        if (currPlaying == null) {
+            this.setPrevTimeInfo(currTime);
+            return;
+        }
+
+        if (currPlaying.getType() == AudioType.SONG
+                && currPlaying.getName().equals("Ad Break")) {
+            currPlaying.simulateTimePass(this, currTime);
+
+            this.setPrevTimeInfo(currTime);
+            return;
+        }
+
+
         if (this.playerState != PlayerState.EMPTY && this.playerState != PlayerState.STOPPED) {
             currPlaying.simulateTimePass(this, currTime);
         }
@@ -74,8 +90,8 @@ public final class Player {
      * Increments the number of listens as Free user between ads for the given song.
      */
     public void addListenedBetweenAds(Song song) {
-        int listens = listenedAsPremium.getOrDefault(song, 0);
-        listenedAsPremium.put(song, listens + 1);
+        int listens = listenedBetweenAds.getOrDefault(song, 0);
+        listenedBetweenAds.put(song, listens + 1);
     }
 
     /* Getters and Setters */
