@@ -16,11 +16,16 @@ public final class Player {
     private boolean shuffle;
 
     private Map<Song, Integer> listenedAsPremium; // <Song, listens>
+    private Map<Song, Integer> listenedBetweenAds; // <Song, listens>
+
+    private boolean adIsNext;
+    private Audio listeningBeforeAd;
 
     /* Constructor */
     public Player() {
         playerState = PlayerState.EMPTY;
         shuffle = false;
+        initListenedBetweenAds();
     }
 
     /**
@@ -60,6 +65,19 @@ public final class Player {
     }
 
 
+    public void initListenedBetweenAds() {
+        listenedBetweenAds = new HashMap<>();
+    }
+
+
+    /**
+     * Increments the number of listens as Free user between ads for the given song.
+     */
+    public void addListenedBetweenAds(Song song) {
+        int listens = listenedAsPremium.getOrDefault(song, 0);
+        listenedAsPremium.put(song, listens + 1);
+    }
+
     /* Getters and Setters */
     public Audio getCurrPlaying() {
         return currPlaying;
@@ -94,7 +112,19 @@ public final class Player {
     public Map<Song, Integer> getListenedAsPremium() {
         return listenedAsPremium;
     }
-    public void setListenedAsPremium(Map<Song, Integer> listenedAsPremium) {
-        this.listenedAsPremium = listenedAsPremium;
+    public Map<Song, Integer> getListenedBetweenAds() {
+        return listenedBetweenAds;
+    }
+    public boolean isAdNext() {
+        return adIsNext;
+    }
+    public void setAdIsNext(boolean adIsNext) {
+        this.adIsNext = adIsNext;
+    }
+    public Audio getListeningBeforeAd() {
+        return listeningBeforeAd;
+    }
+    public void setListeningBeforeAd(Audio listeningBeforeAd) {
+        this.listeningBeforeAd = listeningBeforeAd;
     }
 }

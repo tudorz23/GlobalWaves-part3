@@ -354,7 +354,8 @@ public final class Database {
      * @param listenedSongs Map of < Song, listenCnt > type.
      * @return HashMap of < Song, Double >, meaning < Song, revenue >.
      */
-    public Map<Song, Double> computeSongMonetization(Map<Song, Integer> listenedSongs) {
+    public Map<Song, Double> computeSongMonetization(Map<Song, Integer> listenedSongs,
+                                                     double sumToSplit) {
         Map<Song, Double> songMonetization = new HashMap<>();
 
         double totalListens = 0.0;
@@ -363,7 +364,7 @@ public final class Database {
         }
 
         for (Map.Entry<Song, Integer> entry : listenedSongs.entrySet()) {
-            double songRevenue = entry.getValue() * (double) PREMIUM_FEE / totalListens;
+            double songRevenue = entry.getValue() * sumToSplit / totalListens;
             songMonetization.put(entry.getKey(), songRevenue);
         }
 
@@ -374,7 +375,7 @@ public final class Database {
     /**
      * Updates the song revenue map of the artists that own each of the Songs
      * from songMonetization map. These Songs are those that have been listened
-     * to by one user after buying premium subscription.
+     * to by one user after buying premium subscription or between two ads.
      * @param songMonetization Map of < Song, revenue > type.
      */
     public void updateArtistMonetization(Map<Song, Double> songMonetization) {
@@ -386,6 +387,20 @@ public final class Database {
 
             monetization.addSongRevenue(artistName, song, entry.getValue());
         }
+    }
+
+
+    /**
+     * @return Deep copy of the Ad object from the database.
+     */
+    public Song getAdvertisementFromDatabase() {
+        for (Song song : songs) {
+            if (song.getName().equals("Ad Break")) {
+                return song.getDeepCopy();
+            }
+        }
+        // Never reached.
+        throw new IllegalStateException("Ad not present in the database.");
     }
 
     /* Getters and Setters */

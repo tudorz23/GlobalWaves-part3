@@ -15,6 +15,8 @@ import utils.enums.PremiumState;
 import java.util.List;
 import java.util.Map;
 
+import static utils.Constants.PREMIUM_FEE;
+
 public class AdminInteraction {
     private Database database;
     private Session session;
@@ -121,7 +123,8 @@ public class AdminInteraction {
                 continue;
             }
 
-            Map<Song, Double> songMonetization = database.computeSongMonetization(listenedAsPremium);
+            Map<Song, Double> songMonetization = database
+                            .computeSongMonetization(listenedAsPremium, PREMIUM_FEE);
 
             database.updateArtistMonetization(songMonetization);
         }

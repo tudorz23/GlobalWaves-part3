@@ -49,8 +49,10 @@ public class CancelPremiumCommand implements ICommand {
         }
 
         Map<Song, Double> songMonetization = session.getDatabase()
-                                            .computeSongMonetization(listenedAsPremium);
+                .computeSongMonetization(listenedAsPremium, PREMIUM_FEE);
 
         session.getDatabase().updateArtistMonetization(songMonetization);
+
+        user.getPlayer().initListenedBetweenAds(); // The user just became a FREE user.
     }
 }

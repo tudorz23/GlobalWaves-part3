@@ -58,8 +58,14 @@ public final class Song extends Audio {
         return copy;
     }
 
+
     @Override
     public void simulateTimePass(final Player player, final int currTime) {
+        if (this.getName().equals("Ad Break")) {
+            simulateAd(player, currTime);
+            return;
+        }
+
         if (player.getPlayerState() == PlayerState.PAUSED
             || player.getPlayerState() == PlayerState.STOPPED) {
             return;
@@ -80,6 +86,7 @@ public final class Song extends Audio {
         simulateNoRepeat(player, elapsedTime);
     }
 
+
     /**
      * Simulates the time passing when Repeat Infinite is on.
      */
@@ -93,6 +100,7 @@ public final class Song extends Audio {
 
         timePosition = remainder;
     }
+
 
     /**
      * Simulates the time passing when Repeat Once is on.
@@ -123,6 +131,7 @@ public final class Song extends Audio {
         timePosition = duration;
     }
 
+
     /**
      * Simulates the time passing when No repeat is on.
      */
@@ -141,6 +150,7 @@ public final class Song extends Audio {
         timePosition = duration;
     }
 
+
     /**
      * Sets the time position to 0.
      */
@@ -148,10 +158,17 @@ public final class Song extends Audio {
         timePosition = 0;
     }
 
+
+    public void setTimePositionToEnd() {
+        timePosition = duration;
+    }
+
+
     @Override
     public int getRemainedTime() {
         return (duration - timePosition);
     }
+
 
     @Override
     public void next(final Player player) {
@@ -159,16 +176,19 @@ public final class Song extends Audio {
         timePosition = duration;
     }
 
+
     @Override
     public void prev(final Player player) {
         player.setPlayerState(PlayerState.PLAYING);
         timePosition = 0;
     }
 
+
     @Override
     public String getPlayingTrackName() {
         return getName();
     }
+
 
     /**
      * Increments the number of likes.
@@ -176,6 +196,7 @@ public final class Song extends Audio {
     public void incrementLikeCnt() {
         likeCnt++;
     }
+
 
     /**
      * Decrements the number of likes.
@@ -222,9 +243,10 @@ public final class Song extends Audio {
 
 
     /**
+     * Adds the song's artist to the monetizedArtists list.
      * Adds this song to the respective list from the player of the listening user.
      * If the User is premium, adds to the listenedAsPremium list, else to the
-     * listenedSinceAd list.
+     * listenedBetweenAd list.
      * To be called from a song instance from the database.
      */
     public void updateMonetization(User listener) {
@@ -232,8 +254,30 @@ public final class Song extends Audio {
 
         if (listener.getPremiumState() == PremiumState.PREMIUM) {
             listener.getPlayer().addListenedAsPremium(this);
+        } else {
+            listener.getPlayer().addListenedBetweenAds(this);
         }
     }
+
+
+    /**
+     * Simulates the passing of time for an ad.
+     */
+    private void simulateAd(final Player player, int currTime) {
+        player.setAdIsNext(false);
+        int elapsedTime = currTime - player.getPrevTimeInfo();
+
+        if (getRemainedTime() > elapsedTime) {
+            timePosition += elapsedTime;
+            return;
+        }
+
+        player.setPrevTimeInfo(player.getPrevTimeInfo() + getRemainedTime());
+
+        player.setCurrPlaying(player.getListeningBeforeAd());
+        player.simulateTimePass(currTime);
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -246,11 +290,13 @@ public final class Song extends Audio {
                 && Objects.equals(releaseYear, song.releaseYear);
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(getName(), artist, lyrics, duration,
                 album, genre, releaseYear);
     }
+
 
     /* Getters and Setters */
     public Integer getDuration() {

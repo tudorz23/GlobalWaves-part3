@@ -2,6 +2,7 @@ package commands;
 
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import commands.adminCommands.AdBreakCommand;
 import commands.adminCommands.AddUserCommand;
 import commands.adminCommands.DeleteUserCommand;
 import commands.adminCommands.UpdateRecommendationsCommand;
@@ -243,6 +244,9 @@ public class CommandFactory {
             }
             case UPDATE_RECOMMENDATIONS -> {
                 return new UpdateRecommendationsCommand(session, commandInput, user, output);
+            }
+            case AD_BREAK -> {
+                return new AdBreakCommand(session, commandInput, user, output);
             }
             default -> {
                 PrinterBasic printer = new PrinterBasic(output, commandInput);

@@ -39,12 +39,14 @@ public final class Playlist extends SongCollection implements IObservable {
         return copy;
     }
 
+
     /**
      * Increments the number of followers.
      */
     public void incrementFollowersCnt() {
         followersCnt++;
     }
+
 
     /**
      * Decrements the number of followers.
@@ -71,6 +73,7 @@ public final class Playlist extends SongCollection implements IObservable {
         originalSong.updateArtistAnalytics(listener);
         originalSong.updateMonetization(listener);
     }
+
 
     /**
      * Sets the observer for the playlist (should be the owner).

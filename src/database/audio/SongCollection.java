@@ -39,9 +39,16 @@ public abstract class SongCollection extends Audio {
                 return;
             }
 
+            player.setPrevTimeInfo(player.getPrevTimeInfo() + songRemainingTime);
             changeToNextSong(player);
-            elapsedTime -= songRemainingTime;
 
+            // For handling ads.
+            if (player.isAdNext()) {
+                simulateAd(currTime);
+                return;
+            }
+
+            elapsedTime -= songRemainingTime;
             songRemainingTime = songs.get(playingSongIndex).getRemainedTime();
         }
 
@@ -260,8 +267,19 @@ public abstract class SongCollection extends Audio {
         return totalLikes;
     }
 
+
     @Override
     public abstract void updateAnalytics();
+
+
+    private void simulateAd(int currTime) {
+        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
+
+        getListener().getPlayer().setListeningBeforeAd(this);
+        getListener().getPlayer().setCurrPlaying(ad);
+        getListener().getPlayer().simulateTimePass(currTime);
+    }
+
 
     /* Getters and Setters */
     /**
