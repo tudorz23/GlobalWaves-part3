@@ -61,6 +61,9 @@ public class FansPlaylistStrategy implements RecommendationStrategy {
     }
 
 
+    /**
+     * Sorts the map of top fans of the artist and selects top 5 of them.
+     */
     private List<String> getTopFans(Artist artist) {
         LinkedHashMap<String, Integer> sortedFans = MapOperations
                 .sortStringMapByValue(artist.getArtistAnalytics().getArtistTopFans());
@@ -81,6 +84,9 @@ public class FansPlaylistStrategy implements RecommendationStrategy {
     }
 
 
+    /**
+     * Sorts the liked songs of the user and selects top 5 of them.
+     */
     private List<Song> getTopSongsOfUser(User user) {
         List<Song> topSongs = new ArrayList<>(user.getLikedSongs());
 
