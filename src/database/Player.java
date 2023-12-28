@@ -22,6 +22,8 @@ public final class Player {
     private boolean adIsNext;
     private Audio listeningBeforeAd;
 
+    private double lastAdPrice;
+
     /* Constructor */
     public Player() {
         playerState = PlayerState.EMPTY;
@@ -142,5 +144,13 @@ public final class Player {
     }
     public void setListeningBeforeAd(Audio listeningBeforeAd) {
         this.listeningBeforeAd = listeningBeforeAd;
+    }
+
+    public double getLastAdPrice() {
+        return lastAdPrice;
+    }
+
+    public void setLastAdPrice(double lastAdPrice) {
+        this.lastAdPrice = lastAdPrice;
     }
 }

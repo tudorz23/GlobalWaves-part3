@@ -5,6 +5,7 @@ import utils.enums.PlayerState;
 import utils.enums.RepeatState;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * General class for song collections that support changes in repeat mode and
@@ -40,13 +41,16 @@ public abstract class SongCollection extends Audio {
             }
 
             player.setPrevTimeInfo(player.getPrevTimeInfo() + songRemainingTime);
-            changeToNextSong(player);
+            Song playingSong = songs.get(playingSongIndex);
+            playingSong.setTimePosition(playingSong.getDuration());
 
             // For handling ads.
             if (player.isAdNext()) {
-                simulateAd(currTime);
+                introduceAdThroughCollection(player, currTime);
                 return;
             }
+
+            changeToNextSong(player);
 
             elapsedTime -= songRemainingTime;
             songRemainingTime = songs.get(playingSongIndex).getRemainedTime();
@@ -272,12 +276,26 @@ public abstract class SongCollection extends Audio {
     public abstract void updateAnalytics();
 
 
-    private void simulateAd(int currTime) {
+    /**
+     * Introduces an advertisement after the currently playing song, saving the
+     * current collection instance, with an eye to reload it after the ad ends.
+     */
+    private void introduceAdThroughCollection(Player player, int currTime) {
+        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
+
+        Map<Song, Double> songMonetization = getListener().getDatabase()
+                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
+
+        getListener().getDatabase().updateArtistMonetization(songMonetization);
+
+        player.initListenedBetweenAds();
+
+
         Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
 
-        getListener().getPlayer().setListeningBeforeAd(this);
-        getListener().getPlayer().setCurrPlaying(ad);
-        getListener().getPlayer().simulateTimePass(currTime);
+        player.setListeningBeforeAd(this);
+        player.setCurrPlaying(ad);
+        player.simulateTimePass(currTime);
     }
 
 

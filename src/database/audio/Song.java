@@ -9,6 +9,7 @@ import utils.enums.PlayerState;
 import utils.enums.PremiumState;
 import utils.enums.RepeatState;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 public final class Song extends Audio {
@@ -72,95 +73,76 @@ public final class Song extends Audio {
         }
 
         int elapsedTime = currTime - player.getPrevTimeInfo();
+        int songRemainingTime = getRemainedTime();
 
+        while (elapsedTime >= songRemainingTime) {
+            if (player.getPlayerState() == PlayerState.STOPPED) {
+                return;
+            }
+
+            player.setPrevTimeInfo(player.getPrevTimeInfo() + songRemainingTime);
+            changeToNextSong(player);
+
+            if (player.isAdNext()) {
+                introduceAd(player, currTime);
+                return;
+            }
+
+            elapsedTime -= songRemainingTime;
+            songRemainingTime = getRemainedTime();
+        }
+
+        if (elapsedTime == 0) {
+            return;
+        }
+
+        setTimePosition(getTimePosition() + elapsedTime);
+    }
+
+
+    private void changeToNextSong(final Player player) {
         if (player.getRepeatState() == RepeatState.REPEAT_INFINITE) {
-            simulateRepeatInfinite(elapsedTime);
+            resetTimePosition();
+            updateAnalytics();
             return;
         }
 
         if (player.getRepeatState() == RepeatState.REPEAT_ONCE) {
-            simulateRepeatOnce(player, elapsedTime);
-            return;
-        }
-
-        simulateNoRepeat(player, elapsedTime);
-    }
-
-
-    /**
-     * Simulates the time passing when Repeat Infinite is on.
-     */
-    private void simulateRepeatInfinite(final int elapsedTime) {
-        int quotient = (timePosition + elapsedTime) / duration;
-        int remainder = (timePosition + elapsedTime) % duration;
-
-        for (int i = 0; i < quotient; i++) {
+            resetTimePosition();
             updateAnalytics();
-        }
-
-        timePosition = remainder;
-    }
-
-
-    /**
-     * Simulates the time passing when Repeat Once is on.
-     */
-    private void simulateRepeatOnce(final Player player, final int elapsedTime) {
-        int quotient = (timePosition + elapsedTime) / duration;
-        int remainder = (timePosition + elapsedTime) % duration;
-
-        if (quotient == 0) {
-            // No repeat necessary.
-            timePosition = remainder;
-            return;
-        }
-
-        // Surely, it repeats once, so update analytics once.
-        updateAnalytics();
-
-        if (quotient == 1) {
-            // Repeat it once and set repeat state to No repeat.
             player.setRepeatState(RepeatState.NO_REPEAT);
-            timePosition = remainder;
             return;
         }
 
-        // quotient > 1. Surely, the player needs to be stopped.
-        player.setPlayerState(PlayerState.STOPPED);
-        player.setRepeatState(RepeatState.NO_REPEAT);
-        timePosition = duration;
-    }
-
-
-    /**
-     * Simulates the time passing when No repeat is on.
-     */
-    private void simulateNoRepeat(final Player player, final int elapsedTime) {
-        int quotient = (timePosition + elapsedTime) / duration;
-        int remainder = (timePosition + elapsedTime) % duration;
-
-        if (quotient == 0) {
-            // Song did not end.
-            timePosition = remainder;
-            return;
-        }
-
-        // Surely, song ended.
+        // Surely, it is on NO_REPEAT.
         player.setPlayerState(PlayerState.STOPPED);
         timePosition = duration;
     }
 
+
+    private void introduceAd(Player player, int currTime) {
+        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
+
+        Map<Song, Double> songMonetization = getListener().getDatabase()
+                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
+
+        getListener().getDatabase().updateArtistMonetization(songMonetization);
+
+        player.initListenedBetweenAds();
+
+
+        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
+
+        player.setListeningBeforeAd(this);
+        player.setCurrPlaying(ad);
+        player.simulateTimePass(currTime);
+    }
 
     /**
      * Sets the time position to 0.
      */
     public void resetTimePosition() {
         timePosition = 0;
-    }
-
-
-    public void setTimePositionToEnd() {
-        timePosition = duration;
     }
 
 

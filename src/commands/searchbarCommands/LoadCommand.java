@@ -62,7 +62,7 @@ public final class LoadCommand implements ICommand {
         loadSelection(userPlayer);
 
         userPlayer.getCurrPlaying().setListener(user);
-        userPlayer.getCurrPlaying().updateAnalytics();
+
 
         userPlayer.setPrevTimeInfo(session.getTimestamp());
         userPlayer.setPlayerState(PlayerState.PLAYING);
@@ -76,6 +76,13 @@ public final class LoadCommand implements ICommand {
 
         user.setSelection(null);
         user.setSearchResult(null);
+
+        if (userPlayer.isAdNext()) {
+            userPlayer.setAdIsNext(false);
+        }
+
+        userPlayer.getCurrPlaying().updateAnalytics();
+
         printer.print("Playback loaded successfully.");
     }
 

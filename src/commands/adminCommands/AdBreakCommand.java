@@ -51,17 +51,17 @@ public class AdBreakCommand implements ICommand {
             return;
         }
 
-        Map<Song, Integer> listenedBetweenAds = user.getPlayer().getListenedBetweenAds();
-        if (listenedBetweenAds.isEmpty()) {
-            return;
-        }
 
-        Map<Song, Double> songMonetization = session.getDatabase()
-                .computeSongMonetization(listenedBetweenAds, commandInput.getPrice());
-
-        session.getDatabase().updateArtistMonetization(songMonetization);
-
-        user.getPlayer().initListenedBetweenAds();
+//        Map<Song, Integer> listenedBetweenAds = user.getPlayer().getListenedBetweenAds();
+//        if (!listenedBetweenAds.isEmpty()) {
+//        Map<Song, Double> songMonetization = session.getDatabase()
+//                .computeSongMonetization(listenedBetweenAds, commandInput.getPrice());
+//
+//        session.getDatabase().updateArtistMonetization(songMonetization);
+//        }
+//
+//        user.getPlayer().initListenedBetweenAds();
+        user.getPlayer().setLastAdPrice(commandInput.getPrice());
         user.getPlayer().setAdIsNext(true);
 
         printer.print("Ad inserted successfully.");
