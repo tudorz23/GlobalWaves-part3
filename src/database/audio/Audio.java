@@ -6,6 +6,8 @@ import database.users.User;
 import utils.enums.AudioType;
 import utils.enums.SearchableType;
 
+import java.util.Map;
+
 /**
  * Describes audio objects that can be searched by the user.
  * To be extended by classes Song, SongCollection and Podcast.
@@ -66,6 +68,29 @@ public abstract class Audio extends Searchable {
      * Updates the analytics for the listener for one single listen to this audio.
      */
     public abstract void updateAnalytics();
+
+
+    /**
+     * Introduces an advertisement after the currently playing song, saving the
+     * current audio instance, with an eye to reload it after the ad ends.
+     */
+    protected void introduceAd(Player player, int currTime) {
+        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
+
+        Map<Song, Double> songMonetization = getListener().getDatabase()
+                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
+
+        getListener().getDatabase().updateArtistMonetization(songMonetization);
+
+        player.initListenedBetweenAds();
+
+
+        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
+
+        player.setListeningBeforeAd(this);
+        player.setCurrPlaying(ad);
+        player.simulateTimePass(currTime);
+    }
 
 
     /* Getters and Setters */

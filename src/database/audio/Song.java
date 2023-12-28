@@ -81,12 +81,15 @@ public final class Song extends Audio {
             }
 
             player.setPrevTimeInfo(player.getPrevTimeInfo() + songRemainingTime);
-            changeToNextSong(player);
+            setTimePosition(duration);
 
+            // For handling ads.
             if (player.isAdNext()) {
                 introduceAd(player, currTime);
                 return;
             }
+
+            changeToNextSong(player);
 
             elapsedTime -= songRemainingTime;
             songRemainingTime = getRemainedTime();
@@ -120,23 +123,23 @@ public final class Song extends Audio {
     }
 
 
-    private void introduceAd(Player player, int currTime) {
-        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
-
-        Map<Song, Double> songMonetization = getListener().getDatabase()
-                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
-
-        getListener().getDatabase().updateArtistMonetization(songMonetization);
-
-        player.initListenedBetweenAds();
-
-
-        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
-
-        player.setListeningBeforeAd(this);
-        player.setCurrPlaying(ad);
-        player.simulateTimePass(currTime);
-    }
+//    private void introduceAd(Player player, int currTime) {
+//        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
+//
+//        Map<Song, Double> songMonetization = getListener().getDatabase()
+//                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
+//
+//        getListener().getDatabase().updateArtistMonetization(songMonetization);
+//
+//        player.initListenedBetweenAds();
+//
+//
+//        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
+//
+//        player.setListeningBeforeAd(this);
+//        player.setCurrPlaying(ad);
+//        player.simulateTimePass(currTime);
+//    }
 
     /**
      * Sets the time position to 0.

@@ -46,7 +46,7 @@ public abstract class SongCollection extends Audio {
 
             // For handling ads.
             if (player.isAdNext()) {
-                introduceAdThroughCollection(player, currTime);
+                introduceAd(player, currTime);
                 return;
             }
 
@@ -276,27 +276,24 @@ public abstract class SongCollection extends Audio {
     public abstract void updateAnalytics();
 
 
-    /**
-     * Introduces an advertisement after the currently playing song, saving the
-     * current collection instance, with an eye to reload it after the ad ends.
-     */
-    private void introduceAdThroughCollection(Player player, int currTime) {
-        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
 
-        Map<Song, Double> songMonetization = getListener().getDatabase()
-                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
-
-        getListener().getDatabase().updateArtistMonetization(songMonetization);
-
-        player.initListenedBetweenAds();
-
-
-        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
-
-        player.setListeningBeforeAd(this);
-        player.setCurrPlaying(ad);
-        player.simulateTimePass(currTime);
-    }
+//    private void introduceAdThroughCollection(Player player, int currTime) {
+//        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
+//
+//        Map<Song, Double> songMonetization = getListener().getDatabase()
+//                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
+//
+//        getListener().getDatabase().updateArtistMonetization(songMonetization);
+//
+//        player.initListenedBetweenAds();
+//
+//
+//        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
+//
+//        player.setListeningBeforeAd(this);
+//        player.setCurrPlaying(ad);
+//        player.simulateTimePass(currTime);
+//    }
 
 
     /* Getters and Setters */
