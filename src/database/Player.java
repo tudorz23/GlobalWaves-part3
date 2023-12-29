@@ -69,6 +69,9 @@ public final class Player {
     }
 
 
+    /**
+     * Initializes the listenedAsPremium list of songs.
+     */
     public void initListenedAsPremium() {
         listenedAsPremium = new HashMap<>();
     }
@@ -95,6 +98,7 @@ public final class Player {
         int listens = listenedBetweenAds.getOrDefault(song, 0);
         listenedBetweenAds.put(song, listens + 1);
     }
+
 
     /* Getters and Setters */
     public Audio getCurrPlaying() {

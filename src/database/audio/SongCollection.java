@@ -276,26 +276,6 @@ public abstract class SongCollection extends Audio {
     public abstract void updateAnalytics();
 
 
-
-//    private void introduceAdThroughCollection(Player player, int currTime) {
-//        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
-//
-//        Map<Song, Double> songMonetization = getListener().getDatabase()
-//                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
-//
-//        getListener().getDatabase().updateArtistMonetization(songMonetization);
-//
-//        player.initListenedBetweenAds();
-//
-//
-//        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
-//
-//        player.setListeningBeforeAd(this);
-//        player.setCurrPlaying(ad);
-//        player.simulateTimePass(currTime);
-//    }
-
-
     /* Getters and Setters */
     /**
      * Getter for songs.

@@ -31,7 +31,7 @@ public class RandomSongStrategy implements RecommendationStrategy {
         int timePosition = playingSong.getTimePosition();
 
         if (timePosition < 30) {
-            printer.print("No new recommendations were found.");
+            printer.print("No new recommendations were found");
             return;
         }
 
@@ -43,7 +43,7 @@ public class RandomSongStrategy implements RecommendationStrategy {
         }
 
         if (sameGenreSongs.isEmpty()) {
-            printer.print("No new recommendations were found.");
+            printer.print("No new recommendations were found");
             return;
         }
 
@@ -55,7 +55,7 @@ public class RandomSongStrategy implements RecommendationStrategy {
         try {
             user.getAnalytics().addSongRecommendation(recommendation);
         } catch (IllegalArgumentException exception) {
-            printer.print("No new recommendations were found.");
+            printer.print("No new recommendations were found");
         }
 
         user.getAnalytics().updateLatestRecommendation(recommendation);

@@ -49,7 +49,7 @@ public class FansPlaylistStrategy implements RecommendationStrategy {
         }
 
         if (playlistRecommendation.isEmpty()) {
-            printer.print("No new recommendations were found.");
+            printer.print("No new recommendations were found");
             return;
         }
 

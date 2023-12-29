@@ -103,6 +103,10 @@ public final class Song extends Audio {
     }
 
 
+    /**
+     * Moves to the 'next' song (i.e. the same one) if repeat is enabled,
+     * else stop the player.
+     */
     private void changeToNextSong(final Player player) {
         if (player.getRepeatState() == RepeatState.REPEAT_INFINITE) {
             resetTimePosition();
@@ -122,24 +126,6 @@ public final class Song extends Audio {
         timePosition = duration;
     }
 
-
-//    private void introduceAd(Player player, int currTime) {
-//        Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
-//
-//        Map<Song, Double> songMonetization = getListener().getDatabase()
-//                .computeSongMonetization(listenedBetweenAds, player.getLastAdPrice());
-//
-//        getListener().getDatabase().updateArtistMonetization(songMonetization);
-//
-//        player.initListenedBetweenAds();
-//
-//
-//        Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
-//
-//        player.setListeningBeforeAd(this);
-//        player.setCurrPlaying(ad);
-//        player.simulateTimePass(currTime);
-//    }
 
     /**
      * Sets the time position to 0.

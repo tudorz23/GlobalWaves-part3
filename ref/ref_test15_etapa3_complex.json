@@ -8654,7 +8654,7 @@
   "command" : "removeAlbum",
   "user" : "Madonna",
   "timestamp" : 8887,
-  "message" : "Madonna can't delete this album."
+  "message" : "Madonna deleted the album successfully."
 }, {
   "command" : "search",
   "user" : "henry26",
@@ -8765,8 +8765,8 @@
   "command" : "search",
   "user" : "irene33",
   "timestamp" : 8999,
-  "message" : "Search returned 2 results",
-  "results" : [ "Express Yourself", "Express Yourself" ]
+  "message" : "Search returned 1 results",
+  "results" : [ "Express Yourself" ]
 }, {
   "command" : "select",
   "user" : "irene33",
@@ -8807,7 +8807,7 @@
   "command" : "addAlbum",
   "user" : "Madonna",
   "timestamp" : 9037,
-  "message" : "Madonna has another album with the same name."
+  "message" : "Madonna has added new album successfully."
 }, {
   "command" : "search",
   "user" : "carol19",
@@ -9217,6 +9217,9 @@
   }, {
     "name" : "New Merchandise",
     "description" : "New Merchandise from The Beach Boys."
+  }, {
+    "name" : "New Album",
+    "description" : "New Album from Madonna."
   } ]
 }, {
   "command" : "adBreak",

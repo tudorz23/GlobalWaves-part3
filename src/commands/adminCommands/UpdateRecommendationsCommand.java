@@ -43,12 +43,12 @@ public class UpdateRecommendationsCommand implements ICommand {
 
         if (user.getPlayer().getPlayerState() == PlayerState.EMPTY
                 || user.getPlayer().getPlayerState() == PlayerState.STOPPED) {
-            printer.print("No new recommendations were found.");
+            printer.print("No new recommendations were found");
             return;
         }
 
         if (user.getPlayer().getCurrPlaying().getType() != AudioType.SONG) {
-            printer.print("No new recommendations were found.");
+            printer.print("No new recommendations were found");
             return;
         }
 

@@ -27,7 +27,7 @@ public class RandomPlaylistStrategy implements RecommendationStrategy {
         Map<String, Integer> genresMap = getGenresMap();
 
         if (genresMap.isEmpty()) {
-            printer.print("No new recommendations were found.");
+            printer.print("No new recommendations were found");
             return;
         }
 
