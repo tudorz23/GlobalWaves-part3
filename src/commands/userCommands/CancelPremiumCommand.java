@@ -40,9 +40,6 @@ public class CancelPremiumCommand implements ICommand {
             return;
         }
 
-        user.setPremiumState(PremiumState.FREE);
-        printer.print(user.getUsername() + " cancelled the subscription successfully.");
-
         Map<Song, Integer> listenedAsPremium = user.getPlayer().getListenedAsPremium();
         if (listenedAsPremium.isEmpty()) {
             return;
@@ -53,6 +50,7 @@ public class CancelPremiumCommand implements ICommand {
 
         session.getDatabase().updateArtistMonetization(songMonetization);
 
-        user.getPlayer().initListenedBetweenAds(); // The user just became a FREE user.
+        user.setPremiumState(PremiumState.FREE);
+        printer.print(user.getUsername() + " cancelled the subscription successfully.");
     }
 }

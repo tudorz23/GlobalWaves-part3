@@ -37,5 +37,7 @@ public class BuyPremiumCommand implements ICommand {
         user.getPlayer().initListenedAsPremium();
 
         printer.print(user.getUsername() + " bought the subscription successfully.");
+
+        user.getPlayer().setAdIsNext(false);
     }
 }
