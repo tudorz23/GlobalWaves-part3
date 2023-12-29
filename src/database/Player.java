@@ -51,10 +51,8 @@ public final class Player {
             return;
         }
 
-        if (currPlaying.getType() == AudioType.SONG
-                && currPlaying.getName().equals("Ad Break")) {
+        if (currPlaying.getType() == AudioType.SONG && currPlaying.getName().equals("Ad Break")) {
             currPlaying.simulateTimePass(this, currTime);
-
             this.setPrevTimeInfo(currTime);
             return;
         }
@@ -86,6 +84,9 @@ public final class Player {
     }
 
 
+    /**
+     * Initializes the listenedBetweenAds list of songs.
+     */
     public void initListenedBetweenAds() {
         listenedBetweenAds = new HashMap<>();
     }
@@ -149,11 +150,9 @@ public final class Player {
     public void setListeningBeforeAd(Audio listeningBeforeAd) {
         this.listeningBeforeAd = listeningBeforeAd;
     }
-
     public double getLastAdPrice() {
         return lastAdPrice;
     }
-
     public void setLastAdPrice(double lastAdPrice) {
         this.lastAdPrice = lastAdPrice;
     }

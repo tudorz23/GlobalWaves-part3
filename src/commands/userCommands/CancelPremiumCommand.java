@@ -23,7 +23,7 @@ public class CancelPremiumCommand implements ICommand {
 
     /* Constructor */
     public CancelPremiumCommand(final Session session, final CommandInput commandInput,
-                             final User user, final ArrayNode output) {
+                                final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -39,6 +39,8 @@ public class CancelPremiumCommand implements ICommand {
             printer.print(user.getUsername() + " is not a premium user.");
             return;
         }
+
+        user.getPlayer().simulateTimePass(session.getTimestamp());
 
         Map<Song, Integer> listenedAsPremium = user.getPlayer().getListenedAsPremium();
         if (listenedAsPremium.isEmpty()) {

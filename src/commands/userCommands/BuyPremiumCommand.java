@@ -16,7 +16,7 @@ public class BuyPremiumCommand implements ICommand {
 
     /* Constructor */
     public BuyPremiumCommand(final Session session, final CommandInput commandInput,
-                           final User user, final ArrayNode output) {
+                             final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -33,11 +33,12 @@ public class BuyPremiumCommand implements ICommand {
             return;
         }
 
-        user.setPremiumState(PremiumState.PREMIUM);
+        user.getPlayer().simulateTimePass(session.getTimestamp());
+
         user.getPlayer().initListenedAsPremium();
-
-        printer.print(user.getUsername() + " bought the subscription successfully.");
-
         user.getPlayer().setAdIsNext(false);
+
+        user.setPremiumState(PremiumState.PREMIUM);
+        printer.print(user.getUsername() + " bought the subscription successfully.");
     }
 }

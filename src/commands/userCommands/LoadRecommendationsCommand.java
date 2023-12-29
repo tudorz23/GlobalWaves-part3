@@ -58,6 +58,7 @@ public class LoadRecommendationsCommand implements ICommand {
         }
 
         user.getPlayer().getCurrPlaying().updateAnalytics();
+        user.getPlayer().setAdIsNext(false);
         printer.print("Playback loaded successfully.");
     }
 }
