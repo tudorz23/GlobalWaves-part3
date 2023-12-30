@@ -38,7 +38,7 @@ public class SubscribeCommand implements ICommand {
         ContentCreator contentCreator = (ContentCreator) user.getCurrPage().getOwningUser();
 
         if (user.getAnalytics().isSubscribedTo(contentCreator)) {
-            user.getAnalytics().unsubscribedFrom(contentCreator);
+            user.getAnalytics().unsubscribeFrom(contentCreator);
             contentCreator.removeObserver(user);
             printer.print(user.getUsername() + " unsubscribed from " + contentCreator.getUsername()
                             + " successfully.");

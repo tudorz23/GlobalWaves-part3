@@ -2,7 +2,6 @@ package database.analytics;
 
 import database.audio.Audio;
 import database.audio.Playlist;
-import database.audio.Podcast;
 import database.audio.Song;
 import database.records.Merch;
 import database.records.Notification;
@@ -103,7 +102,7 @@ public class Analytics {
      * Removes the given content creator from the list of creators
      * that the user is subscribed to.
      */
-    public void unsubscribedFrom(ContentCreator creator) {
+    public void unsubscribeFrom(ContentCreator creator) {
         subscribedToList.remove(creator);
     }
 

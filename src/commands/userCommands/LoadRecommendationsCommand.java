@@ -44,6 +44,10 @@ public class LoadRecommendationsCommand implements ICommand {
             return;
         }
 
+        if (user.getPlayer() != null) {
+            user.getPlayer().simulateTimePass(session.getTimestamp());
+        }
+
         user.getPlayer().setCurrPlaying(recommendation.getDeepCopy());
 
         user.getPlayer().getCurrPlaying().setListener(user);
