@@ -71,8 +71,8 @@ public abstract class Audio extends Searchable {
 
 
     /**
-     * Introduces an advertisement after the currently playing song, saving the
-     * current audio instance, with an eye to reload it after the ad ends.
+     * Introduces an advertisement into the player after the currently playing song,
+     * saving the current audio instance, with an eye to reload it after the ad ends.
      */
     protected void introduceAd(Player player, int currTime) {
         Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();

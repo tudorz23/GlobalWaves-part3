@@ -3,7 +3,6 @@ package commands.adminCommands;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
-import database.audio.Song;
 import database.users.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
@@ -11,9 +10,7 @@ import utils.enums.AudioType;
 import utils.enums.PlayerState;
 import utils.enums.PremiumState;
 
-import java.util.Map;
-
-public class AdBreakCommand implements ICommand {
+public final class AdBreakCommand implements ICommand {
     private final Session session;
     private final CommandInput commandInput;
     private final User user;

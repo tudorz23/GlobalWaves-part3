@@ -8,9 +8,17 @@ import database.users.User;
 import fileio.output.PrinterBasic;
 import utils.MapOperations;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Comparator;
 
-public class FansPlaylistStrategy implements RecommendationStrategy {
+import static utils.Constants.MAX_TOP_FANS_CNT;
+import static utils.Constants.MAX_TOP_SONGS_CNT;
+
+
+public final class FansPlaylistStrategy implements RecommendationStrategy {
     private final Session session;
     private final User user;
     private final PrinterBasic printer;
@@ -37,9 +45,9 @@ public class FansPlaylistStrategy implements RecommendationStrategy {
 
         List<String> topFans = getTopFans(artist);
 
-        // This will be returned to the user.
-        String name = artist.getUsername() + " Fan Club recommendations";
-        Playlist playlistRecommendation = new Playlist(name, user.getUsername());
+        // Playlist to be returned to the user.
+        String playlistName = artist.getUsername() + " Fan Club recommendations";
+        Playlist playlistRecommendation = new Playlist(playlistName, user.getUsername());
 
         for (String fan : topFans) {
             User userFan = session.getDatabase().searchUserInDatabase(fan);
@@ -64,7 +72,7 @@ public class FansPlaylistStrategy implements RecommendationStrategy {
     /**
      * Sorts the map of top fans of the artist and selects top 5 of them.
      */
-    private List<String> getTopFans(Artist artist) {
+    private List<String> getTopFans(final Artist artist) {
         LinkedHashMap<String, Integer> sortedFans = MapOperations
                 .sortStringMapByValue(artist.getArtistAnalytics().getArtistTopFans());
 
@@ -75,7 +83,7 @@ public class FansPlaylistStrategy implements RecommendationStrategy {
             cnt++;
             topFans.add(fanEntry.getKey());
 
-            if (cnt == 5) {
+            if (cnt == MAX_TOP_FANS_CNT) {
                 break;
             }
         }
@@ -87,11 +95,11 @@ public class FansPlaylistStrategy implements RecommendationStrategy {
     /**
      * Sorts the liked songs of the user and selects top 5 of them.
      */
-    private List<Song> getTopSongsOfUser(User user) {
-        List<Song> topSongs = new ArrayList<>(user.getLikedSongs());
+    private List<Song> getTopSongsOfUser(final User requestedUser) {
+        List<Song> topSongs = new ArrayList<>(requestedUser.getLikedSongs());
 
         topSongs.sort(Comparator.comparing(Song::getLikeCnt).reversed());
-        while (topSongs.size() > 5) {
+        while (topSongs.size() > MAX_TOP_SONGS_CNT) {
             topSongs.remove(topSongs.size() - 1);
         }
 

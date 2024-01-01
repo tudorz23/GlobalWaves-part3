@@ -223,7 +223,7 @@ public class CommandFactory {
      */
     private ICommand helperGetCommandStage3(final CommandInput commandInput,
                                             final CommandType commandType, final User user) {
-        switch(commandType) {
+        switch (commandType) {
             case WRAPPED -> {
                 return new WrappedCommand(session, commandInput, user, output);
             }

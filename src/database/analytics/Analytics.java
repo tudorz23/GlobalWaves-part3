@@ -8,9 +8,13 @@ import database.records.Notification;
 import database.users.ContentCreator;
 import pages.Page;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
-public class Analytics {
+public final class Analytics {
     private Map<String, Integer> topArtists;
     private Map<String, Integer> topGenres;
     private Map<Audio, Integer> topSongs;
@@ -47,27 +51,46 @@ public class Analytics {
     }
 
 
-    public void addSong(Song song) {
+    /**
+     * Adds a Song object to User's topSongs map.
+     */
+    public void addSong(final Song song) {
         int listens = topSongs.getOrDefault(song, 0);
         topSongs.put(song, listens + 1);
     }
 
-    public void addArtist(String artistName) {
+
+    /**
+     * Adds an artist (i.e. his name as String) to User's topArtists map.
+     */
+    public void addArtist(final String artistName) {
         int listens = topArtists.getOrDefault(artistName, 0);
         topArtists.put(artistName, listens + 1);
     }
 
-    public void addGenre(String genre) {
+
+    /**
+     * Adds a genre to User's topGenres map.
+     */
+    public void addGenre(final String genre) {
         int listens = topGenres.getOrDefault(genre, 0);
         topGenres.put(genre, listens + 1);
     }
 
-    public void addAlbum(String albumName) {
+
+    /**
+     * Adds an album (i.e. its name as String) to User's topAlbums map.
+     */
+    public void addAlbum(final String albumName) {
         int listens = topAlbums.getOrDefault(albumName, 0);
         topAlbums.put(albumName, listens + 1);
     }
 
-    public void addEpisode(String episode) {
+
+    /**
+     * Adds an episode (i.e. its name as String) to User's topEpisodes map.
+     */
+    public void addEpisode(final String episode) {
         int listens = topEpisodes.getOrDefault(episode, 0);
         topEpisodes.put(episode, listens + 1);
     }
@@ -76,7 +99,7 @@ public class Analytics {
     /**
      * Adds a new Notification to the notification list.
      */
-    public void addNotification(Notification notification) {
+    public void addNotification(final Notification notification) {
         notifications.add(notification);
     }
 
@@ -93,7 +116,7 @@ public class Analytics {
      * Adds a new content creator to the list of creators
      * that the user is subscribed to.
      */
-    public void subscribeTo(ContentCreator creator) {
+    public void subscribeTo(final ContentCreator creator) {
         subscribedToList.add(creator);
     }
 
@@ -102,7 +125,7 @@ public class Analytics {
      * Removes the given content creator from the list of creators
      * that the user is subscribed to.
      */
-    public void unsubscribeFrom(ContentCreator creator) {
+    public void unsubscribeFrom(final ContentCreator creator) {
         subscribedToList.remove(creator);
     }
 
@@ -111,7 +134,7 @@ public class Analytics {
      * Checks if the user is subscribed to the given content creator.
      * @return true if he is, false otherwise.
      */
-    public boolean isSubscribedTo(ContentCreator creator) {
+    public boolean isSubscribedTo(final ContentCreator creator) {
         return subscribedToList.contains(creator);
     }
 
@@ -119,7 +142,7 @@ public class Analytics {
     /**
      * Adds a new merch to the list of merch pieces owned by the user.
      */
-    public void addMerch(Merch merch) {
+    public void addMerch(final Merch merch) {
         merchCollection.add(merch);
     }
 
@@ -127,7 +150,7 @@ public class Analytics {
     /**
      * Sets the latest recommendation to a new one.
      */
-    public void updateLatestRecommendation(Audio newRecommendation) {
+    public void updateLatestRecommendation(final Audio newRecommendation) {
         latestRecommendation = newRecommendation;
     }
 
@@ -136,7 +159,7 @@ public class Analytics {
      * Adds a new song recommendation, if it has not been recommended before.
      * @throws IllegalArgumentException if it has already been recommended.
      */
-    public void addSongRecommendation(Song song) throws IllegalArgumentException {
+    public void addSongRecommendation(final Song song) throws IllegalArgumentException {
         if (songRecommendations.contains(song)) {
             throw new IllegalArgumentException("Song " + song.getName()
                             + " has already been recommended.");
@@ -145,36 +168,62 @@ public class Analytics {
     }
 
 
-    public void addPlaylistRecommendation(Playlist playlist) {
+    /**
+     * Adds a new playlist to User's playlist recommendations list.
+     */
+    public void addPlaylistRecommendation(final Playlist playlist) {
         playlistRecommendations.add(playlist);
     }
 
 
-    public void pushPageHistory(Page newPage) {
+    /**
+     * Pushes a page to the page history stack.
+     */
+    public void pushPageHistory(final Page newPage) {
         pageHistory.addFirst(newPage);
     }
 
 
+    /**
+     * Pops a page from the page history stack.
+     * @return Page instance.
+     */
     public Page popPageHistory() {
         return pageHistory.pop();
     }
 
 
+    /**
+     * Checks whether the page history is empty.
+     * @return true if it is, false otherwise.
+     */
     public boolean pageHistoryIsEmpty() {
         return pageHistory.isEmpty();
     }
 
 
-    public void pushForwardPageHistory(Page oldPage) {
+    /**
+     * Pushes a page to the forward page history stack.
+     * @param oldPage Page from where "previousPage" command was executed.
+     */
+    public void pushForwardPageHistory(final Page oldPage) {
         forwardPageHistory.addFirst(oldPage);
     }
 
 
+    /**
+     * Pops a page from the forward page history stack.
+     * @return Page instance.
+     */
     public Page popForwardPageHistory() {
         return forwardPageHistory.pop();
     }
 
 
+    /**
+     * Checks whether the forward page history is empty.
+     * @return true if it is, false otherwise.
+     */
     public boolean forwardPageHistoryIsEmpty() {
         return forwardPageHistory.isEmpty();
     }
@@ -195,7 +244,7 @@ public class Analytics {
     public Map<String, Integer> getTopAlbums() {
         return topAlbums;
     }
-    public void setTopEpisodes(Map<String, Integer> topEpisodes) {
+    public void setTopEpisodes(final Map<String, Integer> topEpisodes) {
         this.topEpisodes = topEpisodes;
     }
     public Map<String, Integer> getTopEpisodes() {
@@ -213,20 +262,7 @@ public class Analytics {
     public Audio getLatestRecommendation() {
         return latestRecommendation;
     }
-
-    public LinkedList<Page> getPageHistory() {
-        return pageHistory;
-    }
-
-    public void setPageHistory(LinkedList<Page> pageHistory) {
-        this.pageHistory = pageHistory;
-    }
-
-    public LinkedList<Page> getForwardPageHistory() {
-        return forwardPageHistory;
-    }
-
-    public void setForwardPageHistory(LinkedList<Page> forwardPageHistory) {
+    public void setForwardPageHistory(final LinkedList<Page> forwardPageHistory) {
         this.forwardPageHistory = forwardPageHistory;
     }
 }

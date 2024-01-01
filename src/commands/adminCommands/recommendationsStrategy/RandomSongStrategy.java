@@ -1,18 +1,17 @@
 package commands.adminCommands.recommendationsStrategy;
 
 import client.Session;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.audio.Song;
 import database.users.User;
 import fileio.output.PrinterBasic;
-import utils.enums.AudioType;
-import utils.enums.PlayerState;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RandomSongStrategy implements RecommendationStrategy {
+import static utils.Constants.MIN_TIME_PASSED_SONG;
+
+public final class RandomSongStrategy implements RecommendationStrategy {
     private final Session session;
     private final User user;
     private final PrinterBasic printer;
@@ -30,7 +29,7 @@ public class RandomSongStrategy implements RecommendationStrategy {
         Song playingSong = (Song) user.getPlayer().getCurrPlaying();
         int timePosition = playingSong.getTimePosition();
 
-        if (timePosition < 30) {
+        if (timePosition < MIN_TIME_PASSED_SONG) {
             printer.print("No new recommendations were found");
             return;
         }

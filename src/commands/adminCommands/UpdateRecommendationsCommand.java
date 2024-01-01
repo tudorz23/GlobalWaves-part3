@@ -14,7 +14,7 @@ import utils.enums.AudioType;
 import utils.enums.PlayerState;
 import utils.enums.UserType;
 
-public class UpdateRecommendationsCommand implements ICommand {
+public final class UpdateRecommendationsCommand implements ICommand {
     private final Session session;
     private final CommandInput commandInput;
     private final User user;
@@ -22,7 +22,7 @@ public class UpdateRecommendationsCommand implements ICommand {
 
     /* Constructor */
     public UpdateRecommendationsCommand(final Session session, final CommandInput commandInput,
-                             final User user, final ArrayNode output) {
+                                        final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -53,16 +53,36 @@ public class UpdateRecommendationsCommand implements ICommand {
         }
 
         RecommendationStrategy strategy;
-        switch (commandInput.getRecommendationType()) {
-            case "random_song" -> strategy = new RandomSongStrategy(session, user, printer);
-            case "random_playlist" -> strategy = new RandomPlaylistStrategy(session, user, printer);
-            case "fans_playlist" -> strategy = new FansPlaylistStrategy(session, user, printer);
-            default -> {
-                printer.print("Command not supported.");
-                return;
-            }
+        try {
+            strategy = getRecommendationStrategy(commandInput.getRecommendationType(), printer);
+        } catch (IllegalArgumentException exception) {
+            printer.print(exception.getMessage());
+            return;
         }
 
         strategy.recommend();
+    }
+
+
+    /**
+     * Factory method to get the appropriate Strategy object for Recommendations Command.
+     * @throws IllegalArgumentException if the recommendation type is not supported.
+     */
+    private RecommendationStrategy getRecommendationStrategy(final String recommendationType,
+                                                             final PrinterBasic printer) {
+        switch (recommendationType) {
+            case "random_song" -> {
+                return new RandomSongStrategy(session, user, printer);
+            }
+            case "random_playlist" -> {
+                return new RandomPlaylistStrategy(session, user, printer);
+            }
+            case "fans_playlist" -> {
+                return new FansPlaylistStrategy(session, user, printer);
+            }
+            default -> {
+                throw new IllegalArgumentException("Invalid Recommendation Strategy requested.");
+            }
+        }
     }
 }

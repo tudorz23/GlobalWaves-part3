@@ -7,9 +7,22 @@ import database.users.User;
 import fileio.output.PrinterBasic;
 import utils.MapOperations;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.Comparator;
 
-public class RandomPlaylistStrategy implements RecommendationStrategy {
+import static utils.Constants.SONGS_FROM_GENRE1;
+import static utils.Constants.SONGS_FROM_GENRE2;
+import static utils.Constants.SONGS_FROM_GENRE3;
+import static utils.Constants.MAX_TOP_GENRES_CNT;
+import static utils.Constants.AT_LEAST_2_GENRES;
+import static utils.Constants.AT_LEAST_3_GENRES;
+
+
+public final class RandomPlaylistStrategy implements RecommendationStrategy {
     private final Session session;
     private final User user;
     private final PrinterBasic printer;
@@ -33,24 +46,18 @@ public class RandomPlaylistStrategy implements RecommendationStrategy {
 
         List<String> top3Genres = getTop3Genres(genresMap);
 
-        // This playlist will be returned to the user.
+        //  Playlist to be returned to the user.
         String name = user.getUsername() + "'s recommendations";
         Playlist playlistRecommendation = new Playlist(name, user.getUsername());
 
-        List<Song> songsFromGenre1 = getSongsFromGenre(top3Genres.get(0));
-        List<Song> topSongsGenre1 = getTopNSongsByLikes(songsFromGenre1, 5);
-        playlistRecommendation.addAllSongsFromList(topSongsGenre1);
+        addSongsFromGenre(playlistRecommendation, top3Genres.get(0), SONGS_FROM_GENRE1);
 
-        if (top3Genres.size() >= 2) {
-            List<Song> songsFromGenre2 = getSongsFromGenre(top3Genres.get(1));
-            List<Song> topSongsGenre2 = getTopNSongsByLikes(songsFromGenre2, 3);
-            playlistRecommendation.addAllSongsFromList(topSongsGenre2);
+        if (top3Genres.size() >= AT_LEAST_2_GENRES) {
+            addSongsFromGenre(playlistRecommendation, top3Genres.get(1), SONGS_FROM_GENRE2);
         }
 
-        if (top3Genres.size() == 3) {
-            List<Song> songsFromGenre3 = getSongsFromGenre(top3Genres.get(2));
-            List<Song> topSongsGenre3 = getTopNSongsByLikes(songsFromGenre3, 2);
-            playlistRecommendation.addAllSongsFromList(topSongsGenre3);
+        if (top3Genres.size() == AT_LEAST_3_GENRES) {
+            addSongsFromGenre(playlistRecommendation, top3Genres.get(2), SONGS_FROM_GENRE3);
         }
 
         user.getAnalytics().addPlaylistRecommendation(playlistRecommendation);
@@ -91,19 +98,22 @@ public class RandomPlaylistStrategy implements RecommendationStrategy {
 
 
     /**
-     * Sorts the genre map and selects top 3 genres.
+     * Sorts the genre map by the listens and selects top 3 genres.
      * @param genresMap Genre map of type < genre, listens >.
      * @return List of top 3 genres.
      */
-    private List<String> getTop3Genres(Map<String, Integer> genresMap) {
-        LinkedHashMap<String, Integer> sortedGenresMap = MapOperations.sortStringMapByValue(genresMap);
+    private List<String> getTop3Genres(final Map<String, Integer> genresMap) {
+        LinkedHashMap<String, Integer> sortedGenresMap =
+                                    MapOperations.sortStringMapByValue(genresMap);
 
         List<String> top3Genres = new ArrayList<>();
+
         int cnt = 0;
         for (Map.Entry<String, Integer> genreEntry : sortedGenresMap.entrySet()) {
-            cnt++;
             top3Genres.add(genreEntry.getKey());
-            if (cnt == 3) {
+
+            cnt++;
+            if (cnt == MAX_TOP_GENRES_CNT) {
                 break;
             }
         }
@@ -113,10 +123,24 @@ public class RandomPlaylistStrategy implements RecommendationStrategy {
 
 
     /**
+     * Adds the top songNumber songs from the given genre to the playlist recommendation.
+     * @param playlistRecommendation Playlist recommendation for a user.
+     * @param genre Genre of interest.
+     * @param songNumber Number of songs to add from the given genre.
+     */
+    private void addSongsFromGenre(final Playlist playlistRecommendation, final String genre,
+                                   final int songNumber) {
+        List<Song> songsFromGenre = getSongsFromGenre(genre);
+        List<Song> topSongsFromGenre = getTopNSongsByLikes(songsFromGenre, songNumber);
+        playlistRecommendation.addAllSongsFromList(topSongsFromGenre);
+    }
+
+
+    /**
      * @param genre Genre of interest.
      * @return List of Songs from the database from the given genre.
      */
-    private List<Song> getSongsFromGenre(String genre) {
+    private List<Song> getSongsFromGenre(final String genre) {
         List<Song> songsFromGenre = new ArrayList<>();
 
         for (Song song : session.getDatabase().getSongs()) {
@@ -130,15 +154,15 @@ public class RandomPlaylistStrategy implements RecommendationStrategy {
 
 
     /**
-     * Sorts the list by the like counter and gets top N songs.
+     * Sorts the list by the like counter and gets top songNumber songs.
      * @param songList List of Songs.
-     * @param N int number.
+     * @param songNumber Number of songs to add, i.e. N.
      */
-    private List<Song> getTopNSongsByLikes(List<Song> songList, int N) {
+    private List<Song> getTopNSongsByLikes(final List<Song> songList, final int songNumber) {
         List<Song> topNSongs = new ArrayList<>(songList);
 
         topNSongs.sort(Comparator.comparing(Song::getLikeCnt).reversed());
-        while (topNSongs.size() > N) {
+        while (topNSongs.size() > songNumber) {
             topNSongs.remove(topNSongs.size() - 1);
         }
 
