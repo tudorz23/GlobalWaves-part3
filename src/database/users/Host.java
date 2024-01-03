@@ -17,7 +17,7 @@ public final class Host extends ContentCreator {
 
     /* Constructor */
     public Host(final String username, final int age, final String city,
-                Database database) {
+                final Database database) {
         super(username, age, city, database);
         this.setType(UserType.HOST);
         this.officialPage = new HostPage(this);
@@ -89,8 +89,5 @@ public final class Host extends ContentCreator {
     }
     public HostAnalytics getHostAnalytics() {
         return hostAnalytics;
-    }
-    public void setHostAnalytics(HostAnalytics hostAnalytics) {
-        this.hostAnalytics = hostAnalytics;
     }
 }

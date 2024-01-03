@@ -22,7 +22,7 @@ import static utils.Constants.AT_LEAST_2_GENRES;
 import static utils.Constants.AT_LEAST_3_GENRES;
 
 
-public final class RandomPlaylistStrategy implements RecommendationStrategy {
+public final class RandomPlaylistStrategy implements IRecommendationStrategy {
     private final Session session;
     private final User user;
     private final PrinterBasic printer;

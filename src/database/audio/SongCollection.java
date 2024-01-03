@@ -5,7 +5,6 @@ import utils.enums.PlayerState;
 import utils.enums.RepeatState;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * General class for song collections that support changes in repeat mode and
@@ -221,7 +220,7 @@ public abstract class SongCollection extends Audio {
     /**
      * Checks if the collection contains the requested song.
      */
-    public boolean containsSong(Song song) {
+    public boolean containsSong(final Song song) {
         return songs.contains(song);
     }
 
@@ -229,7 +228,7 @@ public abstract class SongCollection extends Audio {
     /**
      * Adds all songs from a list to the collection, if not already present.
      */
-    public void addAllSongsFromList(List<Song> songList) {
+    public void addAllSongsFromList(final List<Song> songList) {
         for (Song song : songList) {
             if (!containsSong(song)) {
                 addSong(song);

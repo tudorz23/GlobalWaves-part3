@@ -18,7 +18,7 @@ import static utils.Constants.MAX_TOP_FANS_CNT;
 import static utils.Constants.MAX_TOP_SONGS_CNT;
 
 
-public final class FansPlaylistStrategy implements RecommendationStrategy {
+public final class FansPlaylistStrategy implements IRecommendationStrategy {
     private final Session session;
     private final User user;
     private final PrinterBasic printer;

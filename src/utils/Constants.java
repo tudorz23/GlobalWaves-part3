@@ -24,4 +24,5 @@ public final class Constants {
     public static final int AT_LEAST_2_GENRES = 2;
     public static final int AT_LEAST_3_GENRES = 3;
     public static final int MIN_TIME_PASSED_SONG = 30;
+    public static final int MAX_MAP_TOP_RESULT_NUMBER = 5;
 }

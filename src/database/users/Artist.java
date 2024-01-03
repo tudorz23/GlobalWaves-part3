@@ -17,7 +17,7 @@ public final class Artist extends ContentCreator {
 
     /* Constructor */
     public Artist(final String username, final int age, final String city,
-                  Database database) {
+                  final Database database) {
         super(username, age, city, database);
         this.setType(UserType.ARTIST);
         this.officialPage = new ArtistPage(this);
@@ -100,7 +100,7 @@ public final class Artist extends ContentCreator {
 
 
     @Override
-    public ContentCreatorAnalytics getContentCreatorAnalytics(){
+    public ContentCreatorAnalytics getContentCreatorAnalytics() {
         return artistAnalytics;
     }
 
@@ -113,8 +113,5 @@ public final class Artist extends ContentCreator {
     }
     public ArtistAnalytics getArtistAnalytics() {
         return artistAnalytics;
-    }
-    public void setArtistAnalytics(ArtistAnalytics artistAnalytics) {
-        this.artistAnalytics = artistAnalytics;
     }
 }

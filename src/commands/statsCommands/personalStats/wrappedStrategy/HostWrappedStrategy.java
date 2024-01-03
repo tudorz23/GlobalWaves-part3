@@ -4,7 +4,6 @@ import client.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import commands.statsCommands.personalStats.WrappedCommand;
 import database.analytics.HostAnalytics;
 import database.users.Host;
 import fileio.input.CommandInput;
@@ -13,27 +12,27 @@ import utils.MapOperations;
 
 import java.util.LinkedHashMap;
 
-public class HostWrappedStrategy implements IWrappedStrategy {
+public final class HostWrappedStrategy implements IWrappedStrategy {
     private final Session session;
     private final CommandInput commandInput;
-    private final Host user;
+    private final Host host;
     private final ArrayNode output;
 
     /* Constructor */
     public HostWrappedStrategy(final Session session, final CommandInput commandInput,
-                                 final Host user, final ArrayNode output) {
+                               final Host host, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
-        this.user = user;
+        this.host = host;
         this.output = output;
     }
 
     @Override
     public void wrapped() {
-        HostAnalytics analytics = user.getHostAnalytics();
+        HostAnalytics analytics = host.getHostAnalytics();
         if (analytics.getHostTopFans().isEmpty()) {
             PrinterBasic printer = new PrinterBasic(output, commandInput);
-            printer.print("No data to show for host " + user.getUsername());
+            printer.print("No data to show for host " + host.getUsername());
             return;
         }
 
@@ -41,10 +40,11 @@ public class HostWrappedStrategy implements IWrappedStrategy {
 
         ObjectNode commandNode = mapper.createObjectNode();
         commandNode.put("command", "wrapped");
-        commandNode.put("user", user.getUsername());
+        commandNode.put("user", host.getUsername());
         commandNode.put("timestamp", session.getTimestamp());
 
-        LinkedHashMap<String, Integer> sortedEpisodes = MapOperations.sortStringMapByValue(analytics.getHostTopEpisodes());
+        LinkedHashMap<String, Integer> sortedEpisodes
+                            = MapOperations.sortStringMapByValue(analytics.getHostTopEpisodes());
 
         ObjectNode resultNode = mapper.createObjectNode();
         ObjectNode topEpisodes = MapOperations.createStringMapObjectNode(sortedEpisodes);

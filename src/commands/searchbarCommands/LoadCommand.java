@@ -3,14 +3,20 @@ package commands.searchbarCommands;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
-import database.*;
+
+import database.Player;
 import database.audio.Audio;
 import database.audio.Playlist;
 import database.audio.Podcast;
 import database.users.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
-import utils.enums.*;
+import utils.enums.AudioType;
+import utils.enums.LogStatus;
+import utils.enums.PlayerState;
+import utils.enums.SearchableType;
+import utils.enums.RepeatState;
+
 
 public final class LoadCommand implements ICommand {
     private final Session session;
@@ -86,6 +92,7 @@ public final class LoadCommand implements ICommand {
         printer.print("Playback loaded successfully.");
     }
 
+
     /**
      * Loads the selection into the player. Podcast load is done separately
      * For songs, playlists and albums, a deep copy is directly added.
@@ -102,6 +109,7 @@ public final class LoadCommand implements ICommand {
         // If the selection is a song, a playlist, or an album, add a deep copy of it.
         player.setCurrPlaying(selection.getDeepCopy());
     }
+
 
     /**
      * Loads a podcast into the player. If the podcast has been listened to before,

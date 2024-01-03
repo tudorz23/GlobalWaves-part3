@@ -9,7 +9,7 @@ import utils.enums.SearchableType;
 import java.util.Map;
 
 /**
- * Describes audio objects that can be searched by the user.
+ * Describes audio objects that can be searched and loaded by the user.
  * To be extended by classes Song, SongCollection and Podcast.
  */
 public abstract class Audio extends Searchable {
@@ -74,7 +74,8 @@ public abstract class Audio extends Searchable {
      * Introduces an advertisement into the player after the currently playing song,
      * saving the current audio instance, with an eye to reload it after the ad ends.
      */
-    protected void introduceAd(Player player, int currTime) {
+    protected void introduceAd(final Player player, final int currTime) {
+        // Compute the monetization generated between current and previous adds.
         Map<Song, Integer> listenedBetweenAds = player.getListenedBetweenAds();
 
         Map<Song, Double> songMonetization = getListener().getDatabase()
@@ -83,7 +84,6 @@ public abstract class Audio extends Searchable {
         getListener().getDatabase().updateArtistMonetization(songMonetization);
 
         player.initListenedBetweenAds();
-
 
         Song ad = getListener().getDatabase().getAdvertisementFromDatabase();
 
@@ -122,11 +122,17 @@ public abstract class Audio extends Searchable {
         this.type = type;
     }
 
+    /**
+     * Getter for listened field.
+     */
     public User getListener() {
         return listener;
     }
 
-    public void setListener(User listener) {
+    /**
+     * Setter for listener field.
+     */
+    public void setListener(final User listener) {
         this.listener = listener;
     }
 }

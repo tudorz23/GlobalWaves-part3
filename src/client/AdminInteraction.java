@@ -35,6 +35,7 @@ public class AdminInteraction {
         invoker = new Invoker();
     }
 
+
     /**
      * Entry point to the program.
      */
@@ -45,6 +46,7 @@ public class AdminInteraction {
         startCommands();
         endProgram();
     }
+
 
     /**
      * Populates the database with data taken from the input.
@@ -71,12 +73,14 @@ public class AdminInteraction {
         }
     }
 
+
     /**
      * Initializes a new Session.
      */
     private void initSession() {
         this.session = new Session(database);
     }
+
 
     /**
      * Iterates through the commands from the input.
@@ -86,6 +90,7 @@ public class AdminInteraction {
             executeAction(commandInput);
         }
     }
+
 
     /**
      * Calls the Command Factory to generate a command based on the commandInput.
@@ -104,6 +109,10 @@ public class AdminInteraction {
     }
 
 
+    /**
+     * To be executed after all input commands have been executed.
+     * Finalizes the monetization status for each artist on the platform.
+     */
     private void endProgram() {
         checkPremiumUsersMonetization();
 
@@ -112,6 +121,10 @@ public class AdminInteraction {
     }
 
 
+    /**
+     * Updates the monetization coming from users that are still Premium
+     * after all the input commands have been executed.
+     */
     private void checkPremiumUsersMonetization() {
         for (User user : database.getBasicUsers()) {
             if (user.getPremiumState() == PremiumState.FREE) {

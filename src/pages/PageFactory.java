@@ -36,10 +36,11 @@ public final class PageFactory {
             case LIKED_CONTENT -> {
                 return new LikedContentPage(user);
             }
-            case ARTIST_PAGE ->{
-                if (user.getPlayer() == null || user.getPlayer().getPlayerState() == PlayerState.EMPTY
-                    || user.getPlayer().getPlayerState() == PlayerState.STOPPED
-                    || user.getPlayer().getCurrPlaying().getType() == AudioType.PODCAST) {
+            case ARTIST_PAGE -> {
+                if (user.getPlayer() == null
+                        || user.getPlayer().getPlayerState() == PlayerState.EMPTY
+                        || user.getPlayer().getPlayerState() == PlayerState.STOPPED
+                        || user.getPlayer().getCurrPlaying().getType() == AudioType.PODCAST) {
                     throw new IllegalArgumentException("Invalid page.");
                 }
 
@@ -48,7 +49,8 @@ public final class PageFactory {
                 return artist.getOfficialPage();
             }
             case HOST_PAGE -> {
-                if (user.getPlayer() == null || user.getPlayer().getPlayerState() == PlayerState.EMPTY
+                if (user.getPlayer() == null
+                        || user.getPlayer().getPlayerState() == PlayerState.EMPTY
                         || user.getPlayer().getPlayerState() == PlayerState.STOPPED
                         || user.getPlayer().getCurrPlaying().getType() != AudioType.PODCAST) {
                     throw new IllegalArgumentException("Invalid page.");
@@ -63,6 +65,9 @@ public final class PageFactory {
     }
 
 
+    /**
+     * @return The name of the artist of the currently playing song or SongCollection.
+     */
     private String getArtistName() {
         String artistName;
         Audio currentlyPlaying = user.getPlayer().getCurrPlaying();

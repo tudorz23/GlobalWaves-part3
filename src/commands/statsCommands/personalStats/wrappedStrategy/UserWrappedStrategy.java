@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.analytics.Analytics;
-import database.audio.Audio;
 import database.users.BasicUser;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
@@ -13,7 +12,7 @@ import utils.MapOperations;
 
 import java.util.LinkedHashMap;
 
-public class UserWrappedStrategy implements IWrappedStrategy {
+public final class UserWrappedStrategy implements IWrappedStrategy {
     private final Session session;
     private final CommandInput commandInput;
     private final BasicUser user;
@@ -37,11 +36,16 @@ public class UserWrappedStrategy implements IWrappedStrategy {
             return;
         }
 
-        LinkedHashMap<String, Integer> sortedArtists = MapOperations.sortStringMapByValue(user.getAnalytics().getTopArtists());
-        LinkedHashMap<String, Integer> sortedGenres = MapOperations.sortStringMapByValue(user.getAnalytics().getTopGenres());
-        LinkedHashMap<String, Integer> sortedSongs = MapOperations.sortAudioMapByValue(user.getAnalytics().getTopSongs());
-        LinkedHashMap<String, Integer> sortedAlbums = MapOperations.sortStringMapByValue(user.getAnalytics().getTopAlbums());
-        LinkedHashMap<String, Integer> sortedEpisodes = MapOperations.sortStringMapByValue(user.getAnalytics().getTopEpisodes());
+        LinkedHashMap<String, Integer> sortedArtists
+                                = MapOperations.sortStringMapByValue(analytics.getTopArtists());
+        LinkedHashMap<String, Integer> sortedGenres
+                                = MapOperations.sortStringMapByValue(analytics.getTopGenres());
+        LinkedHashMap<String, Integer> sortedSongs
+                                = MapOperations.sortAudioMapByValue(analytics.getTopSongs());
+        LinkedHashMap<String, Integer> sortedAlbums
+                                = MapOperations.sortStringMapByValue(analytics.getTopAlbums());
+        LinkedHashMap<String, Integer> sortedEpisodes
+                                = MapOperations.sortStringMapByValue(analytics.getTopEpisodes());
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -51,6 +55,7 @@ public class UserWrappedStrategy implements IWrappedStrategy {
         commandNode.put("timestamp", session.getTimestamp());
 
         ObjectNode resultNode = mapper.createObjectNode();
+
         ObjectNode topArtists = MapOperations.createStringMapObjectNode(sortedArtists);
         ObjectNode topGenres = MapOperations.createStringMapObjectNode(sortedGenres);
         ObjectNode topSongs = MapOperations.createStringMapObjectNode(sortedSongs);
@@ -66,5 +71,4 @@ public class UserWrappedStrategy implements IWrappedStrategy {
         commandNode.set("result", resultNode);
         output.add(commandNode);
     }
-
 }

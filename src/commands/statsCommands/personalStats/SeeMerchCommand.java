@@ -11,7 +11,7 @@ import fileio.output.PrinterBasic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeeMerchCommand implements ICommand {
+public final class SeeMerchCommand implements ICommand {
     private final Session session;
     private final CommandInput commandInput;
     private final User user;

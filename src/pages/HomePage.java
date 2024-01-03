@@ -48,7 +48,8 @@ public final class HomePage extends Page {
     /**
      * Appends the audio names from the audio list to the builder.
      */
-    private void appendAudioArray(List<? extends Audio> audioList, StringBuilder builder) {
+    private void appendAudioArray(final List<? extends Audio> audioList,
+                                  final StringBuilder builder) {
         Iterator<?> audioIterator = audioList.iterator();
         while (audioIterator.hasNext()) {
             Audio audio = (Audio) audioIterator.next();

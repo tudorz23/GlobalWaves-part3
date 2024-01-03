@@ -3,7 +3,13 @@ package commands.searchbarCommands;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
-import commands.searchbarCommands.searchStrategy.*;
+import commands.searchbarCommands.searchStrategy.ISearchStrategy;
+import commands.searchbarCommands.searchStrategy.SearchPlaylistStrategy;
+import commands.searchbarCommands.searchStrategy.SearchPodcastStrategy;
+import commands.searchbarCommands.searchStrategy.SearchSongStrategy;
+import commands.searchbarCommands.searchStrategy.SearchAlbumStrategy;
+import commands.searchbarCommands.searchStrategy.SearchArtistStrategy;
+import commands.searchbarCommands.searchStrategy.SearchHostStrategy;
 import database.users.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterSearch;
@@ -56,6 +62,7 @@ public final class SearchCommand implements ICommand {
         searchStrategy.search();
         printer.print();
     }
+
 
     /**
      * Factory method to get the appropriate Strategy object for Search Command.

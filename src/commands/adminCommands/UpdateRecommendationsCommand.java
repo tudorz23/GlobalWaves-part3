@@ -6,7 +6,7 @@ import commands.ICommand;
 import commands.adminCommands.recommendationsStrategy.FansPlaylistStrategy;
 import commands.adminCommands.recommendationsStrategy.RandomPlaylistStrategy;
 import commands.adminCommands.recommendationsStrategy.RandomSongStrategy;
-import commands.adminCommands.recommendationsStrategy.RecommendationStrategy;
+import commands.adminCommands.recommendationsStrategy.IRecommendationStrategy;
 import database.users.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
@@ -52,7 +52,7 @@ public final class UpdateRecommendationsCommand implements ICommand {
             return;
         }
 
-        RecommendationStrategy strategy;
+        IRecommendationStrategy strategy;
         try {
             strategy = getRecommendationStrategy(commandInput.getRecommendationType(), printer);
         } catch (IllegalArgumentException exception) {
@@ -68,8 +68,8 @@ public final class UpdateRecommendationsCommand implements ICommand {
      * Factory method to get the appropriate Strategy object for Recommendations Command.
      * @throws IllegalArgumentException if the recommendation type is not supported.
      */
-    private RecommendationStrategy getRecommendationStrategy(final String recommendationType,
-                                                             final PrinterBasic printer) {
+    private IRecommendationStrategy getRecommendationStrategy(final String recommendationType,
+                                                              final PrinterBasic printer) {
         switch (recommendationType) {
             case "random_song" -> {
                 return new RandomSongStrategy(session, user, printer);

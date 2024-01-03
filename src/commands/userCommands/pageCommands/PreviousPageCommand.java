@@ -8,7 +8,7 @@ import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
 import pages.Page;
 
-public class PreviousPageCommand implements ICommand {
+public final class PreviousPageCommand implements ICommand {
     private final Session session;
     private final CommandInput commandInput;
     private final User user;
@@ -16,7 +16,7 @@ public class PreviousPageCommand implements ICommand {
 
     /* Constructor */
     public PreviousPageCommand(final Session session, final CommandInput commandInput,
-                             final User user, final ArrayNode output) {
+                               final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;

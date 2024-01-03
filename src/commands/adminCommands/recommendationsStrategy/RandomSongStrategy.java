@@ -11,7 +11,7 @@ import java.util.Random;
 
 import static utils.Constants.MIN_TIME_PASSED_SONG;
 
-public final class RandomSongStrategy implements RecommendationStrategy {
+public final class RandomSongStrategy implements IRecommendationStrategy {
     private final Session session;
     private final User user;
     private final PrinterBasic printer;

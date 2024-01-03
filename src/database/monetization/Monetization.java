@@ -5,7 +5,7 @@ import database.audio.Song;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Monetization {
+public final class Monetization {
     private Map<String, ArtistMoneyStats> monetizedArtists;
 
     /* Constructor */
@@ -18,7 +18,7 @@ public class Monetization {
      * Adds the new merch revenue to the given artist.
      * If the artist is not in the listenedArtists lists, he is added.
      */
-    public void addMerchRevenue(String artistName, Double merchRevenue) {
+    public void addMerchRevenue(final String artistName, final Double merchRevenue) {
         ArtistMoneyStats artistMoneyStats = monetizedArtists
                                             .getOrDefault(artistName, new ArtistMoneyStats());
 
@@ -34,7 +34,8 @@ public class Monetization {
      * @param song Song that gives the revenue.
      * @param songRevenue Amount of the revenue.
      */
-    public void addSongRevenue(String artistName, Song song, double songRevenue) {
+    public void addSongRevenue(final String artistName, final Song song,
+                               final double songRevenue) {
         ArtistMoneyStats artistMoneyStats = monetizedArtists
                 .getOrDefault(artistName, new ArtistMoneyStats());
 
@@ -47,7 +48,7 @@ public class Monetization {
      * Adds an artist to the monetizedArtists list, if he isn't already part of it.
      * To be called when one of its song is listened to.
      */
-    public void addMonetizedArtist(String artistName) {
+    public void addMonetizedArtist(final String artistName) {
         ArtistMoneyStats artistMoneyStats = monetizedArtists
                         .getOrDefault(artistName, new ArtistMoneyStats());
         monetizedArtists.put(artistName, artistMoneyStats);

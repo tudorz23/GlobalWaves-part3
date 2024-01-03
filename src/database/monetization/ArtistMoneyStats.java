@@ -5,7 +5,7 @@ import database.audio.Song;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArtistMoneyStats {
+public final class ArtistMoneyStats {
     private double songRevenue;
     private double merchRevenue;
     private double totalRevenue;
@@ -21,7 +21,7 @@ public class ArtistMoneyStats {
      * Adds the new merch revenue to the merchRevenue and totalRevenue storage.
      * @param newMerchRevenue Merch revenue to add.
      */
-    public void addMerchRevenue(double newMerchRevenue) {
+    public void addMerchRevenue(final double newMerchRevenue) {
         merchRevenue += newMerchRevenue;
         totalRevenue += newMerchRevenue;
     }
@@ -32,7 +32,7 @@ public class ArtistMoneyStats {
      * Also adds the song to the paying song lists or
      * updates its amount if it is already there.
      */
-    public void addSongRevenue(Song song, double newSongRevenue) {
+    public void addSongRevenue(final Song song, final double newSongRevenue) {
         songRevenue += newSongRevenue;
         totalRevenue += newSongRevenue;
 

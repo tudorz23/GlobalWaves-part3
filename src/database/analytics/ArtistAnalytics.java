@@ -18,17 +18,29 @@ public final class ArtistAnalytics extends ContentCreatorAnalytics {
         artistTopFans = new HashMap<>();
     }
 
-    public void addAlbum(String albumName) {
+
+    /**
+     * Adds an album (i.e. its name as String) to Artist's topAlbums map.
+     */
+    public void addAlbum(final String albumName) {
         int listens = artistTopAlbums.getOrDefault(albumName, 0);
         artistTopAlbums.put(albumName, listens + 1);
     }
 
-    public void addSong(Song song) {
+
+    /**
+     * Adds a Song object to Artist's topSongs map.
+     */
+    public void addSong(final Song song) {
         int listens = artistTopSongs.getOrDefault(song, 0);
         artistTopSongs.put(song, listens + 1);
     }
 
-    public void addFan(String fanName) {
+
+    /**
+     * Adds a fan (i.e. a user's name as String) to Artist's topFans map.
+     */
+    public void addFan(final String fanName) {
         int listens = artistTopFans.getOrDefault(fanName, 0);
         artistTopFans.put(fanName, listens + 1);
     }

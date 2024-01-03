@@ -7,8 +7,6 @@ import database.users.User;
 import utils.enums.AudioType;
 import utils.enums.PlaylistVisibility;
 
-import java.util.List;
-
 public final class Playlist extends SongCollection implements IObservable {
     private final String owner;
     private PlaylistVisibility visibility;
@@ -79,23 +77,28 @@ public final class Playlist extends SongCollection implements IObservable {
      * Sets the observer for the playlist (should be the owner).
      */
     @Override
-    public void addObserver(IObserver observer) throws IllegalStateException {
+    public void addObserver(final IObserver newObserver) throws IllegalStateException {
         if (this.observer != null) {
             throw new IllegalStateException("The playlist " + getName() + " already has an owner.");
         }
 
-        this.observer = observer;
+        this.observer = newObserver;
     }
 
 
+    /**
+     * Because the only observer should logically be the playlist's owner, he
+     * should not be removable.
+     * @throws IllegalStateException Everytime.
+     */
     @Override
-    public void removeObserver(IObserver observer) throws IllegalStateException {
+    public void removeObserver(final IObserver observerToRemove) throws IllegalStateException {
         throw new IllegalStateException("Cannot remove the owner of the playlist.");
     }
 
 
     @Override
-    public void notifyObservers(Notification notification) {
+    public void notifyObservers(final Notification notification) {
         observer.update(notification);
     }
 

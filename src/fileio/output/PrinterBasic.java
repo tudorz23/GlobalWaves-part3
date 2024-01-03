@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.records.Notification;
 import fileio.input.CommandInput;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +96,7 @@ public final class PrinterBasic extends Printer {
      * Used for Get Notifications command.
      * @param notifications List of notifications to print.
      */
-    public void printNotifications(List<Notification> notifications) {
+    public void printNotifications(final List<Notification> notifications) {
         ObjectNode commandNode = getMetadataNode();
         ArrayNode result = mapper.createArrayNode();
 

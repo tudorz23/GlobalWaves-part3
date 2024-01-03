@@ -12,6 +12,7 @@ import database.users.BasicUser;
 import database.users.Host;
 import database.users.User;
 import fileio.input.CommandInput;
+import utils.enums.UserType;
 
 public final class WrappedCommand implements ICommand {
     private final Session session;
@@ -35,22 +36,34 @@ public final class WrappedCommand implements ICommand {
         session.getDatabase().simulateTimeForEveryone(session.getTimestamp());
 
         IWrappedStrategy wrappedStrategy;
-
-        switch (user.getType()) {
-            case BASIC_USER -> {
-                wrappedStrategy = new UserWrappedStrategy(session, commandInput, (BasicUser) user, output);
-            }
-            case ARTIST -> {
-                wrappedStrategy = new ArtistWrappedStrategy(session, commandInput, (Artist) user, output);
-            }
-            case HOST -> {
-                wrappedStrategy = new HostWrappedStrategy(session, commandInput, (Host) user, output);
-            }
-            default -> {
-                return;
-            }
+        try {
+            wrappedStrategy = getWrappedStrategy(user.getType());
+        } catch (IllegalArgumentException exception) {
+            return;
         }
 
         wrappedStrategy.wrapped();
+    }
+
+
+    /**
+     * Factory method to get the appropriate Strategy object for Wrapped Command.
+     * @throws IllegalArgumentException if the user type is invalid.
+     */
+    private IWrappedStrategy getWrappedStrategy(final UserType userType) {
+        switch (userType) {
+            case BASIC_USER -> {
+                return new UserWrappedStrategy(session, commandInput, (BasicUser) user, output);
+            }
+            case ARTIST -> {
+                return new ArtistWrappedStrategy(session, commandInput, (Artist) user, output);
+            }
+            case HOST -> {
+                return new HostWrappedStrategy(session, commandInput, (Host) user, output);
+            }
+            default -> {
+                throw new IllegalArgumentException("Invalid Wrapped Strategy requested.");
+            }
+        }
     }
 }

@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static utils.Constants.PREMIUM_FEE;
-
 public final class Database {
     private ArrayList<BasicUser> basicUsers;
     private ArrayList<Artist> artists;
@@ -212,23 +210,6 @@ public final class Database {
 
 
     /**
-     * Traverses the podcast database and returns the instance of the
-     * requested podcast, if it exists.
-     * @param reqPodcast Podcast object to search for in the Database (might be a deep copy).
-     * @return Podcast instance for success, null otherwise.
-     * @throws IllegalArgumentException if the podcast is not found.
-     */
-    public Podcast searchPodcastInDatabase(final Podcast reqPodcast) throws IllegalArgumentException {
-        for (Podcast podcast : podcasts) {
-            if (podcast.equals(reqPodcast)) {
-                return podcast;
-            }
-        }
-        throw new IllegalArgumentException("Critical: Podcast not found in the database.");
-    }
-
-
-    /**
      * Traverses the user lists and searches for the username.
      * @return true if the username exists in the database, false otherwise.
      */
@@ -354,8 +335,8 @@ public final class Database {
      * @param listenedSongs Map of < Song, listenCnt > type.
      * @return HashMap of < Song, Double >, meaning < Song, revenue >.
      */
-    public Map<Song, Double> computeSongMonetization(Map<Song, Integer> listenedSongs,
-                                                     double sumToSplit) {
+    public Map<Song, Double> computeSongMonetization(final Map<Song, Integer> listenedSongs,
+                                                     final double sumToSplit) {
         Map<Song, Double> songMonetization = new HashMap<>();
 
         double totalListens = 0.0;
@@ -378,9 +359,7 @@ public final class Database {
      * to by one user after buying premium subscription or between two ads.
      * @param songMonetization Map of < Song, revenue > type.
      */
-    public void updateArtistMonetization(Map<Song, Double> songMonetization) {
-        Monetization monetization = getMonetization();
-
+    public void updateArtistMonetization(final Map<Song, Double> songMonetization) {
         for (Map.Entry<Song, Double> entry : songMonetization.entrySet()) {
             Song song = entry.getKey();
             String artistName = song.getArtist();

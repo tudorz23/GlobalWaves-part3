@@ -9,7 +9,6 @@ import utils.enums.PlayerState;
 import utils.enums.PremiumState;
 import utils.enums.RepeatState;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Objects;
 
 public final class Song extends Audio {
@@ -199,17 +198,17 @@ public final class Song extends Audio {
      * if he is registered in the database.
      * To be called from a song instance from the database.
      */
-    public void updateArtistAnalytics(User listener) {
-        Artist artist;
+    public void updateArtistAnalytics(final User listener) {
+        Artist owningArtist;
         try {
-            artist = listener.getDatabase().searchArtistInDatabase(getArtist());
+            owningArtist = listener.getDatabase().searchArtistInDatabase(getArtist());
         } catch (IllegalArgumentException exception) {
             return;
         }
 
-        artist.getArtistAnalytics().addAlbum(getAlbum());
-        artist.getArtistAnalytics().addSong(this);
-        artist.getArtistAnalytics().addFan(listener.getUsername());
+        owningArtist.getArtistAnalytics().addAlbum(getAlbum());
+        owningArtist.getArtistAnalytics().addSong(this);
+        owningArtist.getArtistAnalytics().addFan(listener.getUsername());
     }
 
 
@@ -220,7 +219,7 @@ public final class Song extends Audio {
      * listenedBetweenAd list.
      * To be called from a song instance from the database.
      */
-    public void updateMonetization(User listener) {
+    public void updateMonetization(final User listener) {
         listener.getDatabase().getMonetization().addMonetizedArtist(getArtist());
 
         if (listener.getPremiumState() == PremiumState.PREMIUM) {
@@ -234,7 +233,7 @@ public final class Song extends Audio {
     /**
      * Simulates the passing of time for an ad.
      */
-    private void simulateAd(final Player player, int currTime) {
+    private void simulateAd(final Player player, final int currTime) {
         player.setAdIsNext(false);
         int elapsedTime = currTime - player.getPrevTimeInfo();
 
@@ -251,10 +250,16 @@ public final class Song extends Audio {
 
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Song song = (Song) o;
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Song song = (Song) obj;
         return Objects.equals(getName(), song.getName()) && Objects.equals(artist, song.artist)
                 && Objects.equals(lyrics, song.lyrics) && Objects.equals(duration, song.duration)
                 && Objects.equals(album, song.album) && Objects.equals(genre, song.genre)

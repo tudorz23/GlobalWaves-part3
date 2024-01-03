@@ -1,6 +1,9 @@
 package database.users;
 
-import database.*;
+
+import database.Database;
+import database.Player;
+import database.Searchable;
 import database.analytics.Analytics;
 import database.audio.*;
 import database.observer.IObserver;
@@ -31,7 +34,7 @@ public abstract class User extends Searchable implements IObserver {
 
     /* Constructors */
     public User(final String username, final int age, final String city,
-                Database database) {
+                final Database database) {
         this.username = username;
         this.age = age;
         this.city = city;
@@ -48,7 +51,7 @@ public abstract class User extends Searchable implements IObserver {
         this.premiumState = PremiumState.FREE;
     }
 
-    public User(final UserInput userInput, Database database) {
+    public User(final UserInput userInput, final Database database) {
         this(userInput.getUsername(), userInput.getAge(), userInput.getCity(), database);
     }
 
@@ -237,8 +240,11 @@ public abstract class User extends Searchable implements IObserver {
     }
 
 
+    /**
+     * Adds the notification to the notification list of the User.
+     */
     @Override
-    public void update(Notification notification) {
+    public void update(final Notification notification) {
         analytics.addNotification(notification);
     }
 
@@ -341,6 +347,12 @@ public abstract class User extends Searchable implements IObserver {
         return followedPlaylists;
     }
     /**
+     * Getter for Database field.
+     */
+    public Database getDatabase() {
+        return database;
+    }
+    /**
      * Getter for type.
      */
     public UserType getType() {
@@ -382,16 +394,16 @@ public abstract class User extends Searchable implements IObserver {
     public Analytics getAnalytics() {
         return analytics;
     }
-
-    public Database getDatabase() {
-        return database;
-    }
-
+    /**
+     * Getter for premiumState.
+     */
     public PremiumState getPremiumState() {
         return premiumState;
     }
-
-    public void setPremiumState(PremiumState premiumState) {
+    /**
+     * Setter for premiumState.
+     */
+    public void setPremiumState(final PremiumState premiumState) {
         this.premiumState = premiumState;
     }
 }

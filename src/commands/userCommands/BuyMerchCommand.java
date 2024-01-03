@@ -3,7 +3,6 @@ package commands.userCommands;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import commands.ICommand;
-import database.monetization.Monetization;
 import database.records.Merch;
 import database.users.User;
 import fileio.input.CommandInput;
@@ -11,7 +10,7 @@ import fileio.output.PrinterBasic;
 import pages.ArtistPage;
 import utils.enums.PageType;
 
-public class BuyMerchCommand implements ICommand {
+public final class BuyMerchCommand implements ICommand {
     private final Session session;
     private final CommandInput commandInput;
     private final User user;
@@ -19,7 +18,7 @@ public class BuyMerchCommand implements ICommand {
 
     /* Constructor */
     public BuyMerchCommand(final Session session, final CommandInput commandInput,
-                            final User user, final ArrayNode output) {
+                           final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;

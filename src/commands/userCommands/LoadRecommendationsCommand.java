@@ -12,7 +12,7 @@ import utils.enums.LogStatus;
 import utils.enums.PlayerState;
 import utils.enums.RepeatState;
 
-public class LoadRecommendationsCommand implements ICommand {
+public final class LoadRecommendationsCommand implements ICommand {
     private final Session session;
     private final CommandInput commandInput;
     private final User user;
@@ -20,7 +20,7 @@ public class LoadRecommendationsCommand implements ICommand {
 
     /* Constructor */
     public LoadRecommendationsCommand(final Session session, final CommandInput commandInput,
-                       final User user, final ArrayNode output) {
+                                      final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;

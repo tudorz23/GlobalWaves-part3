@@ -7,7 +7,7 @@ import database.users.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
 
-public class GetNotificationsCommand implements ICommand {
+public final class GetNotificationsCommand implements ICommand {
     private final Session session;
     private final CommandInput commandInput;
     private final User user;
@@ -15,7 +15,7 @@ public class GetNotificationsCommand implements ICommand {
 
     /* Constructor */
     public GetNotificationsCommand(final Session session, final CommandInput commandInput,
-                            final User user, final ArrayNode output) {
+                                   final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;

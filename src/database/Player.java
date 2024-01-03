@@ -78,7 +78,7 @@ public final class Player {
     /**
      * Increments the number of listens as Premium user for the given song.
      */
-    public void addListenedAsPremium(Song song) {
+    public void addListenedAsPremium(final Song song) {
         int listens = listenedAsPremium.getOrDefault(song, 0);
         listenedAsPremium.put(song, listens + 1);
     }
@@ -95,7 +95,7 @@ public final class Player {
     /**
      * Increments the number of listens as Free user between ads for the given song.
      */
-    public void addListenedBetweenAds(Song song) {
+    public void addListenedBetweenAds(final Song song) {
         int listens = listenedBetweenAds.getOrDefault(song, 0);
         listenedBetweenAds.put(song, listens + 1);
     }
@@ -141,19 +141,19 @@ public final class Player {
     public boolean isAdNext() {
         return adIsNext;
     }
-    public void setAdIsNext(boolean adIsNext) {
+    public void setAdIsNext(final boolean adIsNext) {
         this.adIsNext = adIsNext;
     }
     public Audio getListeningBeforeAd() {
         return listeningBeforeAd;
     }
-    public void setListeningBeforeAd(Audio listeningBeforeAd) {
+    public void setListeningBeforeAd(final Audio listeningBeforeAd) {
         this.listeningBeforeAd = listeningBeforeAd;
     }
     public double getLastAdPrice() {
         return lastAdPrice;
     }
-    public void setLastAdPrice(double lastAdPrice) {
+    public void setLastAdPrice(final double lastAdPrice) {
         this.lastAdPrice = lastAdPrice;
     }
 }

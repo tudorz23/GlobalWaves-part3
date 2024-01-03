@@ -9,7 +9,7 @@ import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
 import utils.enums.PageType;
 
-public class SubscribeCommand implements ICommand {
+public final class SubscribeCommand implements ICommand {
     private final Session session;
     private final CommandInput commandInput;
     private final User user;
@@ -17,7 +17,7 @@ public class SubscribeCommand implements ICommand {
 
     /* Constructor */
     public SubscribeCommand(final Session session, final CommandInput commandInput,
-                                 final User user, final ArrayNode output) {
+                            final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;

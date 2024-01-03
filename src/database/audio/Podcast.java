@@ -33,6 +33,7 @@ public final class Podcast extends Audio {
         this.setType(AudioType.PODCAST);
     }
 
+
     /**
      * Helper for initializing the episodes field.
      * @param episodeInputs list of EpisodeInput objects to be converted to Episode.
@@ -48,6 +49,7 @@ public final class Podcast extends Audio {
         return episodeList;
     }
 
+
     @Override
     public Podcast getDeepCopy() {
         Podcast copy = new Podcast(this.getName(), this.getOwner());
@@ -59,6 +61,7 @@ public final class Podcast extends Audio {
         copy.playingEpisodeIdx = 0;
         return copy;
     }
+
 
     @Override
     public void simulateTimePass(final Player player, final int currTime) {
@@ -89,6 +92,7 @@ public final class Podcast extends Audio {
         int episodeNewTimePos = playingEpisode.getTimePosition() + elapsedTime;
         playingEpisode.setTimePosition(episodeNewTimePos);
     }
+
 
     /**
      * Moves to the next episode, considering the repeat state.
@@ -125,11 +129,13 @@ public final class Podcast extends Audio {
         updateAnalytics();
     }
 
+
     @Override
     public int getRemainedTime() {
         Episode playingEpisode = episodes.get(playingEpisodeIdx);
         return playingEpisode.getRemainedTime();
     }
+
 
     @Override
     public void next(final Player player) {
@@ -139,6 +145,7 @@ public final class Podcast extends Audio {
             player.setPlayerState(PlayerState.PLAYING);
         }
     }
+
 
     @Override
     public void prev(final Player player) {
@@ -173,11 +180,13 @@ public final class Podcast extends Audio {
         }
     }
 
+
     @Override
     public String getPlayingTrackName() {
         Episode playingEpisode = episodes.get(playingEpisodeIdx);
         return playingEpisode.getName();
     }
+
 
     /**
      * Advances the play by 90 seconds.
@@ -202,6 +211,7 @@ public final class Podcast extends Audio {
         }
     }
 
+
     /**
      * Rewinds the play by 90 seconds.
      */
@@ -225,6 +235,7 @@ public final class Podcast extends Audio {
         }
     }
 
+
     /**
      * Adds an episode to the episode list.
      */
@@ -242,6 +253,10 @@ public final class Podcast extends Audio {
         updateHostAnalytics();
     }
 
+    /**
+     * Updates the analytics of the host that owns the podcast,
+     * if he is registered in the database.
+     */
     private void updateHostAnalytics() {
         Host host;
         try {
@@ -256,13 +271,20 @@ public final class Podcast extends Audio {
 
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Podcast podcast = (Podcast) o;
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Podcast podcast = (Podcast) obj;
         return Objects.equals(getName(), podcast.getName())
                 && Objects.equals(owner, podcast.owner);
     }
+
 
     @Override
     public int hashCode() {

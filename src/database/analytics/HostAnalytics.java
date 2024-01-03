@@ -13,12 +13,20 @@ public final class HostAnalytics extends ContentCreatorAnalytics {
         hostTopFans = new HashMap<>();
     }
 
-    public void addEpisode(String episodeName) {
+
+    /**
+     * Adds an episode (i.e. its name as String) to Host's topEpisodes map.
+     */
+    public void addEpisode(final String episodeName) {
         int listens = hostTopEpisodes.getOrDefault(episodeName, 0);
         hostTopEpisodes.put(episodeName, listens + 1);
     }
 
-    public void addFan(String fanName) {
+
+    /**
+     * Adds a fan (i.e. a user's name as String) to Host's topFans map.
+     */
+    public void addFan(final String fanName) {
         int listens = hostTopFans.getOrDefault(fanName, 0);
         hostTopFans.put(fanName, listens + 1);
     }
