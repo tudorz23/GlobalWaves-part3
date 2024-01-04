@@ -57,9 +57,9 @@ according to their types and print out the results.
 * Similarly, data for the `Monetization` command is being constantly updated,
 with every artist that is getting a revenue being registered in the
 `monetizedArtists` map, which contains specific details regarding his revenue.
-* For handling the `Notification` functionality, a new `user` abstract class
-was added, `ContentCreator`, offering an easy way to store the list of creators
-a user is subscribed to.
+* For handling the `Notification` functionality, a new `user` type abstract
+class was added, `ContentCreator`, offering an easy way to store the list of
+creators a user is subscribed to.
 * A new utility class, `MapOperations`, was added, containing static methods
 for operations applicable on maps. Map sorting is done using `streams`,
 `Comparators` and `Collectors`, the sorted entries being stored in
@@ -68,11 +68,12 @@ handled using `merge()` function, for example, to add the listens of
 duplicate songs.
 * **Generics** are used in the `MapOperations`, while **wildcards** are used
 in the `HomePage` class, encouraging code reusability.
-* Java `records` and `enums` are still used, making the code more elegant.
+* Java `records` (package `database.records`) and `enums` (package
+`utils.enums`) are still used, making the code more elegant.
 * Like in the previous stages, `exceptions` have been used in many places
 for a smoother error handling.
 * Lists are sorted using `Comparator` and method reference operator.
-* For advertisements, te time passing simulation system was updated, allowing
+* For advertisements, the time passing simulation system was updated, allowing
 the introduction of the ad in the player while storing the previously playing
 `Audio`, thus being able to reintroduce it after the ad ends.
 
@@ -82,17 +83,17 @@ the introduction of the ad in the player while storing the previously playing
 #### Command Pattern
 * Used for separating the implementations of different actions.
 * Based on the usage of the `ICommand` interface, which exposes the `execute()`
-method, thus abstracting te use of a command.
+method, thus abstracting the use of a command.
 * The `AdminInteraction` class iterates through the commands given as input
 and calls the `execute()` method of the `Invoker` class, which, in turn,
 calls the `execute()` method of `ICommand` interface.
 * The Invoker provides separation between the commands and the client code that
 uses them, in this case, the `AdminInteraction`.
 * It is very useful for adding new functionalities, as each one is implemented
-separately, and it also becomes easier to solve possible occurring problems.
+separately, and it also becomes easier to solve possibly occurring problems.
 
 #### Strategy Pattern
-* Used for diverging in implementation between various way of executing a
+* Used for diverging in implementation between various ways of executing a
 certain action.
 * It also makes the code easier to maintain and debug, as different approaches
 to a task are written in different classes.
@@ -105,7 +106,7 @@ to a task are written in different classes.
   * For different recommendations heuristics (fans playlist, random playlist,
     random song). Based on `IRecommendationStrategy` interface with
     `recommend()` method.
-  * For different types of wrapped statistics (arist, host, basic user). Based
+  * For different types of wrapped statistics (artist, host, basic user). Based
     on `IWrappedStrategy` interface with `wrapped()` method.
 
 #### Factory Pattern
@@ -114,7 +115,7 @@ request.
 * Used factory methods for creating concrete:
   * `ICommand` instances in the `CommandFactory` class.
   * `IDeleteUserStrategy` instances in the `DeleteUserCommand` class.
-  * `IRecommendationsStrategy` instances in the `UpdateRecommendationsCommand`
+  * `IRecommendationStrategy` instances in the `UpdateRecommendationsCommand`
     class.
   * `ISearchStrategy` instances in the `SearchCommand` class.
   * `IWrappedStrategy` instances in the `WrappedCommand` class.
@@ -122,16 +123,16 @@ request.
 
 #### Observer Pattern
 * Based on two interfaces, `IObserver`, with the `update()` method, and
-`IObservable`, with the `addOberver()`, `removeObserver()` and
+`IObservable`, with the `addObserver()`, `removeObserver()` and
 `notifyObservers()` methods.
 * Grants an easy to use and maintain mechanism of sharing notifications to
 the *observers* when an event comes from the *observable*, as the `update()`
 method is called automatically.
-* Used for managing the `Notification` and functionality.
+* Used for managing the `Notification` functionality.
 * The *observer* is the `User` class, while the *observables* are `Playlist`
 and `ContentCreator` (i.e. `Artist` and `Host` through inheritance) classes.
 * The *observable* keeps a list of its *observers* and notifies each of them
-in case certain events happen.
+in case of certain events happening.
 
 ---
 
@@ -140,10 +141,11 @@ in case certain events happen.
 iterating through the input commands and using the `CommandFactory` to generate
 commands, while `Invoker` serves as an intermediary to call `execute()` method.
 * Depending on the type of command, actions are performed, usually modifying
-the state of the `Player` instance of one `User`.
+the state of the `Player` instance of one `User`, updating the analytics or
+printing statistics.
 * Before a new command is applied, almost always the time passing is simulated
 using the polymorphic method `simulateTimePass()`.
 * The output is then appended using specialized `Printer` objects.
 * After handling every command, the monetization is updated for the users that
-still have premium subscription, and the statistics regarding revenue are
+still have premium subscriptions, and the statistics regarding revenue are
 printed.
